@@ -1,0 +1,46 @@
+$font-primary: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+$back-color-primary: #fefefe;
+$back-color-secondary: #f8f8f8;
+
+$fore-color-emphasis: navy;
+
+$fore-color-primary: #c6538c;
+$fore-color-secondary: #669999;
+
+$section-width: 640px;
+
+/* ui.bootstrap adjustments for bootstrap.css */
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
+
+body {
+    font-family: $font-primary;
+    font-size: 14px;
+    padding: 5px;
+    background-color: $back-color-primary;
+    color: $fore-color-primary;
+}
+
+.form {
+    padding: 10px;
+    width: $section-width;
+    background-color: $back-color-secondary;
+    .field {
+        margin-top: 10px;
+    }
+}
+
+.message {
+    margin-top: 10px;
+    padding: 10px;
+    width: $section-width;
+    display: block;
+    background-color: $back-color-secondary;
+    .greeting {}
+    .salutation {}
+    .name {
+        font-weight: bold;
+        color: $fore-color-secondary;
+    }
+}

@@ -1,0 +1,24 @@
+- var version = GLOBAL.config.cfg_app_version;
+- var rootPath = GLOBAL.config.cfg_root_path;
+- var useMinifiedFiles = GLOBAL.config.cfg_enable_minified_files;
+
+doctype html
+html
+	head
+		title=title
+		if useMinifiedFiles === true
+			link(rel='stylesheet', href='#{rootPath}lib/bootstrap/dist/css/bootstrap.min.css?#{version}')
+			link(rel='stylesheet', href='#{rootPath}css/app.min.css?#{version}')
+		else
+			link(rel='stylesheet', href='#{rootPath}lib/bootstrap/dist/css/bootstrap.css?#{version}')
+			link(rel='stylesheet', href='#{rootPath}css/app.css?#{version}')
+	body
+		block content
+
+
+		if useMinifiedFiles === true
+			script(type='text/javascript', src='#{rootPath}js/app.min.js')
+		else
+			script(type='text/javascript', src='#{rootPath}js/app.js?#{version}')
+
+		block scripts

@@ -1,0 +1,15 @@
+extends layout
+block content
+    nav.navbar.navbar-default
+        div.container-fluid
+            div.navbar-header
+                a.navbar-brand Hello World App
+            div.collapse.navbar-collapse
+                ul.nav.navbar-nav
+                    li
+                        a(ui-sref='home') home
+                    li
+                        a(ui-sref='help') help
+    div(data-ui-view)
+
+block scripts
