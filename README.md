@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/vamship/node-app-template-cjs.svg?branch=master)](https://travis-ci.org/vamship/node-app-template-cjs)
+
 ## App Template (Common JS)
 
 This is a sample application template for web applications that run on the [Node JS](http://nodejs.org) platform. This template uses the following technologies:
