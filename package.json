@@ -56,7 +56,8 @@
     "sinon-chai": "^2.7.0",
     "supertest": "^0.13.0",
     "time-grunt": "^0.3.2",
-    "wysknd-lib": "git+https://github.com/vamship/wysknd-lib.git#v0.0.2"
+    "wysknd-lib": "git+https://github.com/vamship/wysknd-lib.git#v0.0.2",
+    "wysknd-test": "^1.0.0"
   },
   "repository": {
     "type": "git",
