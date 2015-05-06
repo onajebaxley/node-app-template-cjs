@@ -11,8 +11,6 @@ var RoutesHandler = require('./routes-handler');
  * @constructor
  */
 function PublicRoutesHandler() {
-    this._runMap = {};
-
     PublicRoutesHandler.super_.apply(this, Array.prototype.slice.call(arguments, 0));
 }
 
