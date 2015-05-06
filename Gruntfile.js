@@ -449,19 +449,11 @@ module.exports = function(grunt) {
         },
 
         /**
-         * Configuration for grunt-mocha-test, which is used to:
+         * Configuration for grunt-mocha-istanbul, which is used to:
          *  - Execute server side node.js tests
          *  - Test web server API by making http requests to the server
+         *  - Provide code coverage information
          */
-        mochaTest: {
-            options: {
-                reporter: 'spec',
-                timeout: 8000,
-                colors: true
-            },
-            default: [ TEST.server.allFilesPattern('js') ]
-        },
-
         mocha_istanbul: {
             options: {
                 reportFormats: [ 'text', 'html' ],

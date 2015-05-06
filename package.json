@@ -37,7 +37,6 @@
     "grunt-jsbeautifier": "^0.2.7",
     "grunt-karma": "^0.8.3",
     "grunt-mocha-istanbul": "^2.3.1",
-    "grunt-mocha-test": "^0.11.0",
     "grunt-prettysass": "^0.2.3",
     "grunt-protractor-runner": "^1.0.0",
     "istanbul": "^0.3.13",
