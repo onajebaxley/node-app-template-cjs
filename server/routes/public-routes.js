@@ -5,7 +5,7 @@
 /* jshint node:true */
 'use strict';
 var _express = require('express');
-var PublicHandler = require('./public-routes-handler');
+var PublicRoutesHandler = require('./public-routes-handler');
 
 module.exports = {
     /**
@@ -14,25 +14,25 @@ module.exports = {
      */
     createRouter: function() {
         var router = _express.Router();
-        var publicHandler = new PublicHandler();
+        var routesHandler = new PublicRoutesHandler();
 
         /**
          * Show home page.
          */
         router.get('/',
-            publicHandler.getHomePageHandler());
+            routesHandler.getHomePageHandler());
 
         /**
          * Show help documentation.
          */
         router.get('/help',
-            publicHandler.getHelpPageHandler());
+            routesHandler.getHelpPageHandler());
 
         /**
          * Request for application status.
          */
         router.get('/__status',
-            publicHandler.getAppStatusHandler());
+            routesHandler.getAppStatusHandler());
 
         return router;
     }

@@ -6,10 +6,10 @@
  * initialization and utility methods that will be useful to classes that
  * implement HTTP request handlers.
  *
- * @class Handler
+ * @class RoutesHandler
  * @constructor
  */
-function Handler() {
+function RoutesHandler() {
     this._logger = GLOBAL.getLogger();
 }
 
@@ -17,11 +17,11 @@ function Handler() {
  * Method that wraps an existing handler in a try/catch block to handle
  * exceptions thrown during synchronous execution.
  * 
- * @class Handler
+ * @class RoutesHandler
  * @protected
  * @param {Function} handler The handler to wrap
  */
-Handler.prototype._wrapHandler = function(handler) {
+RoutesHandler.prototype._wrapHandler = function(handler) {
     return function(req, res, next) {
         try {
             handler(req, res, next);
@@ -32,4 +32,4 @@ Handler.prototype._wrapHandler = function(handler) {
     }.bind(this);
 };
 
-module.exports = Handler
+module.exports = RoutesHandler;
