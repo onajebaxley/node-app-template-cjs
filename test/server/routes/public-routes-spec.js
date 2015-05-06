@@ -13,7 +13,7 @@ _chai.use(require('chai-as-promised'));
 var expect = require('chai').expect;
 var assertionHelper = _wyskndTest.assertionHelper;
 
-describe('[public route]', function() {
+describe('[public routes]', function() {
     var MOUNT_PATH = '/';
     var request = _supertest(_config.baseUrl);
 
