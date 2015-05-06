@@ -1,6 +1,6 @@
 {
   "name": "node-app-template-cjs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Starter template for web apps that use ExpressJS/Jade, AngularJS, and Browserify",
   "main": "index.js",
   "scripts": {
