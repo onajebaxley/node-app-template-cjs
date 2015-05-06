@@ -11,7 +11,7 @@ var _express = require('express');
 var _favicon = require('serve-favicon');
 var _morgan = require('morgan');
 
-var _public = require('./routes/public');
+var _publicRoutes = require('./routes/public-routes');
 
 module.exports = {
 
@@ -84,6 +84,6 @@ module.exports = {
         // Mount the routers at the specified base paths.
         forPath('/')
             .addHandler(_express.static(staticDir))
-            .addHandler(_public.createRouter());
+            .addHandler(_publicRoutes.createRouter());
     }
 };
