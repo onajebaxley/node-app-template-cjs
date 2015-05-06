@@ -6,8 +6,8 @@
   "scripts": {
     "postinstall": "bower install; ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "dev": "export NODE_ENV=development;nodemon server/server -e js,jade",
-    "start": "export NODE_ENV=production;forever start server/server.js",
-    "stop": "forever stop server/server.js",
+    "start": "export NODE_ENV=production;pm2 start -i 0 server/server.js",
+    "stop": "pm2 stop server/server.js",
     "test": "grunt"
   },
   "keywords": [],
