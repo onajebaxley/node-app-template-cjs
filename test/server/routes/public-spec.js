@@ -3,7 +3,15 @@
 var _path = require('path');
 var _config = require('../../config');
 var _supertest = require('supertest');
+var _wyskndTest = require('wysknd-test');
+
+var _sinon = require('sinon');
+var _chai = require('chai');
+_chai.use(require('sinon-chai'));
+_chai.use(require('chai-as-promised'));
+
 var expect = require('chai').expect;
+var assertionHelper = _wyskndTest.assertionHelper;
 
 describe('[public route]', function() {
     var MOUNT_PATH = '/';
