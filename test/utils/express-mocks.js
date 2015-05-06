@@ -36,8 +36,8 @@ module.exports = {
         });
 
         _sinon.stub(res, 'set', function(headers) {
-            if(typeof headers === 'object') {
-                for(var headerName in headers) {
+            if (typeof headers === 'object') {
+                for (var headerName in headers) {
                     res.setHeader(headerName.toLowerCase(), headers[headerName]);
                 }
             }
@@ -50,7 +50,7 @@ module.exports = {
         });
 
         _sinon.stub(res, 'send', function(data) {
-            if(res._headers['content-type'] === 'application/json') {
+            if (res._headers['content-type'] === 'application/json') {
                 data = JSON.stringify(data);
             }
             res.end(data);

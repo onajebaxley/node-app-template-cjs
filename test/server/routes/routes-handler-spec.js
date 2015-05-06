@@ -52,7 +52,7 @@ describe('RoutesHandler', function() {
         it('should return a function when invoked with a valid handler', function() {
             var innerHandler = _sinon.spy();
             var handler = new RoutesHandler();
-            
+
             var wrappedHandler = handler._wrapHandler(innerHandler);
 
             expect(wrappedHandler).to.be.a('function');
@@ -73,7 +73,9 @@ describe('RoutesHandler', function() {
 
         it('should log the error and respond with an HTTP 500 if the inner handler throws an error', function() {
             var error = new Error('something went wrong!');
-            var innerHandler = function() { throw error; };
+            var innerHandler = function() {
+                throw error;
+            };
             var handler = new RoutesHandler();
             var wrappedHandler = handler._wrapHandler(innerHandler);
 

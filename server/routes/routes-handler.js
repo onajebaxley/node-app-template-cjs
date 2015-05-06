@@ -22,7 +22,7 @@ function RoutesHandler() {
  * @param {Function} handler The handler to wrap
  */
 RoutesHandler.prototype._wrapHandler = function(handler) {
-    if(typeof handler !== 'function') {
+    if (typeof handler !== 'function') {
         throw new Error('Invalid callback specified (arg #1)');
     }
 

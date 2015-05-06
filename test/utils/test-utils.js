@@ -29,7 +29,7 @@ module.exports = {
      */
     initLogger: function() {
         _originalGetLogger = GLOBAL.getLogger;
-        GLOBAL.getLogger = function() { };
+        GLOBAL.getLogger = function() {};
         _sinon.stub(GLOBAL, 'getLogger', function() {
             return module.exports._logger;
         });
