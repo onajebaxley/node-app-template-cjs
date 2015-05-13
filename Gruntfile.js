@@ -678,6 +678,9 @@ module.exports = function(grunt) {
                     grunt.task.run('express:' + target);
                 }
                 grunt.task.run(testAction);
+                if(startServer) {
+                    grunt.task.run('express:' + target + ':stop');
+                }
             } else if(testType === 'all') {
                 grunt.task.run('test:client:' + target);
                 grunt.task.run('test:server:' + target);
