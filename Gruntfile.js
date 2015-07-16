@@ -260,7 +260,7 @@ module.exports = function(grunt) {
                 }, {
                     expand: true,
                     cwd: ENV.ROOT.getPath(),
-                    src: [ LOGS.getPath() ],
+                    src: [ LOGS.getChildPath('.keep') ],
                     dest: WORKING.getPath()
                 }, {
                     expand: true,
@@ -271,6 +271,11 @@ module.exports = function(grunt) {
                     expand: false,
                     cwd: ENV.ROOT.getPath(),
                     src: ['package.json'],
+                    dest: WORKING.getPath()
+                }, {
+                    expand: false,
+                    cwd: ENV.ROOT.getPath(),
+                    src: ['server.js'],
                     dest: WORKING.getPath()
                 } ]
             }
