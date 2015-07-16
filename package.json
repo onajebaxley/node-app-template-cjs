@@ -4,7 +4,7 @@
   "description": "Starter template for web apps that use ExpressJS/Jade, AngularJS, and Browserify",
   "main": "index.js",
   "scripts": {
-    "postinstall": "bower install; ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
+    "dev-setup": "bower install; ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "dev": "export NODE_ENV=development;nodemon server/server -e js,jade",
     "start": "export NODE_ENV=production;pm2 start -i 0 server/server.js",
     "stop": "pm2 stop server/server.js",
@@ -35,7 +35,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.4.17",
     "grunt-jsbeautifier": "^0.2.7",
-    "grunt-karma": "^0.8.3",
+    "grunt-karma": "^0.12.0",
     "grunt-mocha-istanbul": "^2.3.1",
     "grunt-prettysass": "^0.2.3",
     "grunt-protractor-runner": "^1.0.0",
