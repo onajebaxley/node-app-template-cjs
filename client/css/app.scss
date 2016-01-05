@@ -26,6 +26,7 @@ body {
     padding: 10px;
     width: $section-width;
     background-color: $back-color-secondary;
+
     .field {
         margin-top: 10px;
     }
@@ -37,8 +38,11 @@ body {
     width: $section-width;
     display: block;
     background-color: $back-color-secondary;
+
     .greeting {}
+
     .salutation {}
+
     .name {
         font-weight: bold;
         color: $fore-color-secondary;
