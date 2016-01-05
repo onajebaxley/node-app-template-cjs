@@ -11,6 +11,7 @@ var _fs = require('fs');
 var _path = require('path');
 var _rc = require('rc');
 var _winston = require('winston');
+var _winstonDailyRotateFile = require('winston-daily-rotate-file');
 
 // Global config object to store application level config.
 GLOBAL.config = {};
@@ -150,31 +151,36 @@ module.exports = {
 
         // Logger for application logs.
         _winston.loggers.add('app', {
-            console: {
-                level: 'silly',
-                colorize: 'true',
-                label: 'app'
-            },
-            DailyRotateFile: {
-                level: 'debug',
-                filename: _path.join(GLOBAL.config.cfg_logs_dir, 'app'),
-                datePattern: '.yyyy-MM-dd.log'
-            }
+            transports: [
+                new _winston.transports.Console({
+                    level: 'silly',
+                    colorize: true,
+                    prettyPrint: true,
+                    stringify: true,
+                    label: 'app'
+                }),
+
+                new _winstonDailyRotateFile({
+                    level: 'debug',
+                    filename: _path.join(GLOBAL.config.cfg_logs_dir, 'app'),
+                    datePattern: '.yyyy-MM-dd.log',
+                    label: 'app'
+                })
+            ]
         });
 
         // Logger for access logs
         _winston.loggers.add('access', {
-            console: {
-                silent: true
-            },
-            DailyRotateFile: {
-                level: 'debug',
-                filename: _path.join(GLOBAL.config.cfg_logs_dir, 'access'),
-                datePattern: '.yyyy-MM-dd.log',
-                json: false,
-                colorize: false
-            }
+            transports: [
+                new _winstonDailyRotateFile({
+                    level: 'debug',
+                    filename: _path.join(GLOBAL.config.cfg_logs_dir, 'access'),
+                    datePattern: '.yyyy-MM-dd.log',
+                    json: false,
+                    colorize: false
+                })
+            ]
         });
         _winston.loggers.get('app').info('Logger ready!');
     }
-}
+};
