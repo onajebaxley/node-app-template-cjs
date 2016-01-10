@@ -12,7 +12,7 @@ var _testUtils = require('../../utils/test-utils');
 var RoutesHandler = require('../../../server/routes/routes-handler');
 var PublicRoutesHandler = require('../../../server/routes/public-routes-handler');
 
-describe('PublicRoutesHandler', function() {
+xdescribe('PublicRoutesHandler', function() {
     var APP_NAME = 'mock-app';
     var APP_VERSION = '1.0.0-mock';
     var originalConfig = null;

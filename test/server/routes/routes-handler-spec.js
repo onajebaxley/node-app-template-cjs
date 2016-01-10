@@ -11,7 +11,7 @@ var _expressMocks = require('../../utils/express-mocks');
 var _testUtils = require('../../utils/test-utils');
 var RoutesHandler = require('../../../server/routes/routes-handler');
 
-describe('RoutesHandler', function() {
+xdescribe('RoutesHandler', function() {
 
     beforeEach(function() {
         _testUtils.initLogger();

@@ -55,6 +55,7 @@
     "mock-res": "^0.3.0",
     "node-sass-middleware": "^0.9.0",
     "phantomjs": "^1.9.19",
+    "rewire": "^2.5.1",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
     "supertest": "^1.1.0",
