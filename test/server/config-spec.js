@@ -1,6 +1,7 @@
 /* jshint node:true, expr:true */
 'use strict';
 
+var _path = require('path');
 var _sinon = require('sinon');
 var _chai = require('chai');
 _chai.use(require('sinon-chai'));
@@ -9,37 +10,68 @@ _chai.use(require('chai-as-promised'));
 var expect = require('chai').expect;
 var _rewire = require('rewire');
 
-var _testUtils = require('../utils/test-utils');
-var _logger = null;
+var _appHelper = require('../utils/app-helper');
+var _configHelper = require('../utils/config-helper');
+var _config = null;
 
-describe('[logger]', function() {
+describe('[config]', function() {
 
-    var _winstonMock = null;
+    var _packageMock = null;
+    var _rcSpy = null;
+    var _rcOptions = null;
+
+    function _setRcMock(options) {
+        options = options || {};
+        options.port = options.port || 3000;
+        options.rootPath = options.rootPath || '/';
+        options.proxyPresent = options.proxyPresent || false;
+        options.sessionSecret = options.sessionSecret || 'secret';
+        options.sessionSecureProxy = options.sessionSecureProxy || true;
+        options.sessionCookieName = options.sessionCookieName || 'app_session';
+        options.sessionTimeout = options.sessionTimeout || 10800000;
+        options.sessionTokenVersion = options.sessionTokenVersion || 1;
+        options.logsDir = options.logsDir || 'log';
+        options.staticFileCacheDuration = options.staticFileCacheDuration || 31558464000;
+
+        var rcSpy = _sinon.spy();
+        function rcMock(name, defaults) {
+            rcSpy(name, defaults);
+            defaults = defaults || {};
+            for(var prop in options) {
+                defaults[prop] = options[prop];
+            }
+            return defaults;
+        }
+
+        _config.__set__('_rc', rcMock);
+        return {
+            spy: rcSpy,
+            options: options
+        };
+    }
 
     beforeEach(function() {
-        var mockLoggerModule = _testUtils.getMockLogger();
-        _winstonMock = {
-            loggers: {
-                add: _sinon.spy(),
-                get: _sinon.stub().returns(mockLoggerModule.getLogger())
-            },
-            transports: {
-                Console: _sinon.spy()
-            }
+        _config = _rewire('../../server/config');
+
+        _packageMock = {
+            name: 'foo-bar',
+            version: '1.2.3',
+            _rcName: 'foo_bar'
         };
 
-        _logger = _rewire('../../server/logger');
-        _logger.__set__('_winston', _winstonMock);
+        _config.__set__('_packageInfo', _packageMock);
+
+        var ret = _setRcMock();
+        _rcSpy = ret.spy;
+        _rcOptions = ret.options;
     });
 
     afterEach(function() {
-        _testUtils.restoreConfig();
     });
 
     describe('[init]', function() {
         it('should expose the necessary fields and methods', function() {
-            expect(_logger).to.have.property('configure').and.to.be.a('function');
-            expect(_logger).to.have.property('getLogger').and.to.be.a('function');
+            expect(_config).to.have.property('configure').and.to.be.a('function');
         });
     });
 
@@ -49,7 +81,7 @@ describe('[logger]', function() {
 
             var invokeMethod = function(app) {
                 return function() {
-                    _logger.configure(app);
+                    _config.configure(app);
                 };
             };
 
@@ -62,85 +94,187 @@ describe('[logger]', function() {
             expect(invokeMethod({})).to.throw(error);
         });
 
-        it('should initialize two loggers for application and access logging when invoked', function() {
-            _testUtils.mockConfig('cfg_logs_dir', 'log');
-            expect(_winstonMock.loggers.add).to.not.have.been.called;
+        it('should load application configuration from the file system when invoked', function() {
+            expect(_rcSpy).to.not.have.been.called;
 
-            _logger.configure(function() {});
+            _config.configure(_appHelper.getMockApp());
 
-            expect(_winstonMock.loggers.add).to.have.been.calledTwice;
-            expect(_winstonMock.loggers.add.args[0][0]).to.equal('app');
-            expect(_winstonMock.loggers.add.args[1][0]).to.equal('access');
+            expect(_rcSpy).to.have.been.calledOnce;
+            expect(_rcSpy).to.have.been.calledWith(_packageMock._rcName);
+        });
+
+        it('should set application parameters on the express object', function() {
+            var app = _appHelper.getMockApp();
+
+            var funcRef = app.set;
+            var spy = _sinon.stub(app, 'set', function(key, value) {
+                funcRef.call(app, key, value);
+            });
+
+            expect(spy).to.not.have.been.called;
+            _config.configure(app);
+
+            expect(spy).to.have.been.calledTwice;
+
+            expect(spy.args[0][0]).to.equal('views');
+            expect(spy.args[0][1]).to.equal(_path.join(__dirname, '../../server/views'));
+        });
+
+        it('should translate uppercase string values to boolean', function() {
+            _configHelper.deleteConfig();
+            _setRcMock({ proxyPresent: 'TRUE', sessionSecureProxy: 'TRUE' });
+            _config.configure(_appHelper.getMockApp({ env: 'na' }));
+
+            expect(GLOBAL.config.cfg_proxy_present).to.be.true;
+            expect(GLOBAL.config.cfg_session_secure_proxy).to.be.true;
+        });
+
+        it('should initialize required configuration parameters when invoked (ENV=production)', function() {
+            var appKeys = {
+                env: 'production'
+            };
+            var app = _appHelper.getMockApp(appKeys);
+
+            _configHelper.deleteConfig();
+            _config.configure(app);
+
+            expect(GLOBAL.config).to.be.an('object');
+
+            expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
+            expect(GLOBAL.config['view engine']).to.equal('jade');
+            
+            expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
+            expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
+
+            expect(GLOBAL.config.cfg_port).to.equal(_rcOptions.port);
+            expect(GLOBAL.config.cfg_root_path).to.equal(_path.join(_rcOptions.rootPath));
+            expect(GLOBAL.config.cfg_mount_path).to.equal(_rcOptions.rootPath);
+
+            expect(GLOBAL.config.cfg_static_dir).to.equal(_path.join(__dirname, '../../client'));
+
+            expect(GLOBAL.config.cfg_logs_dir).to.equal('log');
+            expect(GLOBAL.config.cfg_proxy_present).to.equal(_rcOptions.proxyPresent);
+
+            expect(GLOBAL.config.cfg_session_secret).to.equal(_rcOptions.sessionSecret);
+            expect(GLOBAL.config.cfg_session_cookie_name).to.equal(_rcOptions.sessionCookieName);
+            expect(GLOBAL.config.cfg_session_token_version).to.equal(_rcOptions.sessionTokenVersion);
+
+            //Configuration settings for ENV=production
+            expect(GLOBAL.config.cfg_app_version).to.equal(_packageMock.version);
+            expect(GLOBAL.config.cfg_static_file_cache_duration).to.equal(_rcOptions.staticFileCacheDuration);
+            expect(GLOBAL.config.cfg_enable_dyamic_js_compile).to.be.false;
+            expect(GLOBAL.config.cfg_enable_dyamic_css_compile).to.be.false;
+            expect(GLOBAL.config.cfg_enable_minified_files).to.be.true;
+            expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(_rcOptions.sessionSecureProxy);
+            expect(GLOBAL.config.cfg_session_timeout).to.equal(_rcOptions.sessionTimeout);
+        });
+
+        it('should initialize required configuration parameters when invoked (ENV=test)', function() {
+            var appKeys = {
+                env: 'test'
+            };
+            var app = _appHelper.getMockApp(appKeys);
+
+            _configHelper.deleteConfig();
+            _config.configure(app);
+
+            expect(GLOBAL.config).to.be.an('object');
+
+            expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
+            expect(GLOBAL.config['view engine']).to.equal('jade');
+            
+            expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
+            expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
+
+            expect(GLOBAL.config.cfg_port).to.equal(_rcOptions.port);
+            expect(GLOBAL.config.cfg_root_path).to.equal(_path.join(_rcOptions.rootPath));
+            expect(GLOBAL.config.cfg_mount_path).to.equal(_rcOptions.rootPath);
+
+            expect(GLOBAL.config.cfg_static_dir).to.equal(_path.join(__dirname, '../../client'));
+
+            expect(GLOBAL.config.cfg_logs_dir).to.equal('log');
+            expect(GLOBAL.config.cfg_proxy_present).to.equal(_rcOptions.proxyPresent);
+
+            expect(GLOBAL.config.cfg_session_secret).to.equal(_rcOptions.sessionSecret);
+            expect(GLOBAL.config.cfg_session_cookie_name).to.equal(_rcOptions.sessionCookieName);
+            expect(GLOBAL.config.cfg_session_token_version).to.equal(_rcOptions.sessionTokenVersion);
+
+            //Configuration settings for ENV=test
+            var versionPattern = new RegExp(_packageMock.version + '__[0-9]{13,13}');
+            expect(GLOBAL.config.cfg_app_version).to.match(versionPattern);
+            expect(GLOBAL.config.cfg_static_file_cache_duration).to.equal(0);
+            expect(GLOBAL.config.cfg_enable_dyamic_js_compile).to.be.false;
+            expect(GLOBAL.config.cfg_enable_dyamic_css_compile).to.be.false;
+            expect(GLOBAL.config.cfg_enable_minified_files).to.be.true;
+            expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(_rcOptions.sessionSecureProxy);
+            expect(GLOBAL.config.cfg_session_timeout).to.equal(_rcOptions.sessionTimeout);
+        });
+
+        it('should initialize required configuration parameters when invoked (ENV=development)', function() {
+            var appKeys = {
+                env: 'development'
+            };
+            var app = _appHelper.getMockApp(appKeys);
+
+            _configHelper.deleteConfig();
+            _config.configure(app);
+
+            expect(GLOBAL.config).to.be.an('object');
+
+            expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
+            expect(GLOBAL.config['view engine']).to.equal('jade');
+            
+            expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
+            expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
+
+            expect(GLOBAL.config.cfg_port).to.equal(_rcOptions.port);
+            expect(GLOBAL.config.cfg_root_path).to.equal(_path.join(_rcOptions.rootPath));
+            expect(GLOBAL.config.cfg_mount_path).to.equal(_rcOptions.rootPath);
+
+            expect(GLOBAL.config.cfg_static_dir).to.equal(_path.join(__dirname, '../../client'));
+
+            expect(GLOBAL.config.cfg_logs_dir).to.equal('log');
+            expect(GLOBAL.config.cfg_proxy_present).to.equal(_rcOptions.proxyPresent);
+
+            expect(GLOBAL.config.cfg_session_secret).to.equal(_rcOptions.sessionSecret);
+            expect(GLOBAL.config.cfg_session_cookie_name).to.equal(_rcOptions.sessionCookieName);
+            expect(GLOBAL.config.cfg_session_token_version).to.equal(_rcOptions.sessionTokenVersion);
+
+            //Configuration settings for ENV=development
+            var versionPattern = new RegExp(_packageMock.version + '__[0-9]{13,13}');
+            expect(GLOBAL.config.cfg_app_version).to.match(versionPattern);
+            expect(GLOBAL.config.cfg_static_file_cache_duration).to.equal(0);
+            expect(GLOBAL.config.cfg_enable_dyamic_js_compile).to.be.true;
+            expect(GLOBAL.config.cfg_enable_dyamic_css_compile).to.be.true;
+            expect(GLOBAL.config.cfg_enable_minified_files).to.be.false;
+            expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(false);
+            expect(GLOBAL.config.cfg_session_timeout).to.equal(900 * 1000);
+        });
+
+        it('should use the rootPath parameter as the mount path if no proxy is present', function() {
+            _configHelper.deleteConfig();
+            var rootPath = '/root/path/123';
+            _setRcMock({ rootPath: rootPath, proxyPresent: 'false' });
+            _config.configure(_appHelper.getMockApp({ env: 'production' }));
+
+            expect(GLOBAL.config.cfg_mount_path).to.equal(rootPath);
+        });
+
+        it('should use "/" as the rootPath parameter as the mount path if a proxy is present', function() {
+            _configHelper.deleteConfig();
+            var rootPath = '/root/path/123';
+            _setRcMock({ rootPath: rootPath, proxyPresent: 'true' });
+            _config.configure(_appHelper.getMockApp({ env: 'production' }));
+
+            expect(GLOBAL.config.cfg_mount_path).to.equal('/');
         });
 
         it('should have no impact if invoked multiple times', function() {
-            _testUtils.mockConfig('cfg_logs_dir', 'log');
+            _config.configure(_appHelper.getMockApp());
+            _rcSpy.reset();
 
-            _logger.configure(function() {});
-            _winstonMock.loggers.add.reset();
-
-            _logger.configure(function() {});
-            expect(_winstonMock.loggers.add).to.not.have.been.called;
-        });
-    });
-
-    describe('getLogger()', function() {
-        it('should throw an error if invoked before the logger has been initialized', function() {
-            var error = 'Cannot get logger. Logger has not been initialized';
-
-            expect(function() {
-                _logger.getLogger();
-            }).to.throw(error);
-        });
-
-        it('should throw an error if invoked without the supported logger names', function() {
-            var doTest = function(loggerName, throwsError) {
-                var error = 'Unsupported logger specified: ' + loggerName;
-
-                var invokeMethod = function() {
-                    _logger.configure(function() {});
-                    return _logger.getLogger(loggerName);
-                };
-
-                if (throwsError) {
-                    expect(invokeMethod).to.throw(error);
-                } else {
-                    expect(invokeMethod).to.not.throw(error);
-                }
-            };
-
-            _logger.configure(function() {});
-            doTest('abc', true);
-            doTest('foo', true);
-            doTest('bar', true);
-
-            doTest('app', false);
-            doTest('access', false);
-        });
-
-        it('should default the logger name to "app" if not specified', function() {
-            expect(_winstonMock.loggers.get).to.not.have.been.called;
-            _logger.configure(function() {});
-            _winstonMock.loggers.get.reset();
-
-            _logger.getLogger();
-
-            expect(_winstonMock.loggers.get).to.have.been.calledOnce;
-            expect(_winstonMock.loggers.get).to.have.been.calledWith('app');
-        });
-
-        it('should return a logger object when invoked', function() {
-            _logger.configure(function() {});
-            var logger = _logger.getLogger();
-
-            expect(logger).to.be.an('object');
-            expect(logger).to.have.property('silly').and.to.be.a('function');
-            expect(logger).to.have.property('debug').and.to.be.a('function');
-            expect(logger).to.have.property('verbose').and.to.be.a('function');
-            expect(logger).to.have.property('info').and.to.be.a('function');
-            expect(logger).to.have.property('warn').and.to.be.a('function');
-            expect(logger).to.have.property('error').and.to.be.a('function');
-            expect(logger).to.have.property('log').and.to.be.a('function');
+            _config.configure(_appHelper.getMockApp());
+            expect(_rcSpy).to.not.have.been.called;
         });
     });
 });

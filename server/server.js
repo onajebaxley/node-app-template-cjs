@@ -10,19 +10,19 @@
 var _http = require('http');
 var _express = require('express');
 
-var _routes = require('./routes');
 var _config = require('./config');
+var _logger = require('./logger');
 
 var app = _express();
 
 // Application configuration.
-_config.apply(app);
+_config.configure(app);
+
+// Logger configuration
+_logger.configure(app);
 
 // Logger should be initialized by now.
-var logger = GLOBAL.getLogger();
-
-// Route configuration.
-_routes.apply(app);
+var logger = _logger.getLogger();
 
 // Launch server.
 _http.createServer(app).listen(GLOBAL.config.cfg_port, function() {

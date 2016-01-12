@@ -8,17 +8,17 @@ _chai.use(require('chai-as-promised'));
 
 var expect = require('chai').expect;
 var _expressMocks = require('../../utils/express-mocks');
-var _testUtils = require('../../utils/test-utils');
+var _loggerHelper = require('../../utils/logger-helper');
 var RoutesHandler = require('../../../server/routes/routes-handler');
 
 xdescribe('RoutesHandler', function() {
 
     beforeEach(function() {
-        _testUtils.initLogger();
+        _loggerHelper.initLogger();
     });
 
     afterEach(function() {
-        _testUtils.resetLogger();
+        _loggerHelper.resetLogger();
     });
 
     describe('ctor()', function() {

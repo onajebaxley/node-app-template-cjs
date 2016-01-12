@@ -9,6 +9,7 @@ _chai.use(require('chai-as-promised'));
 var expect = require('chai').expect;
 var _rewire = require('rewire');
 
+var _appHelper = require('../utils/app-helper');
 var _configHelper = require('../utils/config-helper');
 var _loggerHelper = require('../utils/logger-helper');
 var _logger = null;
@@ -18,6 +19,8 @@ describe('[logger]', function() {
     var _winstonMock = null;
 
     beforeEach(function() {
+        _configHelper.setConfig('cfg_logs_dir', 'log');
+
         var mockLoggerModule = _loggerHelper.getMockLogger();
         _winstonMock = {
             loggers: {
@@ -64,10 +67,9 @@ describe('[logger]', function() {
         });
 
         it('should initialize two loggers for application and access logging when invoked', function() {
-            _configHelper.setConfig('cfg_logs_dir', 'log');
             expect(_winstonMock.loggers.add).to.not.have.been.called;
 
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
 
             expect(_winstonMock.loggers.add).to.have.been.calledTwice;
             expect(_winstonMock.loggers.add.args[0][0]).to.equal('app');
@@ -75,12 +77,10 @@ describe('[logger]', function() {
         });
 
         it('should have no impact if invoked multiple times', function() {
-            _configHelper.setConfig('cfg_logs_dir', 'log');
-
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
             _winstonMock.loggers.add.reset();
 
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
             expect(_winstonMock.loggers.add).to.not.have.been.called;
         });
     });
@@ -99,7 +99,7 @@ describe('[logger]', function() {
                 var error = 'Unsupported logger specified: ' + loggerName;
 
                 var invokeMethod = function() {
-                    _logger.configure(function() {});
+                    _logger.configure(_appHelper.getMockApp());
                     return _logger.getLogger(loggerName);
                 };
 
@@ -110,7 +110,7 @@ describe('[logger]', function() {
                 }
             };
 
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
             doTest('abc', true);
             doTest('foo', true);
             doTest('bar', true);
@@ -121,7 +121,7 @@ describe('[logger]', function() {
 
         it('should default the logger name to "app" if not specified', function() {
             expect(_winstonMock.loggers.get).to.not.have.been.called;
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
             _winstonMock.loggers.get.reset();
 
             _logger.getLogger();
@@ -131,7 +131,7 @@ describe('[logger]', function() {
         });
 
         it('should return a logger object when invoked', function() {
-            _logger.configure(function() {});
+            _logger.configure(_appHelper.getMockApp());
             var logger = _logger.getLogger();
 
             expect(logger).to.be.an('object');

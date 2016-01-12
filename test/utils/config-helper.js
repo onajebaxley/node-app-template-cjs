@@ -26,6 +26,31 @@ module.exports = {
     },
 
     /**
+     * Deletes a configuration key, or all configuration keys from the
+     * GLOBAL object.
+     *
+     * @module test.utils.configHelper
+     * @method deleteConfig
+     * @param {String} [key] An optional key to delete. If omitted, all
+     *          keys will be deleted.
+     */
+    deleteConfig: function(key) {
+        if(!GLOBAL.config || typeof GLOBAL.config !== 'object') {
+            return;
+        }
+        if (!_originalConfig) {
+            _originalConfig = GLOBAL.config;
+            GLOBAL.config = {};
+        }
+        var keys = (typeof key !== 'string' || key.length <= 0)?
+                            Object.keys(GLOBAL.config): [ key ];
+
+        keys.forEach(function(key) {
+            delete GLOBAL.config[key];
+        });
+    },
+
+    /**
      * Restores the original config information if it has been previously
      * overridden.
      *

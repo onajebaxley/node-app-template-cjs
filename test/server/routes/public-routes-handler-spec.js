@@ -8,7 +8,7 @@ _chai.use(require('chai-as-promised'));
 
 var expect = require('chai').expect;
 var _expressMocks = require('../../utils/express-mocks');
-var _testUtils = require('../../utils/test-utils');
+var _loggerHelper = require('../../utils/logger-helper');
 var RoutesHandler = require('../../../server/routes/routes-handler');
 var PublicRoutesHandler = require('../../../server/routes/public-routes-handler');
 
@@ -18,7 +18,7 @@ xdescribe('PublicRoutesHandler', function() {
     var originalConfig = null;
 
     beforeEach(function() {
-        _testUtils.initLogger();
+        _loggerHelper.initLogger();
         originalConfig = GLOBAL.config;
         GLOBAL.config = {
             cfg_app_name: APP_NAME,
@@ -27,7 +27,7 @@ xdescribe('PublicRoutesHandler', function() {
     });
 
     afterEach(function() {
-        _testUtils.resetLogger();
+        _loggerHelper.resetLogger();
         GLOBAL.config = originalConfig;
         originalConfig = null;
     });

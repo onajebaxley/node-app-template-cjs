@@ -7,20 +7,14 @@
 /* jshint node:true */
 'use strict';
 
-var _fs = require('fs');
+var _packageInfo = require('../package.json');
 var _path = require('path');
 var _rc = require('rc');
-var _winston = require('winston');
-var _winstonDailyRotateFile = require('winston-daily-rotate-file');
+
+var _isInitialized = false;
 
 // Global config object to store application level config.
 GLOBAL.config = {};
-
-// Global mechanism for accessing logs
-GLOBAL.getLogger = function(name) {
-    name = name || 'app';
-    return _winston.loggers.get(name);
-};
 
 function _setConfig(key, value, app) {
     GLOBAL.config[key] = value;
@@ -44,6 +38,8 @@ var _configOverrides = {
         _setConfig('cfg_enable_dyamic_js_compile', true);
         _setConfig('cfg_enable_dyamic_css_compile', true);
         _setConfig('cfg_enable_minified_files', false);
+        _setConfig('cfg_session_secure_proxy', false);
+        _setConfig('cfg_session_timeout', 900 * 1000); // 15 minutes
     },
 
     /**
@@ -67,25 +63,29 @@ var _configOverrides = {
     production: function(app) {}
 };
 
-function _getPackageInfo() {
-    var filePath = _path.join(__dirname, '../package.json');
-    var data = _fs.readFileSync(filePath);
-    var packageInfo = JSON.parse(data.toString());
-
-    return packageInfo;
-}
-
 function _getApplicationConfig(appName) {
     // Read configuration settings from the rc file, and set defaults
     // when no settings are available in the file.
+    // Note that when set via environment variables, boolean values are
+    // treated as strings, and must be truthy (non empty) or falsy (empty)
+    // to have the desired effect.
     appName = appName.replace(/-/g, '_');
     return _rc(appName, {
         port: 3000,
         rootPath: '/',
         proxyPresent: false,
-        logsDir: 'logs',
-        staticFileCacheDuration: 31356000000
+        sessionSecret: 'secret',
+        sessionSecureProxy: true,
+        sessionCookieName: appName + '_session',
+        sessionTimeout: 10800000, // 3 hours
+        sessionTokenVersion: 1,
+        logsDir: 'log',
+        staticFileCacheDuration: 31558464000 // One year
     });
+}
+
+function _stringToBoolean(value) {
+    return (typeof value === 'string') ? (value.toLowerCase() === 'true') : !!value;
 }
 
 module.exports = {
@@ -98,12 +98,21 @@ module.exports = {
      * It is strongly recommended that this module be used to set all
      * application configuration values.
      *
+     * @module server.config
+     * @method configure
      * @param {Object} app  A reference to the express App object.
      */
-    apply: function(app) {
+    configure: function(app) {
+        if (!app || app instanceof Array || typeof app !== 'function') {
+            throw new Error('Invalid app object specified (arg #1)');
+        }
+        if (_isInitialized) {
+            // Already initialized. Do nothing.
+            return;
+        }
+
         // Read package info and application configuration settings.
-        var packageInfo = _getPackageInfo();
-        var appConfig = _getApplicationConfig(packageInfo.name);
+        var appConfig = _getApplicationConfig(_packageInfo.name);
         var staticDir = _path.join(__dirname, '../client');
         var env = app.get('env');
 
@@ -113,26 +122,27 @@ module.exports = {
 
         // Other, configuration settings, not updating express.
         _setConfig('cfg_env', env);
-        _setConfig('cfg_port', appConfig.port);
-        _setConfig('cfg_app_name', packageInfo.name);
-        _setConfig('cfg_app_version', packageInfo.version);
+        _setConfig('cfg_app_name', _packageInfo.name);
+        _setConfig('cfg_app_version', _packageInfo.version);
 
-        _setConfig('cfg_static_dir', staticDir);
-        _setConfig('cfg_logs_dir', appConfig.logsDir);
-        _setConfig('cfg_proxy_present', appConfig.proxyPresent);
+        _setConfig('cfg_port', appConfig.port);
         _setConfig('cfg_root_path', appConfig.rootPath);
 
-        // HACK: Just to make sure that this setting shows at this position in
-        // the logs. Actual value gets overwritten later.
-        _setConfig('cfg_mount_path', appConfig.rootPath);
-
+        _setConfig('cfg_static_dir', staticDir);
         _setConfig('cfg_static_file_cache_duration', appConfig.staticFileCacheDuration);
+
+        _setConfig('cfg_logs_dir', appConfig.logsDir);
+        _setConfig('cfg_proxy_present', _stringToBoolean(appConfig.proxyPresent));
+
+        _setConfig('cfg_session_secret', appConfig.sessionSecret);
+        _setConfig('cfg_session_secure_proxy', _stringToBoolean(appConfig.sessionSecureProxy));
+        _setConfig('cfg_session_cookie_name', appConfig.sessionCookieName);
+        _setConfig('cfg_session_timeout', appConfig.sessionTimeout);
+        _setConfig('cfg_session_token_version', appConfig.sessionTokenVersion);
 
         _setConfig('cfg_enable_dyamic_js_compile', false);
         _setConfig('cfg_enable_dyamic_css_compile', false);
         _setConfig('cfg_enable_minified_files', true);
-
-        app.locals.title = GLOBAL.config.cfg_app_name;
 
         // Apply configuration overrides if any have been defined for the
         // environment.
@@ -149,38 +159,6 @@ module.exports = {
 
         _setConfig('cfg_mount_path', mountPath);
 
-        // Logger for application logs.
-        _winston.loggers.add('app', {
-            transports: [
-                new _winston.transports.Console({
-                    level: 'silly',
-                    colorize: true,
-                    prettyPrint: true,
-                    stringify: true,
-                    label: 'app'
-                }),
-
-                new _winstonDailyRotateFile({
-                    level: 'debug',
-                    filename: _path.join(GLOBAL.config.cfg_logs_dir, 'app'),
-                    datePattern: '.yyyy-MM-dd.log',
-                    label: 'app'
-                })
-            ]
-        });
-
-        // Logger for access logs
-        _winston.loggers.add('access', {
-            transports: [
-                new _winstonDailyRotateFile({
-                    level: 'debug',
-                    filename: _path.join(GLOBAL.config.cfg_logs_dir, 'access'),
-                    datePattern: '.yyyy-MM-dd.log',
-                    json: false,
-                    colorize: false
-                })
-            ]
-        });
-        _winston.loggers.get('app').info('Logger ready!');
+        _isInitialized = true;
     }
-};
+}

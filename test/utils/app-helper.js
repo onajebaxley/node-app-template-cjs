@@ -1,0 +1,35 @@
+/* jshint node:true, expr:true */
+'use strict';
+
+/**
+ * Test helper for the core app
+ *
+ * @module test.utils.appHelper
+ */
+module.exports = {
+    /**
+     * Returns a mock app object, which is a mock of the express object.
+     *
+     * @module test.utils.appHelper
+     * @method getMockApp
+     * @param {Object} [appKeys={}] An optional hash of keys that the app will
+     *          use when responding to app.get() calls.
+     */
+    getMockApp: function(appKeys) {
+        appKeys = appKeys || {};
+        appKeys.env = appKeys.env || 'development';
+        var app = function() {
+        };
+
+        app.get = function(key) {
+            return appKeys[key];
+        };
+
+        app.set = function(key, value) {
+            appKeys[key] = value;
+        };
+
+        app.locals = {};
+        return app;
+    }
+};
