@@ -14,7 +14,7 @@ var _configHelper = require('../utils/config-helper');
 var _loggerHelper = require('../utils/logger-helper');
 var _logger = null;
 
-describe('[logger]', function() {
+describe('[server.logger]', function() {
 
     var _winstonMock = null;
 

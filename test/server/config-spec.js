@@ -14,7 +14,7 @@ var _appHelper = require('../utils/app-helper');
 var _configHelper = require('../utils/config-helper');
 var _config = null;
 
-describe('[config]', function() {
+describe('[server.config]', function() {
 
     var _packageMock = null;
     var _rcSpy = null;
