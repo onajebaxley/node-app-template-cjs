@@ -2,8 +2,9 @@
 'use strict';
 
 var _sinon = require('sinon');
-var _logger = require('../../server/logger');
+var _appHelper = require('./app-helper');
 var _configHelper = require('./config-helper');
+var _rewire = require('rewire');
 
 /**
  * Test helper for the logger module
@@ -13,34 +14,54 @@ var _configHelper = require('./config-helper');
 module.exports = {
 
     /**
-     * Mock initializes the logger module.
+     * Initializes the actual logger module with dummy parameters.
      *
      * @module test.utils.loggerHelper
      * @method initLogger
+     * @param {Boolean} [configure=false] If set to true, automatically
+     *          configures the logger with an empty app.
      */
-    initLogger: function() {
+    initLogger: function(configure) {
+        configure = !!configure;
+
         _configHelper.setConfig('cfg_logs_dir', 'log');
-        _logger.configure(function() {});
+        var logger = _rewire('../../server/logger');
+        logger.__set__('_winston', module.exports.getWinstonMock());
+
+        if(configure) {
+            logger.configure(_appHelper.getMockApp());
+        }
+
+        return logger;
     },
 
     /**
-     * Creates and returns a mock logger object.
+     * Initializes a mock winston logger module.
      *
      * @module test.utils.loggerHelper
-     * @method getMockLogger
-     * @return {Object} A mock logger object with spies for each logging method
+     * @method getWinstonMock
+     * @return {Object} A mock logger module that can be injected into other
+     *          modules.
      */
-    getMockLogger: function() {
-        return {
-            getLogger: _sinon.stub().returns({
-                silly: _sinon.spy(),
-                debug: _sinon.spy(),
-                verbose: _sinon.spy(),
-                info: _sinon.spy(),
-                warn: _sinon.spy(),
-                error: _sinon.spy(),
-                log: _sinon.spy()
-            })
+    getWinstonMock: function() {
+        var mockLogger = {
+            loggers: {
+                add: _sinon.spy(),
+                get: _sinon.stub().returns({
+                    silly: _sinon.spy(),
+                    debug: _sinon.spy(),
+                    verbose: _sinon.spy(),
+                    info: _sinon.spy(),
+                    warn: _sinon.spy(),
+                    error: _sinon.spy(),
+                    log: _sinon.spy()
+                })
+            },
+            transports: {
+                Console: _sinon.spy()
+            }
         };
+
+        return mockLogger;
     }
 };

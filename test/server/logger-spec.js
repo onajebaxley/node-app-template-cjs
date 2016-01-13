@@ -21,17 +21,7 @@ describe('[server.logger]', function() {
     beforeEach(function() {
         _configHelper.setConfig('cfg_logs_dir', 'log');
 
-        var mockLoggerModule = _loggerHelper.getMockLogger();
-        _winstonMock = {
-            loggers: {
-                add: _sinon.spy(),
-                get: _sinon.stub().returns(mockLoggerModule.getLogger())
-            },
-            transports: {
-                Console: _sinon.spy()
-            }
-        };
-
+        _winstonMock = _loggerHelper.getWinstonMock();
         _logger = _rewire('../../server/logger');
         _logger.__set__('_winston', _winstonMock);
     });

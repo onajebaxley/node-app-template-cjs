@@ -9,6 +9,8 @@
 var _cookieSession = require('cookie-session');
 var _clone = require('clone');
 
+var _logger = require('./logger');
+
 var _sessionOptions = null;
 var _sessionHandlerMap = null;
 var _isInitialized = false;
@@ -40,6 +42,7 @@ module.exports = {
             signed: true
         };
 
+
         _isInitialized = true;
     },
 
@@ -54,16 +57,20 @@ module.exports = {
      * @return {Object} A reference to the session handler object
      */
     getSessionHandler: function(path) {
+        var logger = _logger.getLogger();
         if(typeof path !== 'string' || path.length <= 0) {
             path = '/';
         }
         var handler = _sessionHandlerMap[path];
         if(!handler) {
+            logger.debug('Creating new session handler for path: [%s]', path);
             var options = _clone(_sessionOptions);
             options.path = path;
             handler = _cookieSession(options);
 
             _sessionHandlerMap[path] = handler;
+        } else {
+            logger.debug('Using existing session handler for path: [%s]', path);
         }
 
         return handler;

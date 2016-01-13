@@ -24,6 +24,7 @@ describe('[server.session]', function() {
 
     beforeEach(function() {
         _session = _rewire('../../server/session');
+        _session.__set__('_logger', _loggerHelper.initLogger(true));
 
         _configHelper.setConfig('cfg_session_cookie_name', _sessionParams.cookieName);
         _configHelper.setConfig('cfg_session_secret', _sessionParams.secretKey);
