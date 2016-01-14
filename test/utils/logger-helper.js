@@ -20,6 +20,7 @@ module.exports = {
      * @method initLogger
      * @param {Boolean} [configure=false] If set to true, automatically
      *          configures the logger with an empty app.
+     * @return {Object} Reference to the logger object
      */
     initLogger: function(configure) {
         configure = !!configure;

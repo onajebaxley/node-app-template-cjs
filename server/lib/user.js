@@ -6,7 +6,7 @@ var _clone = require('clone');
 /**
  * Defines a class that represents a logged in user.
  *
- * @class User
+ * @class server.lib.User
  * @constructor
  * @param {String} username The user username of the user (unique login id)
  * @param {Array} roles A list of strings that represents the roles that the
@@ -37,7 +37,7 @@ function User(username, roles, userProperties) {
  * Determines whether or not the user belongs to a specific role. Role names
  * are case insensitive.
  *
- * @class User
+ * @class server.lib.User
  * @method hasRole
  * @param {String} role The role that we are checking for
  * @return {Boolean} True if the user has the specified role, false otherwise.
@@ -52,7 +52,7 @@ User.prototype.hasRole = function(role) {
 /**
  * Returns a list of all roles associated with the user.
  *
- * @class User
+ * @class server.lib.User
  * @method getRoles
  * @return {Array} A list of roles that the user belongs to
  */
@@ -65,7 +65,7 @@ User.prototype.getRoles = function() {
  * consumption on the client side, though they could be used to access services
  * from the server as well.
  *
- * @class User
+ * @class server.lib.User
  * @method setServiceToken
  * @param {String} serviceKey A string that uniquely identifies the service for
  *          which the token is being set.
@@ -85,7 +85,7 @@ User.prototype.setServiceToken = function(serviceKey, token) {
 /**
  * Returns a service token for the specified service key.
  *
- * @class User
+ * @class server.lib.User
  * @method getServiceToken
  * @param {String} serviceKey A string that uniquely identifies the service for
  *          which the token is being set.
@@ -102,7 +102,7 @@ User.prototype.getServiceToken = function(serviceKey) {
  * Returns a serialized version of the current user object, containing all
  * associated with the user.
  *
- * @class User
+ * @class server.lib.User
  * @method serialize
  * @return {Object} A map of properties associated with the user
  */
