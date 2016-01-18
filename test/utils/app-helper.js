@@ -1,6 +1,8 @@
 /* jshint node:true, expr:true */
 'use strict';
 
+var _sinon = require('sinon');
+
 /**
  * Test helper for the core app
  *
@@ -28,6 +30,8 @@ module.exports = {
         app.set = function(key, value) {
             appKeys[key] = value;
         };
+
+        app.use = _sinon.spy();
 
         app.locals = {};
         return app;
