@@ -31,7 +31,7 @@ module.exports = {
     getMockRes: function() {
         var res = new MockRes();
 
-        ['set', 'status', 'send', 'render'].forEach(function(method) {
+        ['set', 'status', 'send', 'render', 'redirect'].forEach(function(method) {
             res[method] = res[method] || function() {};
         });
 
@@ -58,6 +58,10 @@ module.exports = {
         });
 
         _sinon.stub(res, 'render', function(view, args) {
+            return res;
+        });
+
+        _sinon.stub(res, 'redirect', function(view, args) {
             return res;
         });
 
