@@ -16,9 +16,20 @@ var InvalidSessionError = require('../lib/invalid-session-error');
  *
  * @class CoreHandlerProvider
  * @constructor
+ * @param {String} staticDir The path to the directory containing static files.
+ * @param {String} rootPath The path to the root of the web application.
  */
-function CoreHandlerProvider() {
+function CoreHandlerProvider(staticDir, rootPath) {
+    if(typeof staticDir !== 'string' || staticDir.length <= 0) {
+        throw new Error('Invalid static directory specified (arg #1)');
+    }
+    if(typeof rootPath !== 'string' || rootPath.length <= 0) {
+        throw new Error('Invalid root path specified (arg #2)');
+    }
+
     this._logger = _logger.getLogger();
+    this._staticDir = staticDir;
+    this._rootPath = rootPath;
 }
 
 /**
@@ -51,19 +62,15 @@ CoreHandlerProvider.prototype.accessLoggerMiddleware = function() {
  *
  * @class CoreHandlerProvider
  * @method dynamicCssCompileMiddleware
- * @param {String} staticDir The path to the directory containing static files.
  * @param {String} [jsFile=/js/app.js] An optional sub path to the main js file.
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
-CoreHandlerProvider.prototype.dynamicJsCompileMiddleware = function(staticDir, jsFile) {
-    if(typeof staticDir !== 'string' || staticDir.length <= 0) {
-        throw new Error('Invalid static directory specified (arg #1)');
-    }
+CoreHandlerProvider.prototype.dynamicJsCompileMiddleware = function(jsFile) {
     if(typeof jsFile !== 'string' || jsFile.length <= 0) {
         jsFile = '/js/app.js';
     }
 
-    var sourcePath = _path.join(staticDir, jsFile);
+    var sourcePath = _path.join(this._staticDir, jsFile);
 
     // Dynamically generates a bundled javascript file from individual source
     // javascript files.
@@ -78,22 +85,13 @@ CoreHandlerProvider.prototype.dynamicJsCompileMiddleware = function(staticDir, j
  *
  * @class CoreHandlerProvider
  * @method dynamicJsCompileMiddleware
- * @param {String} staticDir The path to the directory containing static files.
- * @param {String} rootPath The path to the root of the web application.
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
-CoreHandlerProvider.prototype.dynamicCssCompileMiddleware = function(staticDir, rootPath) {
-    if(typeof staticDir !== 'string' || staticDir.length <= 0) {
-        throw new Error('Invalid static directory specified (arg #1)');
-    }
-    if(typeof rootPath !== 'string' || rootPath.length <= 0) {
-        throw new Error('Invalid root path specified (arg #2)');
-    }
-
+CoreHandlerProvider.prototype.dynamicCssCompileMiddleware = function() {
     // Dynamically generates css files from sass files.
     return _nodeSassMiddleware({
-        src: staticDir,
-        prefix: rootPath,
+        src: this._staticDir,
+        prefix: this._rootPath,
         debug: true,
         response: true,
         outputStyle: 'nested'
@@ -106,18 +104,14 @@ CoreHandlerProvider.prototype.dynamicCssCompileMiddleware = function(staticDir, 
  *
  * @class CoreHandlerProvider
  * @method faviconHandler
- * @param {String} staticDir The path to the directory containing static files.
  * @param {String} [filePath=img/favicon.ico] The path to the favicon.ico file.
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
-CoreHandlerProvider.prototype.faviconHandler = function(staticDir, filePath) {
-    if(typeof staticDir !== 'string' || staticDir.length <= 0) {
-        throw new Error('Invalid static directory specified (arg #1)');
-    }
+CoreHandlerProvider.prototype.faviconHandler = function(filePath) {
     if(typeof filePath !== 'string' || filePath.length <= 0) {
         filePath = 'img/favicon.ico';
     }
-    return _favicon(_path.join(staticDir, filePath));
+    return _favicon(_path.join(this._staticDir, filePath));
 };
 
 /**
