@@ -10,6 +10,7 @@ _chai.use(require('chai-as-promised'));
 var expect = require('chai').expect;
 var _rewire = require('rewire');
 
+var _expressMocks = require('../utils/express-mocks');
 var _appHelper = require('../utils/app-helper');
 var _configHelper = require('../utils/config-helper');
 var _loggerHelper = require('../utils/logger-helper');
@@ -21,26 +22,27 @@ describe('[server.routes]', function() {
         staticDir: '/static',
         mountPath: '/mount',
         rootPath: '/',
+        // These two parameters should be true by default so that the call
+        // sequence for app.use() is predictable in the test cases.
         enableDynamicCss: true,
         enableDynamicJs: true
     };
-    var _morganMock;
-    var _sassMiddlewareMock;
-    var _browserifyMiddlewareMock;
-    var _faviconMock;
+    var _coreHandlerProviderMock;
 
     beforeEach(function() {
-        _morganMock = _sinon.stub().returns({ module: 'morgan' });
-        _sassMiddlewareMock = _sinon.stub().returns({ module: 'node-sass-middleware' });
-        _browserifyMiddlewareMock = _sinon.stub().returns({ module: 'browserify-middleware' });
-        _faviconMock = _sinon.stub().returns({ module: 'favicon' });
+        _coreHandlerProviderMock = _sinon.stub().returns({
+            accessLoggerMiddleware: _sinon.stub().returns(function() {}),
+            dynamicJsCompileMiddleware: _sinon.stub().returns(function() {}),
+            dynamicCssCompileMiddleware: _sinon.stub().returns(function() {}),
+            faviconHandler: _sinon.stub().returns(function() {}),
+            resourceNotFoundErrorHandler: _sinon.stub().returns(function() {}),
+            authenticationErrorHandler: _sinon.stub().returns(function() {}),
+            catchAllErrorHandler: _sinon.stub().returns(function() {})
+        });
 
         _routes = _rewire('../../server/routes');
         _routes.__set__('_logger', _loggerHelper.initLogger(true));
-        _routes.__set__('_morgan', _morganMock);
-        _routes.__set__('_nodeSassMiddleware', _sassMiddlewareMock);
-        _routes.__set__('_browserifyMiddleware', _browserifyMiddlewareMock);
-        _routes.__set__('_favicon', _faviconMock);
+        _routes.__set__('CoreHandlerProvider', _coreHandlerProviderMock);
 
         _configHelper.setConfig('cfg_static_dir', _configParams.staticDir);
         _configHelper.setConfig('cfg_mount_path', _configParams.mountPath);
@@ -78,146 +80,147 @@ describe('[server.routes]', function() {
             expect(invokeMethod({})).to.throw(error);
         });
 
-        it('should initialize the access logger with a persistent store and bind it to the app', function() {
+        it('should create an instance of the core handler provider object', function() {
             var mockApp = _appHelper.getMockApp();
 
-            expect(_morganMock).to.not.have.been.called;
-            expect(mockApp.use).to.not.have.been.called;
-
+            expect(_coreHandlerProviderMock).to.not.have.been.called;
             _routes.configure(mockApp);
+            
+            expect(_coreHandlerProviderMock).to.have.been.calledOnce;
+            expect(_coreHandlerProviderMock).to.have.been.calledWithNew;
+            expect(_coreHandlerProviderMock).to.have.
+                    been.calledWith(_configParams.staticDir, _configParams.rootPath);
+        });
 
-            expect(_morganMock).to.have.been.calledOnce;
-            expect(_morganMock.args[0][0]).to.equal('common');
-            var loggerStream = _morganMock.args[0][1];
-            expect(loggerStream).to.be.an('object');
-            expect(loggerStream.stream).to.be.an('object');
-            expect(loggerStream.stream).to.have.property('write').and.to.be.a('function');
+        it('should register the access logger middleware as the first handler', function() {
+            var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            var actualLogger = _routes.__get__('_logger').getLogger('access');
-            var message = 'hello';
-            expect(actualLogger.info).to.not.have.been.called;
-            //Trailing newline added here should be excluded when checked.
-            loggerStream.stream.write(message + '\n');
-            expect(actualLogger.info).to.have.been.calledOnce;
-
-            expect(actualLogger.info.args[0][0]).to.equal(message);
-
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var mockResult = _morganMock();
+            expect(provider.accessLoggerMiddleware).to.not.have.been.called;
+            expect(mockApp.use).to.not.have.been.called;
+            _routes.configure(mockApp);
+            
+            expect(provider.accessLoggerMiddleware).to.have.been.calledOnce;
             expect(mockApp.use.callCount).to.be.at.least(1);
-            expect(mockApp.use.args[0][0]).to.equal(mockResult);
+            expect(mockApp.use.args[0][0]).to.equal(provider.accessLoggerMiddleware());
         });
 
-        it('should initialize and bind dynamic css compile middleware if enabled via configuration', function() {
+        it('should register the css compile middleware if enabled via configuration', function() {
             _configHelper.setConfig('cfg_enable_dyamic_css_compile', true);
+
             var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            expect(_sassMiddlewareMock).to.not.have.been.called;
+            expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
             expect(mockApp.use).to.not.have.been.called;
-
             _routes.configure(mockApp);
-
-            expect(_sassMiddlewareMock).to.have.been.calledOnce;
-            expect(_sassMiddlewareMock.args[0][0]).to.deep.equal({
-                src: _configParams.staticDir,
-                prefix: _configParams.rootPath,
-                debug: true,
-                response: true,
-                outputStyle: 'nested'
-            });
-
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var mockResult = _sassMiddlewareMock();
+            
+            expect(provider.dynamicCssCompileMiddleware).to.have.been.calledOnce;
             expect(mockApp.use.callCount).to.be.at.least(2);
-            expect(mockApp.use.args[1][0]).to.equal(mockResult);
+            expect(mockApp.use.args[1][0]).to.equal(provider.dynamicCssCompileMiddleware());
         });
 
-        it('should not initialize and bind dynamic css compile middleware if not enabled via configuration', function() {
+        it('should not register the css compile middleware if disabled via configuration', function() {
             _configHelper.setConfig('cfg_enable_dyamic_css_compile', false);
+
             var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            expect(_sassMiddlewareMock).to.not.have.been.called;
+            expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
             expect(mockApp.use).to.not.have.been.called;
-
             _routes.configure(mockApp);
-
-            expect(_sassMiddlewareMock).to.not.have.been.called;
-
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var mockResult = _sassMiddlewareMock();
-            expect(mockApp.use).to.not.have.been.calledWith(mockResult);
+            
+            expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
         });
 
-        it('should initialize and bind dynamic js compile middleware if enabled via configuration', function() {
-            // Include the config for dynamic css so that call sequence for
-            // app.use() is predictable.
-            _configHelper.setConfig('cfg_enable_dyamic_css_compile', true);
+        it('should register the js compile middleware if enabled via configuration', function() {
             _configHelper.setConfig('cfg_enable_dyamic_js_compile', true);
+
+            var jsFilePath = '/js/app.js';
+            var mountPath = _path.join(_configParams.mountPath, jsFilePath);
             var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            expect(_browserifyMiddlewareMock).to.not.have.been.called;
+            expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
             expect(mockApp.use).to.not.have.been.called;
-
             _routes.configure(mockApp);
+            
+            expect(provider.dynamicJsCompileMiddleware).to.have.been.calledOnce;
 
-            expect(_browserifyMiddlewareMock).to.have.been.calledOnce;
-            var srcPath = _path.join(_configParams.staticDir, '/js/app.js');
-            expect(_browserifyMiddlewareMock.args[0][0]).to.equal(srcPath);
-
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var bundlePath = _path.join(_configParams.mountPath, '/js/app.js');
-            var mockResult = _browserifyMiddlewareMock();
             expect(mockApp.use.callCount).to.be.at.least(3);
-            expect(mockApp.use.args[2][0]).to.equal(bundlePath);
-            expect(mockApp.use.args[2][1]).to.equal(mockResult);
+            expect(mockApp.use.args[2][0]).to.equal(mountPath);
+            expect(mockApp.use.args[2][1]).to.equal(provider.dynamicJsCompileMiddleware());
         });
 
-        it('should not initialize and bind dynamic js compile middleware if not enabled via configuration', function() {
-            // Include the config for dynamic css so that call sequence for
-            // app.use() is predictable.
-            _configHelper.setConfig('cfg_enable_dyamic_css_compile', true);
+        it('should not register the js compile middleware if disabled via configuration', function() {
             _configHelper.setConfig('cfg_enable_dyamic_js_compile', false);
+
             var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            expect(_browserifyMiddlewareMock).to.not.have.been.called;
+            expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
             expect(mockApp.use).to.not.have.been.called;
-
             _routes.configure(mockApp);
-
-            expect(_browserifyMiddlewareMock).to.not.have.been.called;
-
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var bundlePath = _path.join(_configParams.mountPath, '/js/app.js');
-            var mockResult = _browserifyMiddlewareMock();
-            expect(mockApp.use).to.not.have.been.calledWith(bundlePath, mockResult);
+            
+            expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
         });
 
-        it('should initialize and bind a handler to handle requests for favicon.ico', function() {
-            // Include the config for dynamic js and css so that call sequence for
-            // app.use() is predictable.
-            _configHelper.setConfig('cfg_enable_dyamic_css_compile', true);
-            _configHelper.setConfig('cfg_enable_dyamic_js_compile', true);
+        it('should bind a handler to handle requests for favicon.ico', function() {
+            var faviconPath = 'img/favicon.ico';
             var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
 
-            expect(_faviconMock).to.not.have.been.called;
+            expect(provider.faviconHandler).to.not.have.been.called;
             expect(mockApp.use).to.not.have.been.called;
-
             _routes.configure(mockApp);
 
-            expect(_faviconMock).to.have.been.calledOnce;
-            var faviconPath = _path.join(_configParams.staticDir, 'img/favicon.ico');
-            expect(_faviconMock.args[0][0]).to.equal(faviconPath);
+            expect(provider.faviconHandler).to.have.been.calledOnce;
+            expect(provider.faviconHandler).to.have.been.calledWith(faviconPath);
 
-            // This has to be here so that it does not interfere with previous
-            // call count checks.
-            var mockResult = _faviconMock();
             expect(mockApp.use.callCount).to.be.at.least(4);
-            expect(mockApp.use.args[3][0]).to.equal(mockResult);
+            expect(mockApp.use.args[3][0]).to.equal(provider.faviconHandler());
+        });
+
+        it('should bind a handler for authentication errors before the 404 error handler is bound', function() {
+            var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
+
+            expect(provider.authenticationErrorHandler).to.not.have.been.called;
+            expect(mockApp.use).to.not.have.been.called;
+            _routes.configure(mockApp);
+
+            expect(provider.authenticationErrorHandler).to.have.been.calledOnce;
+            expect(mockApp.use.callCount).to.be.at.least(5);
+            var callIndex = mockApp.use.callCount - 3;
+            expect(mockApp.use.args[callIndex][0]).to.equal(provider.authenticationErrorHandler());
+        });
+
+        it('should bind a handler for 404 errors (resource not found) before the catch all error handler is bound', function() {
+            var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
+
+            expect(provider.resourceNotFoundErrorHandler).to.not.have.been.called;
+            expect(mockApp.use).to.not.have.been.called;
+            _routes.configure(mockApp);
+
+            expect(provider.resourceNotFoundErrorHandler).to.have.been.calledOnce;
+            expect(mockApp.use.callCount).to.be.at.least(6);
+            var callIndex = mockApp.use.callCount - 2;
+            expect(mockApp.use.args[callIndex][0]).to.equal(provider.resourceNotFoundErrorHandler());
+        });
+
+        it('should bind a catch all handler at the very end to handle all errors raised during request processing', function() {
+            var mockApp = _appHelper.getMockApp();
+            var provider = _coreHandlerProviderMock();
+
+            expect(provider.catchAllErrorHandler).to.not.have.been.called;
+            expect(mockApp.use).to.not.have.been.called;
+            _routes.configure(mockApp);
+
+            expect(provider.catchAllErrorHandler).to.have.been.calledOnce;
+            var callIndex = mockApp.use.callCount - 1;
+            expect(mockApp.use.callCount).to.be.at.least(7);
+            expect(mockApp.use.args[callIndex][0]).to.equal(provider.catchAllErrorHandler());
         });
 
         it('should have no impact if invoked multiple times', function() {
@@ -229,6 +232,7 @@ describe('[server.routes]', function() {
             _routes.configure(mockApp);
             expect(mockApp.use).to.not.have.been.called;
         });
+
     });
 
 });

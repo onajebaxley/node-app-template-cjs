@@ -8,50 +8,24 @@
 'use strict';
 var _path = require('path');
 var _express = require('express');
-var _favicon = require('serve-favicon');
-var _morgan = require('morgan');
-var _nodeSassMiddleware = require('node-sass-middleware');
-var _browserifyMiddleware = require('browserify-middleware');
 
 var _logger = require('./logger');
 var _publicRoutes = require('./routes/public-routes');
+var CoreHandlerProvider = require('./handlers/core-handler-provider');
 var _isInitialized = false;
 
-function _initAccessLogger() {
-    var accessLogger = _logger.getLogger('access');
-    var winstonStream = {
-        write: function(message, encoding) {
-            // We're piping from Morgan to Winston. There will be an extra
-            // newline character that has to be trimmed.
-            accessLogger.info(message.slice(0, -1));
+
+function forPath(path) {
+    path = path || '';
+    path = _path.join(GLOBAL.config.cfg_mount_path, path);
+
+    var mounter = {
+        addHandler: function(handler) {
+            app.use(path, handler);
+            return mounter;
         }
     };
-
-    return _morgan('common', {
-        stream: winstonStream
-    });
-}
-
-function _initDynamicCssMiddleware() {
-    // Dynamically generates css files from sass files. Intended for use in
-    // development mode only. Production deployments should pre compile sass 
-    // to css prior to deployment.
-    return _nodeSassMiddleware({
-        src: GLOBAL.config.cfg_static_dir,
-        prefix: GLOBAL.config.cfg_root_path,
-        debug: true,
-        response: true,
-        outputStyle: 'nested'
-    });
-}
-
-function _initDynamicJsMiddleware() {
-    var sourcePath = _path.join(GLOBAL.config.cfg_static_dir, '/js/app.js');
-
-    // Dynamically generates a bundled javascript file from individual source
-    // javascript files. Intended for development use only. Production
-    // deployments should browserify the source modules prior to deployment.
-    return _browserifyMiddleware(sourcePath);
+    return mounter;
 }
 
 module.exports = {
@@ -73,18 +47,36 @@ module.exports = {
             return;
         }
 
-        app.use(_initAccessLogger());
+        var provider = new CoreHandlerProvider(GLOBAL.config.cfg_static_dir,
+                                               GLOBAL.config.cfg_root_path);
 
+        //Access logger
+        app.use(provider.accessLoggerMiddleware());
+
+        //Dynamic SASS -> CSS compilation (dev only)
         if (GLOBAL.config.cfg_enable_dyamic_css_compile) {
-            app.use(_initDynamicCssMiddleware());
+            app.use(provider.dynamicCssCompileMiddleware());
         }
-
+        //Dynamic browserify compilation (dev only)
         if (GLOBAL.config.cfg_enable_dyamic_js_compile) {
-            var bundlePath = _path.join(GLOBAL.config.cfg_mount_path, '/js/app.js');
-            app.use(bundlePath, _initDynamicJsMiddleware());
+            var jsMountPath = _path.join(GLOBAL.config.cfg_mount_path, '/js/app.js');
+            app.use(jsMountPath, provider.dynamicJsCompileMiddleware('/js/app.js'));
         }
 
-        app.use(_favicon(_path.join(GLOBAL.config.cfg_static_dir, 'img/favicon.ico')));
+        //Favicon.ico handler
+        app.use(provider.faviconHandler('img/favicon.ico'));
+
+        //Routers to handle application paths
+
+
+        //Handler for authentication errors
+        app.use(provider.authenticationErrorHandler());
+        
+        //Handler for 404 errors
+        app.use(provider.resourceNotFoundErrorHandler());
+
+        //Catch all handler for all errors.
+        app.use(provider.catchAllErrorHandler());
 
         _isInitialized = true;
     }
