@@ -15,16 +15,15 @@ var _loggerHelper = require('../../utils/logger-helper');
 var PublicHandlerProvider = null;
 
 describe('PublicHandlerProvider', function() {
-    var APP_NAME = 'mock-app';
-    var APP_VERSION = '1.0.0-mock';
+    var DEFAULT_APP_NAME = 'mock-app';
+    var DEFAULT_APP_VERSION = '1.0.0-mock';
 
     beforeEach(function() {
-        _loggerHelper.initLogger();
         PublicHandlerProvider = _rewire('../../../server/handlers/public-handler-provider');
         PublicHandlerProvider.__set__('_logger', _loggerHelper.initLogger(true));
 
-        _configHelper.setConfig('cfg_app_name', APP_NAME);
-        _configHelper.setConfig('cfg_app_version', APP_VERSION);
+        _configHelper.setConfig('cfg_app_name', DEFAULT_APP_NAME);
+        _configHelper.setConfig('cfg_app_version', DEFAULT_APP_VERSION);
     });
 
     afterEach(function() {
@@ -54,7 +53,7 @@ describe('PublicHandlerProvider', function() {
             var error = 'Invalid app version specified (arg #2)';
             function invoke(appVersion) {
                 return function() {
-                    return new PublicHandlerProvider(APP_NAME, appVersion);
+                    return new PublicHandlerProvider(DEFAULT_APP_NAME, appVersion);
                 };
             }
 
@@ -69,7 +68,7 @@ describe('PublicHandlerProvider', function() {
         });
 
         it('should expose the methods required by the interface', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
 
             expect(provider).to.be.an('object');
             expect(provider).to.have.property('homePageHandler').and.to.be.a('function');
@@ -80,14 +79,14 @@ describe('PublicHandlerProvider', function() {
 
     describe('homePageHandler()', function() {
         it('should return a function when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.homePageHandler();
 
             expect(handler).to.be.a('function');
         });
 
         it('should render the home page when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.homePageHandler();
 
             var req = _expressMocks.getMockReq();
@@ -104,14 +103,14 @@ describe('PublicHandlerProvider', function() {
 
     describe('helpPageHandler()', function() {
         it('should return a function when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.helpPageHandler();
 
             expect(handler).to.be.a('function');
         });
 
         it('should render the home page when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.helpPageHandler();
 
             var req = _expressMocks.getMockReq();
@@ -128,14 +127,14 @@ describe('PublicHandlerProvider', function() {
 
     describe('appStatusHandler()', function() {
         it('should return a function when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.appStatusHandler();
 
             expect(handler).to.be.a('function');
         });
 
         it('should respond with the app status when invoked', function() {
-            var provider = new PublicHandlerProvider(APP_NAME, APP_VERSION);
+            var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.appStatusHandler();
 
             var req = _expressMocks.getMockReq();
@@ -155,8 +154,8 @@ describe('PublicHandlerProvider', function() {
 
             expect(res.send).to.have.been.calledOnce;
             var payload = res.send.args[0][0];
-            expect(payload.app).to.equal(APP_NAME);
-            expect(payload.version).to.equal(APP_VERSION);
+            expect(payload.app).to.equal(DEFAULT_APP_NAME);
+            expect(payload.version).to.equal(DEFAULT_APP_VERSION);
             expect(payload.timestamp).to.be.within(startTime, Date.now());
         });
     });

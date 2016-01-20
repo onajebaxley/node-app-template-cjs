@@ -7,12 +7,12 @@ var _util = require('util');
 /**
  * Class that defines request handlers for the public route.
  *
- * @class PublicRoutesHandler
+ * @class PublicHandlerProvider
  * @constructor
  * @param {String} appName The name of the current application
  * @param {String} appVersion The current application version
  */
-function PublicRoutesHandler(appName, appVersion) {
+function PublicHandlerProvider(appName, appVersion) {
     if(typeof appName !== 'string' || appName.length <= 0) {
         throw new Error('Invalid app name specified (arg #1)');
     }
@@ -31,7 +31,7 @@ function PublicRoutesHandler(appName, appVersion) {
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-PublicRoutesHandler.prototype.homePageHandler = function() {
+PublicHandlerProvider.prototype.homePageHandler = function() {
     return function(req, res, next) {
         res.render('home', {});
     }.bind(this);
@@ -44,7 +44,7 @@ PublicRoutesHandler.prototype.homePageHandler = function() {
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-PublicRoutesHandler.prototype.helpPageHandler = function() {
+PublicHandlerProvider.prototype.helpPageHandler = function() {
     return function(req, res, next) {
         res.render('help', {});
     }.bind(this);
@@ -57,7 +57,7 @@ PublicRoutesHandler.prototype.helpPageHandler = function() {
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-PublicRoutesHandler.prototype.appStatusHandler = function() {
+PublicHandlerProvider.prototype.appStatusHandler = function() {
     return function(req, res, next) {
         res.set({
             'content-type': 'application/json',
@@ -71,4 +71,4 @@ PublicRoutesHandler.prototype.appStatusHandler = function() {
     }.bind(this);
 };
 
-module.exports = PublicRoutesHandler;
+module.exports = PublicHandlerProvider;
