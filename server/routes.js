@@ -10,8 +10,8 @@ var _path = require('path');
 var _express = require('express');
 
 var _logger = require('./logger');
-var _publicRoutes = require('./routes/public-routes');
 var CoreHandlerProvider = require('./handlers/core-handler-provider');
+
 var _isInitialized = false;
 
 

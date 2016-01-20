@@ -131,7 +131,7 @@ CoreHandlerProvider.prototype.resourceNotFoundErrorHandler = function() {
             secondaryMessage: 'Perhaps you typed it in incorrectly?',
             errorInfo: req.path
         });
-    };
+    }.bind(this);
 };
 
 /**
@@ -154,7 +154,7 @@ CoreHandlerProvider.prototype.authenticationErrorHandler = function(loginPage) {
         } else {
             next(err);
         }
-    };
+    }.bind(this);
 };
 
 /**
@@ -177,7 +177,7 @@ CoreHandlerProvider.prototype.catchAllErrorHandler = function() {
             secondaryMessage: '',
             errorInfo: err.toString()
         });
-    };
+    }.bind(this);
 };
 
 module.exports = CoreHandlerProvider;
