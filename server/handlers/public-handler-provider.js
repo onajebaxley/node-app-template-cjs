@@ -25,15 +25,16 @@ function PublicHandlerProvider(appName, appVersion) {
 }
 
 /**
- * Handles a request to show the home page.
+ * Handles a request to show the public portal/landing page for the
+ * app.
  *
- * @method homePageHandler
+ * @method portalPageHandler
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-PublicHandlerProvider.prototype.homePageHandler = function() {
+PublicHandlerProvider.prototype.portalPageHandler = function() {
     return function(req, res, next) {
-        res.render('home', {});
+        res.render('portal', {});
     }.bind(this);
 };
 

@@ -22,7 +22,7 @@ describe('[server.routers.publicRouter]', function() {
 
     beforeEach(function() {
         _publicHandlerProviderMock = _sinon.stub().returns({
-            homePageHandler: _sinon.stub().returns(function() {}),
+            portalPageHandler: _sinon.stub().returns(function() {}),
             helpPageHandler: _sinon.stub().returns(function() {}),
             appStatusHandler: _sinon.stub().returns(function() {})
         });
@@ -80,12 +80,12 @@ describe('[server.routers.publicRouter]', function() {
                 var provider = _publicHandlerProviderMock();
 
                 expect(mockExpress._router.get).to.not.have.been.called;
-                expect(provider.homePageHandler).to.not.have.been.called;
+                expect(provider.portalPageHandler).to.not.have.been.called;
 
                 _publicRouter.createRouter();
 
-                expect(provider.homePageHandler).to.have.been.calledOnce;
-                var handler = provider.homePageHandler();
+                expect(provider.portalPageHandler).to.have.been.calledOnce;
+                var handler = provider.portalPageHandler();
                 expect(mockExpress._router.get.callCount).to.be.at.least(1);
                 expect(mockExpress._router.get.args[0][0]).to.equal(path);
                 expect(mockExpress._router.get.args[0][1]).to.equal(handler);

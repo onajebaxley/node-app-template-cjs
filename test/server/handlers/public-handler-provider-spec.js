@@ -71,23 +71,23 @@ describe('PublicHandlerProvider', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
 
             expect(provider).to.be.an('object');
-            expect(provider).to.have.property('homePageHandler').and.to.be.a('function');
+            expect(provider).to.have.property('portalPageHandler').and.to.be.a('function');
             expect(provider).to.have.property('helpPageHandler').and.to.be.a('function');
             expect(provider).to.have.property('appStatusHandler').and.to.be.a('function');
         });
     });
 
-    describe('homePageHandler()', function() {
+    describe('portalPageHandler()', function() {
         it('should return a function when invoked', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
-            var handler = provider.homePageHandler();
+            var handler = provider.portalPageHandler();
 
             expect(handler).to.be.a('function');
         });
 
-        it('should render the home page when invoked', function() {
+        it('should render the portal page when invoked', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
-            var handler = provider.homePageHandler();
+            var handler = provider.portalPageHandler();
 
             var req = _expressMocks.getMockReq();
             var res = _expressMocks.getMockRes();
@@ -96,7 +96,7 @@ describe('PublicHandlerProvider', function() {
             handler(req, res, next);
 
             expect(res.render).to.have.been.calledOnce;
-            expect(res.render.args[0][0]).to.equal('home');
+            expect(res.render.args[0][0]).to.equal('portal');
             expect(res.render.args[0][1]).to.deep.equal({});
         });
     });
@@ -109,7 +109,7 @@ describe('PublicHandlerProvider', function() {
             expect(handler).to.be.a('function');
         });
 
-        it('should render the home page when invoked', function() {
+        it('should render the portal page when invoked', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
             var handler = provider.helpPageHandler();
 
