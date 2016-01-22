@@ -75,7 +75,7 @@ describe('[server.routers.publicRouter]', function() {
                 _publicRouter.__set__('_express', mockExpress);
             });
 
-            it('should attach a the home page handler to the path "/"', function() {
+            it('should attach the home page handler to the path GET /', function() {
                 var path = '/';
                 var provider = _publicHandlerProviderMock();
 
@@ -91,7 +91,7 @@ describe('[server.routers.publicRouter]', function() {
                 expect(mockExpress._router.get.args[0][1]).to.equal(handler);
             });
 
-            it('should attach a the help page handler to the path "/help"', function() {
+            it('should attach the help page handler to the path GET /help', function() {
                 var path = '/help';
                 var provider = _publicHandlerProviderMock();
 
@@ -107,7 +107,7 @@ describe('[server.routers.publicRouter]', function() {
                 expect(mockExpress._router.get.args[1][1]).to.equal(handler);
             });
 
-            it('should attach a the status page handler to the path "/__status"', function() {
+            it('should attach the status page handler to the path GET /__status', function() {
                 var path = '/__status';
                 var provider = _publicHandlerProviderMock();
 
