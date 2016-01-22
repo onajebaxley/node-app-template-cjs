@@ -28,6 +28,7 @@ function PublicHandlerProvider(appName, appVersion) {
  * Handles a request to show the public portal/landing page for the
  * app.
  *
+ * @class PublicHandlerProvider
  * @method portalPageHandler
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
@@ -41,6 +42,7 @@ PublicHandlerProvider.prototype.portalPageHandler = function() {
 /**
  * Handles a request to show the help page.
  *
+ * @class PublicHandlerProvider
  * @method helpPageHandler
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
@@ -54,6 +56,7 @@ PublicHandlerProvider.prototype.helpPageHandler = function() {
 /**
  * Handles a request to retrieve current server status.
  *
+ * @class PublicHandlerProvider
  * @method appStatusHandler
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.

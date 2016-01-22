@@ -150,7 +150,7 @@ CoreHandlerProvider.prototype.authenticationErrorHandler = function(loginPage) {
     }
     return function(err, req, res, next) {
         if (err instanceof InvalidSessionError) {
-            res.redirect(loginPage + '?resource=' + req.path);
+            res.redirect(loginPage + '?redirect=' + req.path);
         } else {
             next(err);
         }

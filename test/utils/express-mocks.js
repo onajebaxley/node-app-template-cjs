@@ -41,7 +41,10 @@ module.exports = {
      * @return {Object} A mock response object.
      */
     getMockReq: function() {
-        return new MockReq();
+        var req = new MockReq();
+        req.query = {};
+        req.body = {};
+        return req;
     },
 
     /**

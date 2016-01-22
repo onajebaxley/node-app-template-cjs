@@ -354,7 +354,7 @@ describe('CoreHandlerProvider', function() {
             handler(err, req, res, next);
 
             expect(res.redirect).to.have.been.calledOnce;
-            expect(res.redirect).to.have.been.calledWith('/auth/login?resource=' + resourcePath);
+            expect(res.redirect).to.have.been.calledWith('/auth/login?redirect=' + resourcePath);
         });
 
         it('should default the login page url to "auth/login" if a valid login page is not specified', function() {
@@ -372,7 +372,7 @@ describe('CoreHandlerProvider', function() {
                 handler(err, req, res, next);
 
                 expect(res.redirect).to.have.been.calledOnce;
-                expect(res.redirect).to.have.been.calledWith('/auth/login?resource=' + resourcePath);
+                expect(res.redirect).to.have.been.calledWith('/auth/login?redirect=' + resourcePath);
             }
 
             checkLoginPageDefault(undefined);
@@ -400,7 +400,7 @@ describe('CoreHandlerProvider', function() {
             handler(err, req, res, next);
 
             expect(res.redirect).to.have.been.calledOnce;
-            expect(res.redirect).to.have.been.calledWith(loginPage + '?resource=' + resourcePath);
+            expect(res.redirect).to.have.been.calledWith(loginPage + '?redirect=' + resourcePath);
         });
     });
 
