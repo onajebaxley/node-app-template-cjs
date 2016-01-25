@@ -18,13 +18,18 @@ describe('[server.routers.appRouter]', function() {
     var _appHandlerProviderMock;
     var _sessionMock;
     var _passportMock;
+    var _authMock;
 
     beforeEach(function() {
         _sessionMock = {
             getSessionHandler: _sinon.stub().returns(function() {})
         };
         _passportMock = {
-            initialize: _sinon.stub().returns(function() {})
+            initialize: _sinon.stub().returns(function() {}),
+            session: _sinon.stub().returns(function() {})
+        };
+        _authMock = {
+            ensureUserSession: _sinon.stub().returns(function() {})
         };
 
         _appHandlerProviderMock = _sinon.stub().returns({
@@ -35,6 +40,7 @@ describe('[server.routers.appRouter]', function() {
         _appRouter.__set__('_logger', _loggerHelper.initLogger(true));
         _appRouter.__set__('_session', _sessionMock);
         _appRouter.__set__('_passport', _passportMock);
+        _appRouter.__set__('_auth', _authMock);
         _appRouter.__set__('AppHandlerProvider', _appHandlerProviderMock);
     });
 
@@ -97,7 +103,7 @@ describe('[server.routers.appRouter]', function() {
                 });
             });
 
-            describe('[passport middleware]', function() {
+            describe('[passport middleware - initialize]', function() {
                 it('should initialize a session handler', function() {
                     expect(_passportMock.initialize).to.not.have.been.called;
 
@@ -107,14 +113,56 @@ describe('[server.routers.appRouter]', function() {
                 });
 
                 it('should bind an authentication handler as a middleware for all routes defined in the router', function() {
-                    var passportMiddleware = _passportMock.initialize();
+                    var middleware = _passportMock.initialize();
 
                     expect(mockExpress._router.use).to.not.have.been.called;
 
                     _appRouter.createRouter();
 
                     expect(mockExpress._router.use.callCount).to.be.at.least(2);
-                    expect(mockExpress._router.use.args[1][0]).to.equal(passportMiddleware);
+                    expect(mockExpress._router.use.args[1][0]).to.equal(middleware);
+                });
+            });
+
+            describe('[auth - ensure user session]', function() {
+                it('should initialize an ensure session handler', function() {
+                    expect(_authMock.ensureUserSession).to.not.have.been.called;
+
+                    _appRouter.createRouter();
+
+                    expect(_authMock.ensureUserSession).to.have.been.calledOnce;
+                });
+
+                it('should bind the ensure session handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _authMock.ensureUserSession();
+
+                    expect(mockExpress._router.use).to.not.have.been.called;
+
+                    _appRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(3);
+                    expect(mockExpress._router.use.args[2][0]).to.equal(middleware);
+                });
+            });
+
+            describe('[passport middleware - session]', function() {
+                it('should initialize the passport session', function() {
+                    expect(_passportMock.session).to.not.have.been.called;
+
+                    _appRouter.createRouter();
+
+                    expect(_passportMock.session).to.have.been.calledOnce;
+                });
+
+                it('should bind the passport session handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _passportMock.session();
+
+                    expect(mockExpress._router.use).to.not.have.been.called;
+
+                    _appRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(4);
+                    expect(mockExpress._router.use.args[3][0]).to.equal(middleware);
                 });
             });
 

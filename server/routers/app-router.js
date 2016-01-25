@@ -11,6 +11,7 @@ var _passport = require('passport');
 
 var _logger = require('../logger');
 var _session = require('../session');
+var _auth = require('../auth');
 var AppHandlerProvider = require('../handlers/app-handler-provider');
 
 module.exports = {
@@ -25,8 +26,11 @@ module.exports = {
     createRouter: function() {
         var router = _express.Router();
         var routesHandler = new AppHandlerProvider();
+
         router.use(_session.getSessionHandler());
         router.use(_passport.initialize());
+        router.use(_auth.ensureUserSession());
+        router.use(_passport.session());
 
         router.get('/', routesHandler.homePageHandler());
         return router;

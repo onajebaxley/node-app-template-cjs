@@ -6,6 +6,9 @@
 'use strict';
 
 var _express = require('express');
+var _passport = require('passport');
+
+var _session = require('../session');
 var _logger = require('../logger');
 var AuthHandlerProvider = require('../handlers/auth-handler-provider');
 
@@ -21,6 +24,9 @@ module.exports = {
     createRouter: function() {
         var router = _express.Router();
         var routesHandler = new AuthHandlerProvider('/');
+
+        router.use(_session.getSessionHandler());
+        router.use(_passport.initialize());
 
         router.get('/login', routesHandler.loginPageHandler());
         router.get('/logout', routesHandler.logoutHandler());
