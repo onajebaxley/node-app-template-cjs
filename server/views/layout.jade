@@ -7,10 +7,8 @@ html
 	head
 		title=title
 		if useMinifiedFiles === true
-			link(rel='stylesheet', href='#{rootPath}lib/bootstrap/dist/css/bootstrap.min.css?#{version}')
 			link(rel='stylesheet', href='#{rootPath}css/app.min.css?#{version}')
 		else
-			link(rel='stylesheet', href='#{rootPath}lib/bootstrap/dist/css/bootstrap.css?#{version}')
 			link(rel='stylesheet', href='#{rootPath}css/app.css?#{version}')
 	body
 		block content
