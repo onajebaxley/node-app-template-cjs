@@ -91,7 +91,7 @@ describe('[server.routers.appRouter]', function() {
                     expect(mockExpress._router.use).to.not.have.been.called;
 
                     _appRouter.createRouter();
-                    
+
                     expect(mockExpress._router.use.callCount).to.be.at.least(1);
                     expect(mockExpress._router.use.args[0][0]).to.equal(sessionMiddleware);
                 });
@@ -112,7 +112,7 @@ describe('[server.routers.appRouter]', function() {
                     expect(mockExpress._router.use).to.not.have.been.called;
 
                     _appRouter.createRouter();
-                    
+
                     expect(mockExpress._router.use.callCount).to.be.at.least(2);
                     expect(mockExpress._router.use.args[1][0]).to.equal(passportMiddleware);
                 });

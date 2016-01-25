@@ -201,7 +201,7 @@ describe('[server.auth]', function() {
 
                 var user = new User(username);
                 user.sessionTimestamp = sessionTimestamp;
-                for(var serviceName in serviceTokens) {
+                for (var serviceName in serviceTokens) {
                     user.setServiceToken(serviceName, serviceTokens[serviceName]);
                 }
 
@@ -350,7 +350,7 @@ describe('[server.auth]', function() {
                 expect(deserializerComplete.promise).to.be.fulfilled
                     .then(verifyRejection)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
 
             });
 
@@ -374,7 +374,7 @@ describe('[server.auth]', function() {
                 expect(deserializerComplete.promise).to.be.fulfilled
                     .then(verifyUser)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
 
             it('should set the session timestamp from the user token on the user object', function(done) {
@@ -398,7 +398,7 @@ describe('[server.auth]', function() {
                 expect(deserializerComplete.promise).to.be.fulfilled
                     .then(verifyUser)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
 
             it('should set all the service tokens from the user token on the user object', function(done) {
@@ -430,7 +430,7 @@ describe('[server.auth]', function() {
                 expect(deserializerComplete.promise).to.be.fulfilled
                     .then(verifyUser)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
         });
 
@@ -456,7 +456,7 @@ describe('[server.auth]', function() {
                 expect(authComplete.promise).to.be.fulfilled
                     .then(verifyAuthBehavior)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
 
             it('should fail authenticate requests if a user with the specified user name could not be initialized', function(done) {
@@ -473,7 +473,7 @@ describe('[server.auth]', function() {
                 expect(authComplete.promise).to.be.fulfilled
                     .then(verifyAuthBehavior)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
 
             it('should pass authenticate requests if the username/password combination is valid', function(done) {
@@ -491,7 +491,7 @@ describe('[server.auth]', function() {
                 expect(authComplete.promise).to.be.fulfilled
                     .then(verifyAuthBehavior)
                     .then(_assertionHelper.getNotifySuccessHandler(done),
-                          _assertionHelper.getNotifyFailureHandler(done));
+                        _assertionHelper.getNotifyFailureHandler(done));
             });
         });
     });

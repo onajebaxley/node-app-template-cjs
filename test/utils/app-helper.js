@@ -20,8 +20,7 @@ module.exports = {
     getMockApp: function(appKeys) {
         appKeys = appKeys || {};
         appKeys.env = appKeys.env || 'development';
-        var app = function() {
-        };
+        var app = function() {};
 
         app.get = function(key) {
             return appKeys[key];

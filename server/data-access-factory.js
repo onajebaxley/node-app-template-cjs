@@ -31,7 +31,7 @@ module.exports = {
             // Already initialized. Do nothing.
             return;
         }
-        
+
         //TODO: This initialization needs to happen with some meaningful connection
         //parameters. For now, it's a dummy implementation.
         _dataAccessObjectMap = {
@@ -52,12 +52,12 @@ module.exports = {
      * @return {Object} A reference to the data access object.
      */
     getDataAccessObject: function(key) {
-        if(typeof key !== 'string' || key.length <= 0) {
+        if (typeof key !== 'string' || key.length <= 0) {
             throw new Error('Invalid data access object key specified (arg #1)');
         }
         var logger = _logger.getLogger();
         var dao = _dataAccessObjectMap[key];
-        if(!dao) {
+        if (!dao) {
             throw new Error(_util.format('Could not find data access object with key: [%s]', key));
         }
         return dao;

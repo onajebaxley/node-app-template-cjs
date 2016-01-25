@@ -33,6 +33,7 @@ describe('PublicHandlerProvider', function() {
     describe('ctor()', function() {
         it('should throw an error if invoked with an invalid app name', function() {
             var error = 'Invalid app name specified (arg #1)';
+
             function invoke(appName) {
                 return function() {
                     return new PublicHandlerProvider(appName);
@@ -51,6 +52,7 @@ describe('PublicHandlerProvider', function() {
 
         it('should throw an error if invoked with an invalid app version', function() {
             var error = 'Invalid app version specified (arg #2)';
+
             function invoke(appVersion) {
                 return function() {
                     return new PublicHandlerProvider(DEFAULT_APP_NAME, appVersion);

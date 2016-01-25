@@ -21,7 +21,7 @@ var ALL = null;
 function _getMounterBuilder(app) {
     return function(path) {
         var attachHandler = app.use;
-        if(typeof path === 'string' && path.length > 0) {
+        if (typeof path === 'string' && path.length > 0) {
             path = _path.join(GLOBAL.config.cfg_mount_path, path);
             attachHandler = attachHandler.bind(app, path);
         } else {
@@ -60,7 +60,7 @@ module.exports = {
 
         var forPath = _getMounterBuilder(app);
         var provider = new CoreHandlerProvider(GLOBAL.config.cfg_static_dir,
-                                               GLOBAL.config.cfg_root_path);
+            GLOBAL.config.cfg_root_path);
         var dynamicCssEnabled = GLOBAL.config.cfg_enable_dyamic_css_compile;
         var dynamicJsEnabled = GLOBAL.config.cfg_enable_dyamic_js_compile;
 
@@ -72,12 +72,12 @@ module.exports = {
         forPath(ALL).addHandler(provider.accessLoggerMiddleware());
 
         //Dynamic SASS -> CSS compilation (dev only)
-        if(dynamicCssEnabled) {
+        if (dynamicCssEnabled) {
             forPath(ALL).addHandler(provider.dynamicCssCompileMiddleware());
         }
 
         //Dynamic browserify compilation (dev only)
-        if(dynamicJsEnabled) {
+        if (dynamicJsEnabled) {
             var jsPath = '/js/app.js';
             var jsMiddleware = provider.dynamicJsCompileMiddleware(jsPath);
 
@@ -105,7 +105,7 @@ module.exports = {
         // --------------------------------------------------------------------
         //Handler for authentication errors
         forPath(ALL).addHandler(provider.authenticationErrorHandler());
-        
+
         //Handler for 404 errors
         forPath(ALL).addHandler(provider.resourceNotFoundErrorHandler());
 

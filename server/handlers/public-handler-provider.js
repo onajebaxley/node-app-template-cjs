@@ -13,10 +13,10 @@ var _util = require('util');
  * @param {String} appVersion The current application version
  */
 function PublicHandlerProvider(appName, appVersion) {
-    if(typeof appName !== 'string' || appName.length <= 0) {
+    if (typeof appName !== 'string' || appName.length <= 0) {
         throw new Error('Invalid app name specified (arg #1)');
     }
-    if(typeof appVersion !== 'string' || appVersion.length <= 0) {
+    if (typeof appVersion !== 'string' || appVersion.length <= 0) {
         throw new Error('Invalid app version specified (arg #2)');
     }
     this._logger = _logger.getLogger();

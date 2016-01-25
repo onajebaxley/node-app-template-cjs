@@ -59,7 +59,7 @@ describe('[server.routers.authRouter]', function() {
             expect(_authHandlerProviderMock).to.have.been.calledOnce;
             expect(_authHandlerProviderMock).to.have.been.calledWithNew;
             expect(_authHandlerProviderMock).to.have.
-                        been.calledWith(DEFAULT_REDIRECT_URL);
+            been.calledWith(DEFAULT_REDIRECT_URL);
         });
 
         describe('[handler attachment]', function() {

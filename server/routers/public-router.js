@@ -21,8 +21,8 @@ module.exports = {
      */
     createRouter: function() {
         var router = _express.Router();
-        var routesHandler = new PublicHandlerProvider(GLOBAL.config.cfg_app_name, 
-                                                      GLOBAL.config.cfg_app_version);
+        var routesHandler = new PublicHandlerProvider(GLOBAL.config.cfg_app_name,
+            GLOBAL.config.cfg_app_version);
 
         router.get('/', routesHandler.portalPageHandler());
         router.get('/help', routesHandler.helpPageHandler());

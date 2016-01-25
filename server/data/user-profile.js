@@ -21,43 +21,43 @@ function UserProfile(connectionParams) {
 
     //TODO: This class does not access an actual persistent store. That
     //functionality is left to an actual real world implementation.
-    this._DUMMY_USER_LIST= [ {
+    this._DUMMY_USER_LIST = [{
         username: 'pparker',
         firstName: 'Peter',
         lastName: 'Parker',
         title: 'Spiderman',
-        roles: [ 'superhero', 'reporter' ]
+        roles: ['superhero', 'reporter']
     }, {
         username: 'todinson',
         firstName: 'Thor',
         lastName: 'Odinson',
         title: 'Thor',
-        roles: [ 'superhero', 'demigod' ]
+        roles: ['superhero', 'demigod']
     }, {
         username: 'tstark',
         firstName: 'Tony',
         lastName: 'Stark',
         title: 'Iron Man',
-        roles: [ 'superhero', 'engineer' ]
+        roles: ['superhero', 'engineer']
     }, {
         username: 'nosborne',
         firstName: 'Norman',
         lastName: 'Osborne',
         title: 'Green Goblin',
-        roles: [ 'villain', 'businessman' ]
+        roles: ['villain', 'businessman']
     }, {
         username: 'llaufeyson',
         firstName: 'Loki',
         lastName: 'Laufeyson',
         title: 'Loki',
-        roles: [ 'villain', 'demigod' ]
+        roles: ['villain', 'demigod']
     }, {
         username: 'vvdoom',
         firstName: 'Victor',
         lastName: 'Von Doom',
         title: 'Dr. Doom',
-        roles: [ 'villain', 'engineer' ]
-    } ];
+        roles: ['villain', 'engineer']
+    }];
 }
 
 _util.inherits(UserProfile, DataAccess);
@@ -75,14 +75,14 @@ _util.inherits(UserProfile, DataAccess);
  *          user.
  */
 UserProfile.prototype.lookupUser = function(username) {
-    if(typeof username !== 'string' || username.length <= 0) {
+    if (typeof username !== 'string' || username.length <= 0) {
         throw new Error('Invalid username specified (arg #1)');
     }
     var def = _q.defer();
-    
+
     var action = _promiseUtils.wrapWithExceptionHandler(function() {
         this._DUMMY_USER_LIST.forEach(function(user) {
-            if(user.username === username) {
+            if (user.username === username) {
                 def.resolve(user);
                 return;
             }
@@ -107,14 +107,14 @@ UserProfile.prototype.lookupUser = function(username) {
  *          the result of the lookup operation.
  */
 UserProfile.prototype.saveUser = function(username, data) {
-    if(typeof username !== 'string' || username.length <= 0) {
+    if (typeof username !== 'string' || username.length <= 0) {
         throw new Error('Invalid username specified (arg #1)');
     }
-    if(!data || data instanceof Array || typeof data !== 'object') {
+    if (!data || data instanceof Array || typeof data !== 'object') {
         throw new Error('Invalid profile data specified (arg #2)');
     }
     var def = _q.defer();
-    
+
     var action = _promiseUtils.wrapWithExceptionHandler(function() {
         this._DUMMY_USER_LIST[username] = _clone(data);
         def.resolve(null);
@@ -137,19 +137,19 @@ UserProfile.prototype.saveUser = function(username, data) {
  *          the result of the lookup operation.
  */
 UserProfile.prototype.findUsers = function(searchCriteria) {
-    if(!searchCriteria || searchCriteria instanceof Array || typeof searchCriteria !== 'object') {
+    if (!searchCriteria || searchCriteria instanceof Array || typeof searchCriteria !== 'object') {
         throw new Error('Invalid search criteria specified (arg #1)');
     }
     var def = _q.defer();
-    
+
     var action = _promiseUtils.wrapWithExceptionHandler(function() {
         var results = this._DUMMY_USER_LIST.filter(function(item) {
             var matchAll = true;
             var propCount = 0;
-            for(var prop in searchCriteria) {
+            for (var prop in searchCriteria) {
                 var itemProp = item[prop];
-                if(typeof itemProp === 'string') {
-                    if(itemProp.indexOf(searchCriteria[prop]) !== 0) {
+                if (typeof itemProp === 'string') {
+                    if (itemProp.indexOf(searchCriteria[prop]) !== 0) {
                         matchAll = false;
                     }
                     propCount++;

@@ -12,9 +12,8 @@ var _clone = require('clone');
  *          that will allow the object to connect to a data store.
  */
 function DataAccess(connectionParams) {
-    if(!connectionParams || (connectionParams instanceof Array)
-        || typeof connectionParams !== 'object') {
-            connectionParams = {};
+    if (!connectionParams || (connectionParams instanceof Array) || typeof connectionParams !== 'object') {
+        connectionParams = {};
     }
     this._connectionParams = _clone(connectionParams);
 }

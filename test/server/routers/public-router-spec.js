@@ -64,7 +64,7 @@ describe('[server.routers.publicRouter]', function() {
             expect(_publicHandlerProviderMock).to.have.been.calledOnce;
             expect(_publicHandlerProviderMock).to.have.been.calledWithNew;
             expect(_publicHandlerProviderMock).to.have.
-                        been.calledWith(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
+            been.calledWith(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
         });
 
         describe('[handler attachment]', function() {

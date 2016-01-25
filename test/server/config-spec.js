@@ -34,10 +34,11 @@ describe('[server.config]', function() {
         options.staticFileCacheDuration = options.staticFileCacheDuration || 31558464000;
 
         var rcSpy = _sinon.spy();
+
         function rcMock(name, defaults) {
             rcSpy(name, defaults);
             defaults = defaults || {};
-            for(var prop in options) {
+            for (var prop in options) {
                 defaults[prop] = options[prop];
             }
             return defaults;
@@ -66,8 +67,7 @@ describe('[server.config]', function() {
         _rcOptions = ret.options;
     });
 
-    afterEach(function() {
-    });
+    afterEach(function() {});
 
     describe('[init]', function() {
         it('should expose the necessary fields and methods', function() {
@@ -122,8 +122,13 @@ describe('[server.config]', function() {
 
         it('should translate uppercase string values to boolean', function() {
             _configHelper.deleteConfig();
-            _setRcMock({ proxyPresent: 'TRUE', sessionSecureProxy: 'TRUE' });
-            _config.configure(_appHelper.getMockApp({ env: 'na' }));
+            _setRcMock({
+                proxyPresent: 'TRUE',
+                sessionSecureProxy: 'TRUE'
+            });
+            _config.configure(_appHelper.getMockApp({
+                env: 'na'
+            }));
 
             expect(GLOBAL.config.cfg_proxy_present).to.be.true;
             expect(GLOBAL.config.cfg_session_secure_proxy).to.be.true;
@@ -142,7 +147,7 @@ describe('[server.config]', function() {
 
             expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
             expect(GLOBAL.config['view engine']).to.equal('jade');
-            
+
             expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
             expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
 
@@ -182,7 +187,7 @@ describe('[server.config]', function() {
 
             expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
             expect(GLOBAL.config['view engine']).to.equal('jade');
-            
+
             expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
             expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
 
@@ -223,7 +228,7 @@ describe('[server.config]', function() {
 
             expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
             expect(GLOBAL.config['view engine']).to.equal('jade');
-            
+
             expect(GLOBAL.config.cfg_env).to.equal(appKeys.env);
             expect(GLOBAL.config.cfg_app_name).to.equal(_packageMock.name);
 
@@ -254,8 +259,13 @@ describe('[server.config]', function() {
         it('should use the rootPath parameter as the mount path if no proxy is present', function() {
             _configHelper.deleteConfig();
             var rootPath = '/root/path/123';
-            _setRcMock({ rootPath: rootPath, proxyPresent: 'false' });
-            _config.configure(_appHelper.getMockApp({ env: 'production' }));
+            _setRcMock({
+                rootPath: rootPath,
+                proxyPresent: 'false'
+            });
+            _config.configure(_appHelper.getMockApp({
+                env: 'production'
+            }));
 
             expect(GLOBAL.config.cfg_mount_path).to.equal(rootPath);
         });
@@ -263,8 +273,13 @@ describe('[server.config]', function() {
         it('should use "/" as the rootPath parameter as the mount path if a proxy is present', function() {
             _configHelper.deleteConfig();
             var rootPath = '/root/path/123';
-            _setRcMock({ rootPath: rootPath, proxyPresent: 'true' });
-            _config.configure(_appHelper.getMockApp({ env: 'production' }));
+            _setRcMock({
+                rootPath: rootPath,
+                proxyPresent: 'true'
+            });
+            _config.configure(_appHelper.getMockApp({
+                env: 'production'
+            }));
 
             expect(GLOBAL.config.cfg_mount_path).to.equal('/');
         });

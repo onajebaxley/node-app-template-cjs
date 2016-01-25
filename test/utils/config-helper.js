@@ -35,15 +35,15 @@ module.exports = {
      *          keys will be deleted.
      */
     deleteConfig: function(key) {
-        if(!GLOBAL.config || typeof GLOBAL.config !== 'object') {
+        if (!GLOBAL.config || typeof GLOBAL.config !== 'object') {
             return;
         }
         if (!_originalConfig) {
             _originalConfig = GLOBAL.config;
             GLOBAL.config = {};
         }
-        var keys = (typeof key !== 'string' || key.length <= 0)?
-                            Object.keys(GLOBAL.config): [ key ];
+        var keys = (typeof key !== 'string' || key.length <= 0) ?
+            Object.keys(GLOBAL.config) : [key];
 
         keys.forEach(function(key) {
             delete GLOBAL.config[key];

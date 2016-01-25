@@ -28,7 +28,7 @@ module.exports = {
         var dataAccessFactory = _rewire('../../server/data-access-factory');
         dataAccessFactory.__set__('_logger', _loggerHelper.initLogger(true));
 
-        if(configure) {
+        if (configure) {
             dataAccessFactory.configure(_appHelper.getMockApp());
         }
 

@@ -152,13 +152,14 @@ describe('server.lib.User', function() {
 
         it('should throw an error if invoked without a valid service key', function() {
             var error = 'Invalid service key specified (arg #1)';
+
             function invoke(key) {
                 return function() {
                     var user = new User('jdoe');
                     return user.setServiceToken(key);
                 };
             }
-            
+
             expect(invoke(undefined)).to.throw(error);
             expect(invoke(null)).to.throw(error);
             expect(invoke(123)).to.throw(error);
@@ -171,13 +172,14 @@ describe('server.lib.User', function() {
 
         it('should throw an error if invoked without a valid service token', function() {
             var error = 'Invalid service token specified (arg #2)';
+
             function invoke(token) {
                 return function() {
                     var user = new User('jdoe');
                     return user.setServiceToken('service1', token);
                 };
             }
-            
+
             expect(invoke(undefined)).to.throw(error);
             expect(invoke(null)).to.throw(error);
             expect(invoke(function() {})).to.throw(error);
@@ -196,10 +198,10 @@ describe('server.lib.User', function() {
             //NOTE: Inspecting private members
             expect(user._serviceTokens).to.be.an('object').and.to.be.empty;
 
-            for(serviceName in serviceTokens) {
+            for (serviceName in serviceTokens) {
                 user.setServiceToken(serviceName, serviceTokens[serviceName]);
             }
-            for(serviceName in serviceTokens) {
+            for (serviceName in serviceTokens) {
                 //NOTE: Inspecting private members
                 expect(user._serviceTokens[serviceName]).to.equal(serviceTokens[serviceName]);
             }
@@ -211,13 +213,14 @@ describe('server.lib.User', function() {
 
         it('should throw an error if invoked without a valid service key', function() {
             var error = 'Invalid service key specified (arg #1)';
+
             function invoke(key) {
                 return function() {
                     var user = new User('jdoe');
                     return user.getServiceToken(key);
                 };
             }
-            
+
             expect(invoke(undefined)).to.throw(error);
             expect(invoke(null)).to.throw(error);
             expect(invoke(123)).to.throw(error);
@@ -238,11 +241,11 @@ describe('server.lib.User', function() {
             };
             var serviceName = null;
 
-            for(serviceName in serviceTokens) {
+            for (serviceName in serviceTokens) {
                 //NOTE: Altering private members
                 user._serviceTokens[serviceName] = serviceTokens[serviceName];
             }
-            for(serviceName in serviceTokens) {
+            for (serviceName in serviceTokens) {
                 expect(user.getServiceToken(serviceName)).to.equal(serviceTokens[serviceName]);
             }
         });
@@ -263,7 +266,7 @@ describe('server.lib.User', function() {
             var key = null;
 
             var user = new User('jdoe', null, extendedProperties);
-            for(key in moreExtendedProperties) {
+            for (key in moreExtendedProperties) {
                 user[key] = moreExtendedProperties[key];
             }
 
@@ -271,17 +274,17 @@ describe('server.lib.User', function() {
 
             expect(properties).to.be.an('object');
             expect(properties.username).to.equal(username);
-            for(key in extendedProperties) {
+            for (key in extendedProperties) {
                 expect(properties[key]).to.equal(extendedProperties[key]);
             }
-            for(key in moreExtendedProperties) {
+            for (key in moreExtendedProperties) {
                 expect(properties[key]).to.equal(moreExtendedProperties[key]);
             }
         });
 
         it('should return an object that includes roles and service tokens when invoked', function() {
             var username = 'jdoe';
-            var roles = [ 'user', 'admin', 'manager' ];
+            var roles = ['user', 'admin', 'manager'];
             var serviceTokens = {
                 service1: 'service1_token',
                 service2: 'service2_token',
@@ -289,7 +292,7 @@ describe('server.lib.User', function() {
                 service4: 'service4_token',
             };
             var user = new User('jdoe', roles);
-            for(var serviceName in serviceTokens) {
+            for (var serviceName in serviceTokens) {
                 user.setServiceToken(serviceName, serviceTokens[serviceName]);
             }
             var properties = user.serialize();

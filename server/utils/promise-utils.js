@@ -20,10 +20,10 @@ module.exports = {
      *          action execution.
      */
     wrapWithExceptionHandler: function(action, def) {
-        if(typeof action !== 'function') {
+        if (typeof action !== 'function') {
             throw new Error('Invalid action function specified (arg #1)');
         }
-        if(!def || typeof def !== 'object' || typeof def.reject !== 'function') {
+        if (!def || typeof def !== 'object' || typeof def.reject !== 'function') {
             throw new Error('Invalid deferred object specified (arg #2)');
         }
 

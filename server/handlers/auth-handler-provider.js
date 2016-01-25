@@ -15,7 +15,7 @@ var _passport = require('passport');
  *          after successful login.
  */
 function AuthHandlerProvider(defaultRedirectUrl) {
-    if(typeof defaultRedirectUrl !== 'string' || defaultRedirectUrl.length <= 0) {
+    if (typeof defaultRedirectUrl !== 'string' || defaultRedirectUrl.length <= 0) {
         throw new Error('Invalid redirect url specified (arg #1)');
     }
     this._logger = _logger.getLogger();
@@ -28,8 +28,8 @@ function AuthHandlerProvider(defaultRedirectUrl) {
  * @private
  */
 AuthHandlerProvider.prototype._getRedirectUrl = function(url) {
-    if(typeof url !== 'string' || url.length <= 0) {
-        return this._defaultRedirectUrl;   
+    if (typeof url !== 'string' || url.length <= 0) {
+        return this._defaultRedirectUrl;
     }
     return url;
 };
@@ -87,13 +87,13 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
         //authentication callback handler gets access to the req, res and next
         //objects.
         var handler = _passport.authenticate('username-password', function(err, user, info) {
-            if(err) {
+            if (err) {
                 this._logger.error('Error authenticating user', err);
                 next(err);
                 return;
-            } 
+            }
 
-            if(!user) {
+            if (!user) {
                 this._logger.error('Login failed: [%s]', req.body.username, info);
                 res.render('login', {
                     username: req.body.username,
@@ -102,7 +102,7 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
                 return;
             }
             req.logIn(user, function(err) {
-                if(err) {
+                if (err) {
                     this._logger.error('Error creating session: [%s]', user.username);
                     next(err);
                     return;

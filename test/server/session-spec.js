@@ -98,15 +98,15 @@ describe('[server.session]', function() {
     });
 
     describe('getSessionHandler()', function() {
-        
+
         beforeEach(function() {
             _session.configure(_appHelper.getMockApp());
         });
 
         it('should return a session handler function when invoked', function() {
-           var handler = _session.getSessionHandler(); 
+            var handler = _session.getSessionHandler();
 
-           expect(handler).to.be.a('function');
+            expect(handler).to.be.a('function');
         });
 
         it('should return the same handler function when invoked with the same path parameter', function() {

@@ -20,10 +20,10 @@ var InvalidSessionError = require('../lib/invalid-session-error');
  * @param {String} rootPath The path to the root of the web application.
  */
 function CoreHandlerProvider(staticDir, rootPath) {
-    if(typeof staticDir !== 'string' || staticDir.length <= 0) {
+    if (typeof staticDir !== 'string' || staticDir.length <= 0) {
         throw new Error('Invalid static directory specified (arg #1)');
     }
-    if(typeof rootPath !== 'string' || rootPath.length <= 0) {
+    if (typeof rootPath !== 'string' || rootPath.length <= 0) {
         throw new Error('Invalid root path specified (arg #2)');
     }
 
@@ -66,7 +66,7 @@ CoreHandlerProvider.prototype.accessLoggerMiddleware = function() {
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
 CoreHandlerProvider.prototype.dynamicJsCompileMiddleware = function(jsFile) {
-    if(typeof jsFile !== 'string' || jsFile.length <= 0) {
+    if (typeof jsFile !== 'string' || jsFile.length <= 0) {
         jsFile = '/js/app.js';
     }
 
@@ -108,7 +108,7 @@ CoreHandlerProvider.prototype.dynamicCssCompileMiddleware = function() {
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
 CoreHandlerProvider.prototype.faviconHandler = function(filePath) {
-    if(typeof filePath !== 'string' || filePath.length <= 0) {
+    if (typeof filePath !== 'string' || filePath.length <= 0) {
         filePath = 'img/favicon.ico';
     }
     return _favicon(_path.join(this._staticDir, filePath));
@@ -145,7 +145,7 @@ CoreHandlerProvider.prototype.resourceNotFoundErrorHandler = function() {
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
 CoreHandlerProvider.prototype.authenticationErrorHandler = function(loginPage) {
-    if(typeof loginPage !== 'string' || loginPage.length <= 0) {
+    if (typeof loginPage !== 'string' || loginPage.length <= 0) {
         loginPage = '/auth/login';
     }
     return function(err, req, res, next) {

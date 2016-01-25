@@ -33,7 +33,7 @@ module.exports = {
             // Already initialized. Do nothing.
             return;
         }
-        _sessionHandlerMap = { };
+        _sessionHandlerMap = {};
         _sessionOptions = {
             name: GLOBAL.config.cfg_session_cookie_name,
             secret: GLOBAL.config.cfg_session_secret,
@@ -58,11 +58,11 @@ module.exports = {
      */
     getSessionHandler: function(path) {
         var logger = _logger.getLogger();
-        if(typeof path !== 'string' || path.length <= 0) {
+        if (typeof path !== 'string' || path.length <= 0) {
             path = '/';
         }
         var handler = _sessionHandlerMap[path];
-        if(!handler) {
+        if (!handler) {
             logger.debug('Creating new session handler for path: [%s]', path);
             var options = _clone(_sessionOptions);
             options.path = path;

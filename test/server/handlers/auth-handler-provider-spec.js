@@ -36,6 +36,7 @@ describe('AuthHandlerProvider', function() {
     describe('ctor()', function() {
         it('should throw an error if invoked with a default redirect path', function() {
             var error = 'Invalid redirect url specified (arg #1)';
+
             function invoke(defaultRedirect) {
                 return function() {
                     return new AuthHandlerProvider(defaultRedirect);
@@ -122,7 +123,9 @@ describe('AuthHandlerProvider', function() {
     describe('logoutHandler()', function() {
         function _getMockReq() {
             var req = _expressMocks.getMockReq();
-            req.user = { username: 'jdoe' };
+            req.user = {
+                username: 'jdoe'
+            };
             req.logOut = _sinon.spy();
 
             return req;
@@ -182,7 +185,9 @@ describe('AuthHandlerProvider', function() {
     describe('authUsernamePasswordHandler()', function() {
         function _getMockReq() {
             var req = _expressMocks.getMockReq();
-            req.user = { username: 'jdoe' };
+            req.user = {
+                username: 'jdoe'
+            };
             req.logIn = _sinon.spy();
 
             return req;

@@ -15,43 +15,43 @@ var UserProfile = require('../../../server/data/user-profile');
 
 describe('server.data.UserProfile', function() {
 
-    var USER_LIST= [ {
+    var USER_LIST = [{
         username: 'pparker',
         firstName: 'Peter',
         lastName: 'Parker',
         title: 'Spiderman',
-        roles: [ 'superhero', 'reporter' ]
+        roles: ['superhero', 'reporter']
     }, {
         username: 'todinson',
         firstName: 'Thor',
         lastName: 'Odinson',
         title: 'Thor',
-        roles: [ 'superhero', 'demigod' ]
+        roles: ['superhero', 'demigod']
     }, {
         username: 'tstark',
         firstName: 'Tony',
         lastName: 'Stark',
         title: 'Iron Man',
-        roles: [ 'superhero', 'engineer' ]
+        roles: ['superhero', 'engineer']
     }, {
         username: 'nosborne',
         firstName: 'Norman',
         lastName: 'Osborne',
         title: 'Green Goblin',
-        roles: [ 'villain', 'businessman' ]
+        roles: ['villain', 'businessman']
     }, {
         username: 'llaufeyson',
         firstName: 'Loki',
         lastName: 'Laufeyson',
         title: 'Loki',
-        roles: [ 'villain', 'demigod' ]
+        roles: ['villain', 'demigod']
     }, {
         username: 'vvdoom',
         firstName: 'Victor',
         lastName: 'Von Doom',
         title: 'Dr. Doom',
-        roles: [ 'villain', 'engineer' ]
-    } ];
+        roles: ['villain', 'engineer']
+    }];
     var VALID_USERDATA = USER_LIST[0];
     var VALID_USERNAME = VALID_USERDATA.username;
 
@@ -109,34 +109,34 @@ describe('server.data.UserProfile', function() {
 
             expect(ret).to.be.fulfilled
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should return the user profile data if a user profile is found for the specified username', function(done) {
             var userProfile = _createInstance();
             var ret = userProfile.lookupUser(VALID_USERNAME)
 
-            function verifyProfile(profile){
+            function verifyProfile(profile) {
                 expect(profile).to.deep.equal(VALID_USERDATA);
             }
 
             expect(ret).to.be.fulfilled
                 .then(verifyProfile)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should return null if a user profile is not found for the specified username', function(done) {
             var userProfile = _createInstance();
             var ret = userProfile.lookupUser('baduser')
 
-            function verifyProfile(profile){
+            function verifyProfile(profile) {
                 expect(profile).to.be.null;
             }
 
             expect(ret).to.be.fulfilled
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
     });
 
@@ -192,14 +192,14 @@ describe('server.data.UserProfile', function() {
 
             expect(ret).to.be.fulfilled
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should update the user profile data for the specified username', function(done) {
             var userProfile = _createInstance();
             var ret = userProfile.saveUser(VALID_USERNAME, VALID_USERDATA)
 
-            function verifySave(profile){
+            function verifySave(profile) {
                 expect(userProfile._DUMMY_USER_LIST[VALID_USERNAME]).to.deep.equal(VALID_USERDATA);
                 expect(userProfile._DUMMY_USER_LIST[VALID_USERNAME]).to.not.equal(VALID_USERDATA);
             }
@@ -207,7 +207,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifySave)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
     });
 
@@ -244,7 +244,7 @@ describe('server.data.UserProfile', function() {
 
             expect(ret).to.be.fulfilled
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should return an empty array if the search criteria is empty', function(done) {
@@ -259,7 +259,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should ignore search criteria that have no matching properties on the user profile', function(done) {
@@ -278,7 +278,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should ignore search criteria that have matching properties that are not strings on the user profile', function(done) {
@@ -295,7 +295,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should return a list of user profiles filtered by partial string matches on the search criteria', function(done) {
@@ -315,7 +315,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should apply search criteria cumulatively (boolean and)', function(done) {
@@ -334,7 +334,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
 
         it('should not consider properties that are not defined on the user profile object', function(done) {
@@ -355,7 +355,7 @@ describe('server.data.UserProfile', function() {
             expect(ret).to.be.fulfilled
                 .then(verifyFetch)
                 .then(_assertionHelper.getNotifySuccessHandler(done),
-                      _assertionHelper.getNotifyFailureHandler(done));
+                    _assertionHelper.getNotifyFailureHandler(done));
         });
     });
 

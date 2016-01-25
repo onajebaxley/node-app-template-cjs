@@ -8,7 +8,7 @@
 
 var _winston = require('winston');
 var _path = require('path');
-var _winstonDailyRotateFile = require('winston-daily-rotate-file');
+var WinstonDailyRotateFile = require('winston-daily-rotate-file');
 
 var _isInitialized = false;
 
@@ -41,7 +41,7 @@ module.exports = {
                     label: 'app'
                 }),
 
-                new _winstonDailyRotateFile({
+                new WinstonDailyRotateFile({
                     level: 'debug',
                     filename: _path.join(GLOBAL.config.cfg_logs_dir, 'app'),
                     datePattern: '.yyyy-MM-dd.log',
@@ -53,7 +53,7 @@ module.exports = {
         // Logger for access logs
         _winston.loggers.add('access', {
             transports: [
-                new _winstonDailyRotateFile({
+                new WinstonDailyRotateFile({
                     level: 'debug',
                     filename: _path.join(GLOBAL.config.cfg_logs_dir, 'access'),
                     datePattern: '.yyyy-MM-dd.log',

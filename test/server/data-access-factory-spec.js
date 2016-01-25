@@ -110,7 +110,7 @@ describe('[server.dataAccessFactory]', function() {
             expect(invoke(true)).to.throw(error);
             expect(invoke([])).to.throw(error);
             expect(invoke({})).to.throw(error);
-            expect(invoke(function(){})).to.throw(error);
+            expect(invoke(function() {})).to.throw(error);
         });
 
         it('should throw an error if no data access object has been defined with the specified key', function() {

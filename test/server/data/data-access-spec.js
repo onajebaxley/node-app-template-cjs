@@ -19,7 +19,7 @@ describe('server.data.DataAccess', function() {
                 expect(dao._connectionParams).to.be.an('object');
                 expect(dao._connectionParams).to.be.empty;
             }
-            
+
             checkDefaultConnectionParams(null);
             checkDefaultConnectionParams(undefined);
             checkDefaultConnectionParams(123);

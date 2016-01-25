@@ -59,7 +59,7 @@ describe('CoreHandlerProvider', function() {
             expect(invoke(true)).to.throw(error);
             expect(invoke([])).to.throw(error);
             expect(invoke({})).to.throw(error);
-            expect(invoke(function(){})).to.throw(error);
+            expect(invoke(function() {})).to.throw(error);
         });
 
         it('should throw an error if invoked without a valid root path', function() {
@@ -78,7 +78,7 @@ describe('CoreHandlerProvider', function() {
             expect(invoke(true)).to.throw(error);
             expect(invoke([])).to.throw(error);
             expect(invoke({})).to.throw(error);
-            expect(invoke(function(){})).to.throw(error);
+            expect(invoke(function() {})).to.throw(error);
         });
 
         it('should expose the methods required by the interface', function() {
@@ -172,7 +172,7 @@ describe('CoreHandlerProvider', function() {
             checkFilenameDefault(true);
             checkFilenameDefault([]);
             checkFilenameDefault({});
-            checkFilenameDefault(function(){});
+            checkFilenameDefault(function() {});
         });
 
         it('should generate the source path using the optional js filename parameter if one was specified', function() {
@@ -245,7 +245,7 @@ describe('CoreHandlerProvider', function() {
             checkFilenameDefault(true);
             checkFilenameDefault([]);
             checkFilenameDefault({});
-            checkFilenameDefault(function(){});
+            checkFilenameDefault(function() {});
         });
 
         it('should generate the icon file path using the optional file path parameter if one was specified', function() {
@@ -382,7 +382,7 @@ describe('CoreHandlerProvider', function() {
             checkLoginPageDefault(true);
             checkLoginPageDefault([]);
             checkLoginPageDefault({});
-            checkLoginPageDefault(function(){});
+            checkLoginPageDefault(function() {});
         });
 
         it('should use the optional login page url as the login page if one is specified', function() {

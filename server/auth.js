@@ -23,7 +23,7 @@ function _authenticateUser(username, password) {
     var def = _q.defer();
 
     process.nextTick(_promiseUtils.wrapWithExceptionHandler(function() {
-        if(username === password) {
+        if (username === password) {
             def.resolve(username);
         } else {
             def.reject('Invalid username/password');
@@ -38,12 +38,11 @@ function _initUser(username) {
     var initWrapper = _promiseUtils.wrapWithExceptionHandler(function() {
         var userProfileDao = _dataAccessFactory.getDataAccessObject('user-profile');
         userProfileDao.lookupUser(username).then(function(user) {
-            if(!user) {
+            if (!user) {
                 def.reject('Could not find user with username: [%s]', username);
                 return;
             }
             user.sessionTimestamp = Date.now();
-            var username = user.username;
             var roles = _clone(user.roles);
 
             delete user.username;
@@ -84,7 +83,7 @@ function _userSerializer(user, done) {
     logger.debug('Serializing user', user);
 
     var userToken = {};
-    if(user && typeof user === 'object' &&
+    if (user && typeof user === 'object' &&
         typeof user.username === 'string' && user.username.length > 0 &&
         typeof user.sessionTimestamp === 'number' && user.sessionTimestamp > 0) {
 
@@ -93,7 +92,7 @@ function _userSerializer(user, done) {
         userToken.serviceTokens = _clone(user._serviceTokens);
         userToken.sessionTokenVersion = GLOBAL.config.cfg_session_token_version;
         userToken.sessionTimestamp = user.sessionTimestamp;
-    } 
+    }
 
     done(null, userToken);
 }
@@ -118,8 +117,8 @@ function _userDeserializer(userToken, done) {
 
     } else if (userToken.sessionTokenVersion !== GLOBAL.config.cfg_session_token_version) {
         // User is logging in with a different session token version.
-        logger.error('User session token had invalid version number: [%s]. Token version: [%s]', 
-                        userToken.username, userToken.sessionTokenVersion);
+        logger.error('User session token had invalid version number: [%s]. Token version: [%s]',
+            userToken.username, userToken.sessionTokenVersion);
         done(new InvalidSessionError('User session is no longer valid'), null);
 
     } else {

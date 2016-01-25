@@ -111,11 +111,11 @@ describe('[server.routes]', function() {
 
                 expect(_coreHandlerProviderMock).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(_coreHandlerProviderMock).to.have.been.calledOnce;
                 expect(_coreHandlerProviderMock).to.have.been.calledWithNew;
                 expect(_coreHandlerProviderMock).to.have.
-                        been.calledWith(_configParams.staticDir, _configParams.rootPath);
+                been.calledWith(_configParams.staticDir, _configParams.rootPath);
             });
 
             it('should have no impact if invoked multiple times', function() {
@@ -137,7 +137,7 @@ describe('[server.routes]', function() {
                 expect(provider.accessLoggerMiddleware).to.not.have.been.called;
                 expect(mockApp.use).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(provider.accessLoggerMiddleware).to.have.been.calledOnce;
                 _checkHandlerSequence(mockApp, 1, provider.accessLoggerMiddleware());
             });
@@ -151,7 +151,7 @@ describe('[server.routes]', function() {
                 expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
                 expect(mockApp.use).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(provider.dynamicCssCompileMiddleware).to.have.been.calledOnce;
                 _checkHandlerSequence(mockApp, 2, provider.dynamicCssCompileMiddleware());
             });
@@ -165,7 +165,7 @@ describe('[server.routes]', function() {
                 expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
                 expect(mockApp.use).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(provider.dynamicCssCompileMiddleware).to.not.have.been.called;
             });
 
@@ -180,7 +180,7 @@ describe('[server.routes]', function() {
                 expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
                 expect(mockApp.use).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(provider.dynamicJsCompileMiddleware).to.have.been.calledOnce;
 
                 expect(mockApp.use.callCount).to.be.at.least(3);
@@ -196,7 +196,7 @@ describe('[server.routes]', function() {
                 expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
                 expect(mockApp.use).to.not.have.been.called;
                 _routes.configure(mockApp);
-                
+
                 expect(provider.dynamicJsCompileMiddleware).to.not.have.been.called;
             });
 

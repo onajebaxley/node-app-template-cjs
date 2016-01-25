@@ -29,7 +29,7 @@ module.exports = {
         var logger = _rewire('../../server/logger');
         logger.__set__('_winston', module.exports.getWinstonMock());
 
-        if(configure) {
+        if (configure) {
             logger.configure(_appHelper.getMockApp());
         }
 
