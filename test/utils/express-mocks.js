@@ -26,8 +26,10 @@ module.exports = {
         express._router = function() {
         };
         ['get', 'put', 'post', 'delete'].forEach(function(verb) {
-            express._router[verb] = _sinon.stub();
+            express._router[verb] = _sinon.spy();
         });
+
+        express._router.use = _sinon.spy();
 
         express.Router = _sinon.stub().returns(express._router);
         return express;

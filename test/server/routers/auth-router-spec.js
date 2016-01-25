@@ -70,52 +70,54 @@ describe('[server.routers.authRouter]', function() {
                 _authRouter.__set__('_express', mockExpress);
             });
 
-            it('should attach the login page handler to the path GET /login', function() {
-                var path = '/login';
-                var provider = _authHandlerProviderMock();
+            describe('[routes]', function() {
+                it('should attach the login page handler to the path GET /login', function() {
+                    var path = '/login';
+                    var provider = _authHandlerProviderMock();
 
-                expect(mockExpress._router.get).to.not.have.been.called;
-                expect(provider.loginPageHandler).to.not.have.been.called;
+                    expect(mockExpress._router.get).to.not.have.been.called;
+                    expect(provider.loginPageHandler).to.not.have.been.called;
 
-                _authRouter.createRouter();
+                    _authRouter.createRouter();
 
-                expect(provider.loginPageHandler).to.have.been.calledOnce;
-                var handler = provider.loginPageHandler();
-                expect(mockExpress._router.get.callCount).to.be.at.least(1);
-                expect(mockExpress._router.get.args[0][0]).to.equal(path);
-                expect(mockExpress._router.get.args[0][1]).to.equal(handler);
-            });
+                    expect(provider.loginPageHandler).to.have.been.calledOnce;
+                    var handler = provider.loginPageHandler();
+                    expect(mockExpress._router.get.callCount).to.be.at.least(1);
+                    expect(mockExpress._router.get.args[0][0]).to.equal(path);
+                    expect(mockExpress._router.get.args[0][1]).to.equal(handler);
+                });
 
-            it('should attach the logout handler to the path GET /logout', function() {
-                var path = '/logout';
-                var provider = _authHandlerProviderMock();
+                it('should attach the logout handler to the path GET /logout', function() {
+                    var path = '/logout';
+                    var provider = _authHandlerProviderMock();
 
-                expect(mockExpress._router.get).to.not.have.been.called;
-                expect(provider.logoutHandler).to.not.have.been.called;
+                    expect(mockExpress._router.get).to.not.have.been.called;
+                    expect(provider.logoutHandler).to.not.have.been.called;
 
-                _authRouter.createRouter();
+                    _authRouter.createRouter();
 
-                expect(provider.logoutHandler).to.have.been.calledOnce;
-                var handler = provider.logoutHandler();
-                expect(mockExpress._router.get.callCount).to.be.at.least(2);
-                expect(mockExpress._router.get.args[1][0]).to.equal(path);
-                expect(mockExpress._router.get.args[1][1]).to.equal(handler);
-            });
+                    expect(provider.logoutHandler).to.have.been.calledOnce;
+                    var handler = provider.logoutHandler();
+                    expect(mockExpress._router.get.callCount).to.be.at.least(2);
+                    expect(mockExpress._router.get.args[1][0]).to.equal(path);
+                    expect(mockExpress._router.get.args[1][1]).to.equal(handler);
+                });
 
-            it('should attach the username-password authentication handler to the path POST /login', function() {
-                var path = '/login';
-                var provider = _authHandlerProviderMock();
+                it('should attach the username-password authentication handler to the path POST /login', function() {
+                    var path = '/login';
+                    var provider = _authHandlerProviderMock();
 
-                expect(mockExpress._router.post).to.not.have.been.called;
-                expect(provider.authUsernamePasswordHandler).to.not.have.been.called;
+                    expect(mockExpress._router.post).to.not.have.been.called;
+                    expect(provider.authUsernamePasswordHandler).to.not.have.been.called;
 
-                _authRouter.createRouter();
+                    _authRouter.createRouter();
 
-                expect(provider.authUsernamePasswordHandler).to.have.been.calledOnce;
-                var handler = provider.authUsernamePasswordHandler();
-                expect(mockExpress._router.post.callCount).to.be.at.least(1);
-                expect(mockExpress._router.post.args[0][0]).to.equal(path);
-                expect(mockExpress._router.post.args[0][1]).to.equal(handler);
+                    expect(provider.authUsernamePasswordHandler).to.have.been.calledOnce;
+                    var handler = provider.authUsernamePasswordHandler();
+                    expect(mockExpress._router.post.callCount).to.be.at.least(1);
+                    expect(mockExpress._router.post.args[0][0]).to.equal(path);
+                    expect(mockExpress._router.post.args[0][1]).to.equal(handler);
+                });
             });
         });
     });
