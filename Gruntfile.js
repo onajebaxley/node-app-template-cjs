@@ -743,6 +743,9 @@ module.exports = function(grunt) {
                     runClientTests = true;
                     break;
 
+                } else if ('http' === arg) {
+                    tasks.push('test:http:' + serverMode);
+
                 } else if ('server' === arg) {
                     tasks.push('test:server:' + serverMode);
 
