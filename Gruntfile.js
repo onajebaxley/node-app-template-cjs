@@ -672,7 +672,7 @@ module.exports = function(grunt) {
      * dev code or build artifacts.
      */
     grunt.registerTask('test',
-        'Executes tests (client/server/e2e) against sources or build artifacts',
+        'Executes tests (client/http/server/e2e) against sources or build artifacts',
         function(testType, target) {
             var testAction;
             var startServer = false;
