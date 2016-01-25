@@ -35,13 +35,15 @@ var HELP_TEXT =
 '           [opt2]:     on specified options. Supported options are as follows:  \n' +
 '           [opt3]:       [lint]   : Executes jshint with default options against\n' +
 '           [opt4]:                  all source files.                           \n' +
-'           [opt5]        [client] : Executes client side unit tests against all \n' +
-'                                    source files.                               \n' +
+'           [opt5]:       [client] : Executes client side unit tests against all \n' +
+'           [opt6]                   source files.                               \n' +
 '                         [server] : Executes server side unit tests against all \n' +
-'                                    source files. This task will automatically  \n' +
-'                                    launch the web server prior to running the  \n' +
-'                                    tests, and shutdown the server after the    \n' +
-'                                    tests have been executed.                   \n' +
+'                                    server source files.                        \n' +
+'                         [http]   : Executes http request test against server   \n' +
+'                                    routes. This task will automatically launch \n' +
+'                                    the web server prior to running the tests,  \n' +
+'                                    and shutdown the server after the tests have\n' +
+'                                    been executed.                              \n' +
 '                         [e2e]    : Executes end to end tests against all source\n' +
 '                                    files. This task will automatically launch  \n' +
 '                                    the web server prior to running tests, and  \n' +
@@ -72,18 +74,18 @@ var HELP_TEXT =
 '                       has the effect of making the build artifact easier to    \n' +
 '                       read and troubleshoot.                                   \n' +
 '                                                                                \n' +
-'   test:[client|     : Executes tests against source files or build artifacts.  \n' +
+'   test:[client|http : Executes tests against source files or build artifacts.  \n' +
 '     server|e2e|all]:  The type of test to execute is specified by the first    \n' +
-'        [dev|build]    sub target (client/server/e2e/all), and the files to test\n' +
-'                       (dev/build) is specified by the second subtarget. The    \n' +
-'                       first sub target is mandatory.                           \n' +
+'        [dev|build]    sub target (client/server/http/e2e/all), and the files to\n' +
+'                       test (dev/build) is specified by the second subtarget.   \n' +
+'                       The first sub target is mandatory.                       \n' +
 '                       If the "build" subtarget is specified, sources must      \n' +
 '                       already be built and ready for testing int the build     \n' +
 '                       directory.                                               \n' +
 '                       If required by the tests, an instance of express will be \n' +
 '                       started prior to executing the tests.                    \n' +
-'                       If [all] is used as the test type, all three tests       \n' +
-'                       (client, server and e2e) wll be executed.                \n' +
+'                       If [all] is used as the test type, all four tests        \n' +
+'                       (client, server, http and e2e) wll be executed.          \n' +
 '                                                                                \n' +
 '   bump:[major|minor]: Updates the version number of the package. By default,   \n' +
 '                       this task only increments the patch version number. Major\n' +
@@ -137,7 +139,8 @@ module.exports = function(grunt) {
             'test': {                       /*  |--- test                     */
                 'client': null,             /*  |   |--- client               */
                 'e2e': null,                /*  |   |--- e2e                  */
-                'server': null              /*  |   |--- server               */
+                'server': null,             /*  |   |--- server               */
+                'http': null                /*  |   |--- http                 */
             },                              /*  |                             */
             'logs': null,                   /*  |--- logs                     */
             'working': {                    /*  |--- working                  */
@@ -470,6 +473,19 @@ module.exports = function(grunt) {
         },
 
         /**
+        * Configuration for grunt-mocha-test, which is used to:
+        *  - Test web server API by making http requests to the server
+        */
+        mochaTest: {
+            options: {
+                reporter: 'spec',
+                timeout: 8000,
+                colors: true
+            },
+            default: [ TEST.http.allFilesPattern('js') ]
+        },
+
+        /**
          * Configuration for grunt-protractor-runner, which is used to:
          *  - Execute end to end tests on the application.
          */
@@ -673,6 +689,8 @@ module.exports = function(grunt) {
                 }
             } else if(testType === 'server') {
                 testAction = 'mocha_istanbul:default';
+            } else if(testType === 'http') {
+                testAction = 'mochaTest:default';
                 startServer = true;
             } else if(testType === 'e2e') {
                 testAction = 'protractor:default';
