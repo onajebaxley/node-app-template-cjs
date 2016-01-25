@@ -20,7 +20,7 @@ module.exports = {
      * @return {Object} A mock express object
      */
     getMockExpress: function() {
-        var express = function() {};
+        var express = _sinon.spy();
 
         express._router = function() {};
         ['get', 'put', 'post', 'delete'].forEach(function(verb) {
