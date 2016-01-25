@@ -30,7 +30,7 @@ module.exports = {
         });
 
         express._router.use = _sinon.spy();
-
+        express.static = _sinon.stub().returns(function() {});
         express.Router = _sinon.stub().returns(express._router);
         return express;
     },

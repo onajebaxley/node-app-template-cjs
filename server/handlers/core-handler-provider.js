@@ -84,7 +84,7 @@ CoreHandlerProvider.prototype.dynamicJsCompileMiddleware = function(jsFile) {
  * sass files to css prior to deployment.
  *
  * @class CoreHandlerProvider
- * @method dynamicJsCompileMiddleware
+ * @method dynamicCssCompileMiddleware
  * @return {Function} A handler that conforms to expressjs' handler signature.
  */
 CoreHandlerProvider.prototype.dynamicCssCompileMiddleware = function() {

@@ -11,22 +11,33 @@ var _express = require('express');
 
 var _logger = require('./logger');
 var CoreHandlerProvider = require('./handlers/core-handler-provider');
+var _publicRouter = require('./routers/public-router');
+var _authRouter = require('./routers/auth-router');
+var _appRouter = require('./routers/app-router');
 
 var _isInitialized = false;
+var ALL = null;
 
-
-function forPath(path) {
-    path = path || '';
-    path = _path.join(GLOBAL.config.cfg_mount_path, path);
-
-    var mounter = {
-        addHandler: function(handler) {
-            app.use(path, handler);
-            return mounter;
+function _getMounterBuilder(app) {
+    return function(path) {
+        var attachHandler = app.use;
+        if(typeof path === 'string' && path.length > 0) {
+            path = _path.join(GLOBAL.config.cfg_mount_path, path);
+            attachHandler = attachHandler.bind(app, path);
+        } else {
+            attachHandler = attachHandler.bind(app);
         }
-    };
-    return mounter;
+
+        var mounter = {
+            addHandler: function(handler) {
+                attachHandler(handler);
+                return mounter;
+            }
+        };
+        return mounter;
+    }
 }
+
 
 module.exports = {
     /**
@@ -47,36 +58,59 @@ module.exports = {
             return;
         }
 
+        var forPath = _getMounterBuilder(app);
         var provider = new CoreHandlerProvider(GLOBAL.config.cfg_static_dir,
                                                GLOBAL.config.cfg_root_path);
+        var dynamicCssEnabled = GLOBAL.config.cfg_enable_dyamic_css_compile;
+        var dynamicJsEnabled = GLOBAL.config.cfg_enable_dyamic_js_compile;
+
+        // --------------------------------------------------------------------
+        // Common middleware
+        // --------------------------------------------------------------------
 
         //Access logger
-        app.use(provider.accessLoggerMiddleware());
+        forPath(ALL).addHandler(provider.accessLoggerMiddleware());
 
         //Dynamic SASS -> CSS compilation (dev only)
-        if (GLOBAL.config.cfg_enable_dyamic_css_compile) {
-            app.use(provider.dynamicCssCompileMiddleware());
+        if(dynamicCssEnabled) {
+            forPath(ALL).addHandler(provider.dynamicCssCompileMiddleware());
         }
+
         //Dynamic browserify compilation (dev only)
-        if (GLOBAL.config.cfg_enable_dyamic_js_compile) {
-            var jsMountPath = _path.join(GLOBAL.config.cfg_mount_path, '/js/app.js');
-            app.use(jsMountPath, provider.dynamicJsCompileMiddleware('/js/app.js'));
+        if(dynamicJsEnabled) {
+            var jsPath = '/js/app.js';
+            var jsMiddleware = provider.dynamicJsCompileMiddleware(jsPath);
+
+            forPath(jsPath).addHandler(jsMiddleware);
         }
 
         //Favicon.ico handler
-        app.use(provider.faviconHandler('img/favicon.ico'));
+        forPath(ALL).addHandler(provider.faviconHandler('img/favicon.ico'));
 
-        //Routers to handle application paths
+        // --------------------------------------------------------------------
+        // Routers to handle application paths
+        // --------------------------------------------------------------------
+        forPath('/')
+            .addHandler(_express.static(GLOBAL.config.cfg_static_dir))
+            .addHandler(_publicRouter.createRouter());
 
+        forPath('/auth')
+            .addHandler(_authRouter.createRouter());
 
+        forPath('/app')
+            .addHandler(_appRouter.createRouter());
+
+        // --------------------------------------------------------------------
+        // Error handlers
+        // --------------------------------------------------------------------
         //Handler for authentication errors
-        app.use(provider.authenticationErrorHandler());
+        forPath(ALL).addHandler(provider.authenticationErrorHandler());
         
         //Handler for 404 errors
-        app.use(provider.resourceNotFoundErrorHandler());
+        forPath(ALL).addHandler(provider.resourceNotFoundErrorHandler());
 
         //Catch all handler for all errors.
-        app.use(provider.catchAllErrorHandler());
+        forPath(ALL).addHandler(provider.catchAllErrorHandler());
 
         _isInitialized = true;
     }
