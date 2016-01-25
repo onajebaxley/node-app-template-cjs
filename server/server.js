@@ -12,6 +12,9 @@ var _express = require('express');
 
 var _config = require('./config');
 var _logger = require('./logger');
+var _session = require('./session');
+var _auth = require('./auth');
+var _routes = require('./routes');
 
 var app = _express();
 
@@ -20,6 +23,15 @@ _config.configure(app);
 
 // Logger configuration
 _logger.configure(app);
+
+// Session configuration
+_session.configure(app);
+
+// Authentication configuration
+_auth.configure(app);
+
+// Route configuration.
+_routes.configure(app);
 
 // Logger should be initialized by now.
 var logger = _logger.getLogger();
