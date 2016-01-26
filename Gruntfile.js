@@ -68,7 +68,7 @@ var HELP_TEXT =
 '                                                                                \n' +
 '   build:[debugMode] : Builds all of the source files and deploys the results   \n' +
 '                       to the build folder. If the "debugMode" sub target is    \n' +
-'                       specified, or, the --debugMode option is specified, the  \n' +
+'                       specified, or, the --debug-mode option is specified, the \n' +
 '                       build will be executed without any optimization. In      \n' +
 '                       addition to speeding up the build process, this option   \n' +
 '                       has the effect of making the build artifact easier to    \n' +
@@ -96,9 +96,14 @@ var HELP_TEXT =
 '                       distribution package.                                    \n' +
 '                                                                                \n' +
 ' Supported Options:                                                             \n' +
-'   --debugMode       : When set to true, forces builds to take place in debug   \n' +
+'   --debug-mode      : When set to true, forces builds to take place in debug   \n' +
 '                       mode (no minification). This option overrides settings   \n' +
 '                       from sub targets.                                        \n' +
+'   --no-server       : When set to true, does not launch an express instance    \n' +
+'                       prior to running tests, even if the tests require an     \n' +
+'                       express instance to be present. In such cases, it is     \n' +
+'                       the user\'s responsibility to make sure that an express  \n' +
+'                       is running for the test suite.                           \n' +
 '                                                                                \n' +
 ' IMPORTANT: Please note that while the grunt file exposes tasks in addition to  \n' +
 ' ---------  the ones listed below (no private tasks in grunt yet :( ), it is    \n' +
@@ -606,16 +611,17 @@ module.exports = function(grunt) {
          */
         express: {
             options: {
-                debug: true,
-                node_env: 'test'
+                debug: true
             },
             dev: {
                 options: {
+                    node_env: 'development',
                     script: SERVER.getChildPath('server.js')
                 }
             },
             build: {
                 options: {
+                    node_env: 'test',
                     script: SERVER_BUILD.getChildPath('server.js')
                 }
             }
@@ -696,6 +702,7 @@ module.exports = function(grunt) {
                 testAction = 'protractor:default';
                 startServer = true;
             }
+            startServer = startServer && !grunt.option('no-server');
             if(testAction) {
                 if(startServer) {
                     grunt.task.run('express:' + target);
@@ -791,7 +798,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build',
         'Performs a full build of all source files, preparing it for packaging/publication',
         function(target) {
-            var isDebugMode = grunt.option('debugMode') || (target === 'debugMode');
+            var isDebugMode = grunt.option('debug-mode') || (target === 'debug-mode');
             if(isDebugMode) {
                 grunt.log.writeln('Executing build in debug mode');
             }
