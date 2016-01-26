@@ -1,11 +1,7 @@
 /* jshint node:true, expr:true */
 'use strict';
 
-var _packageJson = require('../../package.json');
 var _path = require('path');
-var _config = require('../config');
-var _supertest = require('supertest');
-var _wyskndTest = require('wysknd-test');
 
 var _sinon = require('sinon');
 var _chai = require('chai');
@@ -13,49 +9,31 @@ _chai.use(require('sinon-chai'));
 _chai.use(require('chai-as-promised'));
 
 var expect = require('chai').expect;
-var _assertionHelper = _wyskndTest.assertionHelper;
+
+var HttpHelper = require('../utils/http-helper');
+var _packageJson = require('../../package.json');
+var _config = require('../config');
 
 describe('[error routes]', function() {
-    var MOUNT_PATH = '/';
-    var request = _supertest(_config.baseUrl);
+    var httpHelper;
 
-    function _getPath(path) {
-        return _path.join(MOUNT_PATH, path);
-    }
+    beforeEach(function() {
+        httpHelper = new HttpHelper(_config.baseUrl, '/');
+    });
 
     describe('[authentication failed error]', function() {
-        var path = null;
+        var path = '/app';
 
-        beforeEach(function() {
-            path = _getPath('/app/');
-        });
-
-        it('should return an HTTP 302 code with correct response headers when invoked', function(done) {
-            request.get(path)
-                .expect(302)
-                .expect('content-type', /text\/html/)
-                .end(function(err, res) {
-                    expect(err).to.be.null;
-                    done();
-                });
+        it('should redirect the user to the login page with the correct post login redirect url', function(done) {
+            httpHelper.test302(path, '/auth/login?redirect=' + path, done);
         });
     });
 
     describe('[resource not found error]', function() {
-        var path = null;
+        var path = '/missing/resource';
 
-        beforeEach(function() {
-            path = _getPath('/missing/resource');
-        });
-
-        it('should return an HTTP 404 code with correct response headers when invoked', function(done) {
-            request.get(path)
-                .expect(404)
-                .expect('content-type', /text\/html/)
-                .end(function(err, res) {
-                    expect(err).to.be.null;
-                    done();
-                });
+        it('should return an HTTP 404 along with an HTML payload', function(done) {
+            httpHelper.test404(path, done);
         });
     });
 

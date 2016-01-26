@@ -138,6 +138,21 @@ describe('AuthHandlerProvider', function() {
             expect(handler).to.be.a('function');
         });
 
+        it('should do nothing if a user is not already logged in', function() {
+            var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
+            var handler = provider.logoutHandler();
+
+            var req = _getMockReq();
+            var res = _expressMocks.getMockRes();
+            var next = _sinon.spy();
+            req.user = undefined;
+
+            expect(req.logOut).to.not.have.been.called;
+            handler(req, res, next);
+
+            expect(req.logOut).to.not.have.been.called;
+        });
+
         it('should log the user out when invoked', function() {
             var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
             var handler = provider.logoutHandler();
@@ -146,6 +161,7 @@ describe('AuthHandlerProvider', function() {
             var res = _expressMocks.getMockRes();
             var next = _sinon.spy();
 
+            expect(req.logOut).to.not.have.been.called;
             handler(req, res, next);
 
             expect(req.logOut).to.have.been.calledOnce;

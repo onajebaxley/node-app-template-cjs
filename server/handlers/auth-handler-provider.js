@@ -62,8 +62,12 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
     return function(req, res, next) {
         var user = req.user;
 
-        req.logOut();
-        this._logger.info('User logged out: [%s]', user.username);
+        if(user) {
+            req.logOut();
+            this._logger.info('User logged out: [%s]', user.username);
+        } else {
+            this._logger.warn('No logout performed. User not logged in');
+        }
 
         var redirectUrl = this._getRedirectUrl(req.query.redirect);
         this._logger.info('Redirecting user to page: [%s]', redirectUrl);
