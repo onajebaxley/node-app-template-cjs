@@ -30,9 +30,9 @@ describe('[error routes]', function() {
             path = _getPath('/app/');
         });
 
-        xit('should return an HTTP 401 code with correct response headers when invoked', function(done) {
+        it('should return an HTTP 302 code with correct response headers when invoked', function(done) {
             request.get(path)
-                .expect(401)
+                .expect(302)
                 .expect('content-type', /text\/html/)
                 .end(function(err, res) {
                     expect(err).to.be.null;

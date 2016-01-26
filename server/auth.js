@@ -168,23 +168,27 @@ module.exports = {
     },
 
     /**
-     * Handler that initializes the user object in the session, if one does not exist.
+     * Handler that checks for a valid user session, and throws an error if one does
+     * not exist.
+     *
      * This is required to ensure proper functioning of passport's session strategy
-     * (which appears to allow requests through when a session does not contain a user
-     * object)
+     * (which appears to allow requests through when a session does not exist, or
+     * contain a user object)
      *
      * This method is an expressjs compatible handler method.
      *
      * @module auth
-     * @method ensureUserSession
+     * @method checkUserSession
      * @param {Object} req The HTTP request object
      * @param {Object} res The HTTP response object
      * @param {Object} next A method that invokes the next handler in the chain
      */
-    ensureUserSession: function(req, rep, next) {
-        if (req._passport && req._passport.session &&
-            !req._passport.session.user) {
-            req._passport.session.user = 0;
+    checkUserSession: function(req, rep, next) {
+        var logger = _logger.getLogger();
+        if(req.session.isNew || !req._passport
+            || !req._passport.session || !req._passport.session.user) {
+            logger.warn('No user session detected');
+            throw new InvalidSessionError('No user session detected');
         }
         next();
     }

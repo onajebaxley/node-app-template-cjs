@@ -50,7 +50,7 @@ describe('[server.auth]', function() {
     describe('[init]', function() {
         it('should expose the necessary fields and methods', function() {
             expect(_auth).to.have.property('configure').and.to.be.a('function');
-            expect(_auth).to.have.property('ensureUserSession').and.to.be.a('function');
+            expect(_auth).to.have.property('checkUserSession').and.to.be.a('function');
         });
     });
 
@@ -496,60 +496,88 @@ describe('[server.auth]', function() {
         });
     });
 
-    describe('ensureUserSession()', function() {
-        it('should do nothing if passport has not been initialized', function() {
-            var req = _expressMocks.getMockReq();
-            var res = null;
-            var next = _sinon.spy();
-
-            _auth.ensureUserSession(req, res, next);
-
-            expect(req._passport).to.be.undefined;
-            expect(next).to.have.been.calledOnce;
-        });
-
-        it('should do nothing if passport has been initialized, but session has not', function() {
-            var req = _expressMocks.getMockReq();
-            var res = null;
-            var next = _sinon.spy();
-            req._passport = {};
-
-            _auth.ensureUserSession(req, res, next);
-
-            expect(req._passport.session).to.be.undefined;
-            expect(next).to.have.been.calledOnce;
-        });
-
-        it('should do nothing if passport, user and session have all been initialized', function() {
-            var req = _expressMocks.getMockReq();
-            var res = null;
-            var next = _sinon.spy();
-            var user = {};
-            req._passport = {
-                session: {
-                    user: user
-                }
+    describe('checkUserSession()', function() {
+        function invoke(req, res, next) {
+            return function() {
+                _auth.checkUserSession(req, res, next);
             };
+        }
 
-            _auth.ensureUserSession(req, res, next);
-
-            expect(req._passport.session.user).to.equal(user);
-            expect(next).to.have.been.calledOnce;
-        });
-
-        it('should do set the user property to 0 if passport and session have been defined, but user has not', function() {
+        it('should throw an error if the current session is new', function() {
             var req = _expressMocks.getMockReq();
             var res = null;
             var next = _sinon.spy();
-            req._passport = {
-                session: {}
-            };
 
-            _auth.ensureUserSession(req, res, next);
+            req.session = { isNew: true };
 
-            expect(req._passport.session.user).to.equal(0);
-            expect(next).to.have.been.calledOnce;
+            expect(next).to.not.have.been.called;
+            expect(invoke(req, res, next)).to.throw(InvalidSessionError);
+            expect(next).to.not.have.been.called;
         });
 
+        it('should throw an error if the request does not contain a "_passport" property', function() {
+            var req = _expressMocks.getMockReq();
+            var res = null;
+            var next = _sinon.spy();
+
+            req.session = { isNew: false };
+            req._passport = undefined;
+
+            expect(next).to.not.have.been.called;
+            expect(invoke(req, res, next)).to.throw(InvalidSessionError);
+            expect(next).to.not.have.been.called;
+        });
+
+        it('should throw an error if the request does not define a "_passport" property', function() {
+            var req = _expressMocks.getMockReq();
+            var res = null;
+            var next = _sinon.spy();
+
+            req.session = { isNew: false };
+            req._passport = undefined;
+
+            expect(next).to.not.have.been.called;
+            expect(invoke(req, res, next)).to.throw(InvalidSessionError);
+            expect(next).to.not.have.been.called;
+        });
+
+        it('should throw an error if the request does not define a "_passport.session" property', function() {
+            var req = _expressMocks.getMockReq();
+            var res = null;
+            var next = _sinon.spy();
+
+            req.session = { isNew: false };
+            req._passport = { session: undefined };
+
+            expect(next).to.not.have.been.called;
+            expect(invoke(req, res, next)).to.throw(InvalidSessionError);
+            expect(next).to.not.have.been.called;
+        });
+
+        it('should throw an error if the request does not define a "_passport.session.user" property', function() {
+            var req = _expressMocks.getMockReq();
+            var res = null;
+            var next = _sinon.spy();
+
+            req.session = { isNew: false };
+            req._passport = { session: { user: undefined} };
+
+            expect(next).to.not.have.been.called;
+            expect(invoke(req, res, next)).to.throw(InvalidSessionError);
+            expect(next).to.not.have.been.called;
+        });
+
+        it('should do nothing if a valid user session has been initialized', function() {
+            var req = _expressMocks.getMockReq();
+            var res = null;
+            var next = _sinon.spy();
+
+            req.session = { isNew: false };
+            req._passport = { session: { user: 'some serialized user token' } };
+
+            expect(next).to.not.have.been.called;
+            _auth.checkUserSession(req, res, next);
+            expect(next).to.have.been.calledOnce;
+        });
     });
 });

@@ -29,7 +29,7 @@ module.exports = {
 
         router.use(_session.getSessionHandler());
         router.use(_passport.initialize());
-        router.use(_auth.ensureUserSession);
+        router.use(_auth.checkUserSession);
         router.use(_passport.session());
 
         router.get('/', routesHandler.homePageHandler());

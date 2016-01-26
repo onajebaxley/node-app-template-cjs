@@ -29,7 +29,7 @@ describe('[server.routers.appRouter]', function() {
             session: _sinon.stub().returns(function() {})
         };
         _authMock = {
-            ensureUserSession: _sinon.stub().returns(function() {})
+            checkUserSession: _sinon.stub().returns(function() {})
         };
 
         _appHandlerProviderMock = _sinon.stub().returns({
@@ -124,9 +124,9 @@ describe('[server.routers.appRouter]', function() {
                 });
             });
 
-            describe('[auth - ensure user session]', function() {
-                it('should bind the ensure session handler as a middleware for all routes defined in the router', function() {
-                    var middleware = _authMock.ensureUserSession;
+            describe('[auth - check user session]', function() {
+                it('should bind the check session handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _authMock.checkUserSession;
 
                     expect(mockExpress._router.use).to.not.have.been.called;
 
