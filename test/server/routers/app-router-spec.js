@@ -125,16 +125,8 @@ describe('[server.routers.appRouter]', function() {
             });
 
             describe('[auth - ensure user session]', function() {
-                it('should initialize an ensure session handler', function() {
-                    expect(_authMock.ensureUserSession).to.not.have.been.called;
-
-                    _appRouter.createRouter();
-
-                    expect(_authMock.ensureUserSession).to.have.been.calledOnce;
-                });
-
                 it('should bind the ensure session handler as a middleware for all routes defined in the router', function() {
-                    var middleware = _authMock.ensureUserSession();
+                    var middleware = _authMock.ensureUserSession;
 
                     expect(mockExpress._router.use).to.not.have.been.called;
 
