@@ -41,11 +41,10 @@ function _getMounterBuilder(app) {
 
 module.exports = {
     /**
-     * Configures the session provider object for the application. Once
-     * configured, the session provider can be used to generate multiple
-     * session handlers.
+     * Configures routes for the application, by mounting routers at
+     * appropriate mount paths.
      *
-     * @module server.session
+     * @module server.routes
      * @method configure
      * @param {Object} app  A reference to the express App object.
      */
