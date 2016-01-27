@@ -32,10 +32,10 @@ module.exports = {
         router.get('/login', routesHandler.loginPageHandler());
         router.get('/logout', routesHandler.logoutHandler());
         router.post('/login',
-                    _bodyParser.urlencoded({
-                        extended: false
-                    }),
-                    routesHandler.authUsernamePasswordHandler());
+            _bodyParser.urlencoded({
+                extended: false
+            }),
+            routesHandler.authUsernamePasswordHandler());
 
         return router;
     }

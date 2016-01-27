@@ -19,10 +19,10 @@ var expect = require('chai').expect;
  *          to all paths specified during testing.
  */
 function HttpHelper(baseUrl, basePath) {
-    if(typeof baseUrl !== 'string' || baseUrl.length <= 0) {
+    if (typeof baseUrl !== 'string' || baseUrl.length <= 0) {
         throw new Error('Invalid base url specified (arg #1)');
     }
-    if(typeof basePath !== 'string' || basePath.length <= 0) {
+    if (typeof basePath !== 'string' || basePath.length <= 0) {
         basePath = '/';
     }
     this._baseUrl = baseUrl;
@@ -37,19 +37,19 @@ function HttpHelper(baseUrl, basePath) {
 HttpHelper.prototype._ensureOptions = function(options) {
     options = _clone(options);
 
-    if(!options || typeof options !== 'object') {
+    if (!options || typeof options !== 'object') {
         options = {};
     }
 
-    if(typeof options.code !== 'number' || options.code < 0) {
+    if (typeof options.code !== 'number' || options.code < 0) {
         options.code = 200;
     }
 
-    if(!options.headers || typeof options.headers !== 'object') {
+    if (!options.headers || typeof options.headers !== 'object') {
         options.headers = {};
     }
 
-    if(!options.body || typeof options.body !== 'object') {
+    if (!options.body || typeof options.body !== 'object') {
         options.body = {};
     }
 
@@ -62,19 +62,19 @@ HttpHelper.prototype._ensureOptions = function(options) {
  * @private
  */
 HttpHelper.prototype._test = function(verb, path, done, request, response, finish) {
-    if(typeof verb !== 'string' || verb.length <= 0) {
+    if (typeof verb !== 'string' || verb.length <= 0) {
         throw new Error('Invalid verb specified (arg #1)');
     }
-    if(typeof path !== 'string' || path.length <= 0) {
+    if (typeof path !== 'string' || path.length <= 0) {
         throw new Error('Invalid path specified (arg #2)');
     }
-    if(typeof done !== 'function') {
+    if (typeof done !== 'function') {
         throw new Error('Invalid callback specified (arg #3)');
     }
 
     request = this._ensureOptions(request);
     response = this._ensureOptions(response);
-    if(typeof finish !== 'function') {
+    if (typeof finish !== 'function') {
         finish = function(err, res) {
             expect(err).to.be.null;
         };
@@ -87,17 +87,17 @@ HttpHelper.prototype._test = function(verb, path, done, request, response, finis
     var handler = _supertest(this._baseUrl);
     handler = handler[verb](requestPath);
 
-    for(name in request.headers) {
+    for (name in request.headers) {
         handler = handler.set(name, request.headers[name]);
     }
 
     // ----------- RESPONSE ----------------
     handler.expect(response.code);
-    if(verb === 'post' || verb === 'put') {
+    if (verb === 'post' || verb === 'put') {
         handler = handler.send(request.body);
     }
 
-    for(name in response.headers) {
+    for (name in response.headers) {
         handler = handler.expect(name, response.headers[name]);
     }
 
@@ -270,12 +270,12 @@ HttpHelper.prototype.testJson = function(path, done, expectedResponse) {
     var finish = function(err, res) {
         expect(err).to.be.null;
 
-        if(typeof expectedResponse === 'function') {
+        if (typeof expectedResponse === 'function') {
             expectedResponse(err, res);
             return;
         }
 
-        if(!expectedResponse || typeof expectedResponse !== 'object') {
+        if (!expectedResponse || typeof expectedResponse !== 'object') {
             //No tests to perform.
             return;
         }

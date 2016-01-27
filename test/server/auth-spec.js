@@ -515,7 +515,9 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: true };
+            req.session = {
+                isNew: true
+            };
 
             expect(next).to.not.have.been.called;
             expect(invoke(req, res, next)).to.throw(InvalidSessionError);
@@ -527,7 +529,9 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: false };
+            req.session = {
+                isNew: false
+            };
             req._passport = undefined;
 
             expect(next).to.not.have.been.called;
@@ -540,7 +544,9 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: false };
+            req.session = {
+                isNew: false
+            };
             req._passport = undefined;
 
             expect(next).to.not.have.been.called;
@@ -553,8 +559,12 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: false };
-            req._passport = { session: undefined };
+            req.session = {
+                isNew: false
+            };
+            req._passport = {
+                session: undefined
+            };
 
             expect(next).to.not.have.been.called;
             expect(invoke(req, res, next)).to.throw(InvalidSessionError);
@@ -566,8 +576,14 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: false };
-            req._passport = { session: { user: undefined} };
+            req.session = {
+                isNew: false
+            };
+            req._passport = {
+                session: {
+                    user: undefined
+                }
+            };
 
             expect(next).to.not.have.been.called;
             expect(invoke(req, res, next)).to.throw(InvalidSessionError);
@@ -579,8 +595,14 @@ describe('[server.auth]', function() {
             var res = null;
             var next = _sinon.spy();
 
-            req.session = { isNew: false };
-            req._passport = { session: { user: 'some serialized user token' } };
+            req.session = {
+                isNew: false
+            };
+            req._passport = {
+                session: {
+                    user: 'some serialized user token'
+                }
+            };
 
             expect(next).to.not.have.been.called;
             _auth.checkUserSession(req, res, next);

@@ -62,7 +62,7 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
     return function(req, res, next) {
         var user = req.user;
 
-        if(user) {
+        if (user) {
             req.logOut();
             this._logger.info('User logged out: [%s]', user.username);
         } else {

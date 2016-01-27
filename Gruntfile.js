@@ -714,6 +714,7 @@ module.exports = function(grunt) {
             } else if(testType === 'all') {
                 grunt.task.run('test:client:' + target);
                 grunt.task.run('test:server:' + target);
+                grunt.task.run('test:http:' + target);
                 grunt.task.run('test:e2e:' + target);
             } else {
                 grunt.log.warn('Unrecognized test type or target. Please see help (grunt help) for task usage information');
@@ -766,6 +767,7 @@ module.exports = function(grunt) {
                     tasks.push('build');
                     tasks.push('test:client:build');
                     tasks.push('test:server:build');
+                    tasks.push('test:http:build');
                     tasks.push('test:e2e:build');
                     break;
 

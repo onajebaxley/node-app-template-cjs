@@ -185,8 +185,7 @@ module.exports = {
      */
     checkUserSession: function(req, rep, next) {
         var logger = _logger.getLogger();
-        if(req.session.isNew || !req._passport
-            || !req._passport.session || !req._passport.session.user) {
+        if (req.session.isNew || !req._passport || !req._passport.session || !req._passport.session.user) {
             logger.warn('No user session detected');
             throw new InvalidSessionError('No user session detected');
         }
