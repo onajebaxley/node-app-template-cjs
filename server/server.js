@@ -13,6 +13,7 @@ var _express = require('express');
 var _config = require('./config');
 var _logger = require('./logger');
 var _session = require('./session');
+var _dataAccessFactory = require('./data-access-factory');
 var _auth = require('./auth');
 var _routes = require('./routes');
 
@@ -26,6 +27,9 @@ _logger.configure(app);
 
 // Session configuration
 _session.configure(app);
+
+// Data access factory configuration
+_dataAccessFactory.configure(app);
 
 // Authentication configuration
 _auth.configure(app);

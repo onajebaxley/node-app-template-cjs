@@ -44,6 +44,20 @@ describe('[authentication routes]', function() {
             }, {});
         });
 
+        it('should set an authenticated session cookie if authentication is successful', function(done) {
+            httpHelper.testPost(path, done, {
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: {
+                    username: 'pparker',
+                    password: 'pparker',
+                }
+            }, {
+                code: 302 
+            });
+        });
+
     });
 
     describe('[GET /logout]', function() {

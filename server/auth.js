@@ -160,7 +160,7 @@ module.exports = {
 
         //TODO: This strategy should be replaced with a more meaningful real world
         //implementation.
-        _passport.use('username-password', _usernamePasswordStrategy);
+        _passport.use('username-password', new _passportLocal.Strategy(_usernamePasswordStrategy));
         _passport.serializeUser(_userSerializer);
         _passport.deserializeUser(_userDeserializer);
 
