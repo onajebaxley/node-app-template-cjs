@@ -22,10 +22,12 @@ var _expressMocks = require('../utils/express-mocks');
 var _auth = null;
 
 describe('[server.auth]', function() {
+    var VALID_USERNAME = 'pparker';
+
+    var _passportLocalMock = null;
     var _passportMock = null;
     var _sessionTokenVersion = '1.0';
     var _sessionTimeout = 1000;
-    var VALID_USERNAME = 'pparker';
 
     beforeEach(function() {
         _passportMock = {
@@ -34,8 +36,13 @@ describe('[server.auth]', function() {
             deserializeUser: _sinon.spy()
         };
 
+        _passportLocalMock = {
+            Strategy: _sinon.stub().returns(function() {})
+        };
+
         _auth = _rewire('../../server/auth');
         _auth.__set__('_passport', _passportMock);
+        _auth.__set__('_passportLocal', _passportLocalMock);
         _auth.__set__('_logger', _loggerHelper.initLogger(true));
         _auth.__set__('_dataAccessFactory', _dataAccessFactoryHelper.initDataAccessFactory(true));
 
@@ -439,7 +446,7 @@ describe('[server.auth]', function() {
 
             beforeEach(function() {
                 _auth.configure(_appHelper.getMockApp());
-                _authenticator = _passportMock.use.args[0][1];
+                _authenticator = _passportLocalMock.Strategy.args[0][0];
             });
 
             it('should fail authenticate requests if the username/password combination is invalid', function(done) {
