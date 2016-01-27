@@ -37,6 +37,14 @@ describe('[public routes]', function() {
         });
     });
 
+    describe('[GET /favicon.ico]', function() {
+        var path = '/favicon.ico';
+
+        it('should return an image file', function(done) {
+            httpHelper.testImage(path, done);
+        });
+    });
+
     describe('[GET /]', function() {
         var path = '/';
 

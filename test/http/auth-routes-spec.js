@@ -39,12 +39,51 @@ describe('[authentication routes]', function() {
                 },
                 body: {
                     username: 'bad user',
-                    password: 'bad password',
+                    password: 'bad password'
                 }
             }, {});
         });
 
         it('should set an authenticated session cookie if authentication is successful', function(done) {
+            var cookieName = _packageJson.name.replace(/-/g, '_') + '_session';
+            var cookiePattern = new RegExp(cookieName);
+            httpHelper.testPost(path, done, {
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: {
+                    username: 'pparker',
+                    password: 'pparker'
+                }
+            }, {
+                code: 302,
+                headers: {
+                    'set-cookie': cookiePattern
+                }
+            });
+        });
+
+        it('should redirect the user to the application root on successful authentication if no redirect url is specified', function(done) {
+            httpHelper.testPost(path, done, {
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: {
+                    username: 'pparker',
+                    password: 'pparker'
+                }
+            }, {
+                code: 302,
+                headers: {
+                    'content-type': /text\/plain/,
+                    location: '/'
+                }
+            });
+        });
+
+        it('should redirect the user to the specified redirect url on successful authentication', function(done) {
+            var redirectUrl = '/foo/bar';
+
             httpHelper.testPost(path, done, {
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded'
@@ -52,9 +91,14 @@ describe('[authentication routes]', function() {
                 body: {
                     username: 'pparker',
                     password: 'pparker',
+                    redirect: redirectUrl
                 }
             }, {
-                code: 302 
+                code: 302,
+                headers: {
+                    'content-type': /text\/plain/,
+                    location: redirectUrl
+                }
             });
         });
 

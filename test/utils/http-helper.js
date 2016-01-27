@@ -235,6 +235,24 @@ HttpHelper.prototype.testJs = function(path, done) {
 };
 
 /**
+ * Performs an http test on a get request to an image resource.
+ *
+ * @class HttpHelper
+ * @method testImage
+ * @param {String} path The path to the resource to query
+ * @param {Function} done A callback that will be invoked when the asynchronous
+ *          test is complete
+ */
+HttpHelper.prototype.testImage = function(path, done) {
+    this._test('get', path, done, {}, {
+        code: 200,
+        headers: {
+            'content-type': /image\/x-icon/
+        }
+    });
+};
+
+/**
  * Performs an http test on a get request to a JSON resource.
  *
  * @class HttpHelper
