@@ -34,32 +34,23 @@ function HttpHelper(baseUrl, basePath) {
  * @method _ensureOptions
  * @private
  */
-HttpHelper.prototype._ensureOptions = function(options, code, headers) {
+HttpHelper.prototype._ensureOptions = function(options) {
     options = _clone(options);
-    code = code || 200;
-    headers = headers || {};
+
     if(!options || typeof options !== 'object') {
         options = {};
     }
 
     if(typeof options.code !== 'number' || options.code < 0) {
-        options.code = code;
+        options.code = 200;
     }
 
     if(!options.headers || typeof options.headers !== 'object') {
         options.headers = {};
     }
 
-    for(var name in headers) {
-        if(options.headers[name] === undefined) {
-            options.headers[name] = headers[name];
-        }
-    }
-
-    if(typeof options.finish !== 'function') {
-        options.finish = function(err, res) {
-            expect(err).to.be.null;
-        };
+    if(!options.body || typeof options.body !== 'object') {
+        options.body = {};
     }
 
     return options;
@@ -70,7 +61,7 @@ HttpHelper.prototype._ensureOptions = function(options, code, headers) {
  * @method _test
  * @private
  */
-HttpHelper.prototype._test = function(verb, path, done, options) {
+HttpHelper.prototype._test = function(verb, path, done, request, response, finish) {
     if(typeof verb !== 'string' || verb.length <= 0) {
         throw new Error('Invalid verb specified (arg #1)');
     }
@@ -81,16 +72,39 @@ HttpHelper.prototype._test = function(verb, path, done, options) {
         throw new Error('Invalid callback specified (arg #3)');
     }
 
-    options = this._ensureOptions(options);
-    var requestPath = _path.join(this._basePath, path);
-
-    var handler = _supertest(this._baseUrl);
-    handler = handler[verb](requestPath).expect(options.code);
-    for(var name in options.headers) {
-        handler = handler.expect(name, options.headers[name]);
+    request = this._ensureOptions(request);
+    response = this._ensureOptions(response);
+    if(typeof finish !== 'function') {
+        finish = function(err, res) {
+            expect(err).to.be.null;
+        };
     }
+
+    var requestPath = _path.join(this._basePath, path);
+    var name = null;
+
+    // ----------- REQUEST ----------------
+    var handler = _supertest(this._baseUrl);
+    handler = handler[verb](requestPath);
+
+    for(name in request.headers) {
+        handler = handler.set(name, request.headers[name]);
+    }
+
+    // ----------- RESPONSE ----------------
+    handler.expect(response.code);
+    if(verb === 'post' || verb === 'put') {
+        handler = handler.send(request.body);
+    }
+
+    for(name in response.headers) {
+        handler = handler.expect(name, response.headers[name]);
+    }
+
+
+    // ----------- END ----------------
     handler.end(function(err, res) {
-        options.finish(err, res);
+        finish(err, res);
         done();
     });
 };
@@ -103,12 +117,30 @@ HttpHelper.prototype._test = function(verb, path, done, options) {
  * @param {String} path The path to the resource to query
  * @param {Function} done A callback that will be invoked when the asynchronous
  *          test is complete
- * @param {Object} [options] An optional options object that can contain
- *          additional testing parameters - expected http response code,
- *          headers, etc.
+ * @param {Object} [reqOpts] An optional options object that can contain
+ *          additional request parameters - headers, body, etc.
+ * @param {Object} [resOpts] An optional options object that can contain
+ *          additional response parameters - headers, code, etc.
  */
-HttpHelper.prototype.testGet = function(path, done, options) {
-    this._test('get', path, done, options);
+HttpHelper.prototype.testGet = function(path, done, reqOpts, resOpts) {
+    this._test('get', path, done, reqOpts, resOpts);
+};
+
+/**
+ * Performs an http test on a post request to the specified url.
+ *
+ * @class HttpHelper
+ * @method testPost
+ * @param {String} path The path to the resource to query
+ * @param {Function} done A callback that will be invoked when the asynchronous
+ *          test is complete
+ * @param {Object} [reqOpts] An optional options object that can contain
+ *          additional request parameters - headers, body, etc.
+ * @param {Object} [resOpts] An optional options object that can contain
+ *          additional response parameters - headers, code, etc.
+ */
+HttpHelper.prototype.testPost = function(path, done, reqOpts, resOpts) {
+    this._test('post', path, done, reqOpts, resOpts);
 };
 
 /**
@@ -121,7 +153,7 @@ HttpHelper.prototype.testGet = function(path, done, options) {
  *          test is complete
  */
 HttpHelper.prototype.test302 = function(path, location, done) {
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 302,
         headers: {
             'content-type': /text\/plain/,
@@ -140,7 +172,7 @@ HttpHelper.prototype.test302 = function(path, location, done) {
  *          test is complete
  */
 HttpHelper.prototype.test404 = function(path, done) {
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 404,
         headers: {
             'content-type': /text\/html/
@@ -158,7 +190,7 @@ HttpHelper.prototype.test404 = function(path, done) {
  *          test is complete
  */
 HttpHelper.prototype.testHtml = function(path, done) {
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 200,
         headers: {
             'content-type': /text\/html/
@@ -176,7 +208,7 @@ HttpHelper.prototype.testHtml = function(path, done) {
  *          test is complete
  */
 HttpHelper.prototype.testCss = function(path, done) {
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 200,
         headers: {
             'content-type': /text\/css/
@@ -194,7 +226,7 @@ HttpHelper.prototype.testCss = function(path, done) {
  *          test is complete
  */
 HttpHelper.prototype.testJs = function(path, done) {
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 200,
         headers: {
             'content-type': /application\/javascript/
@@ -234,13 +266,12 @@ HttpHelper.prototype.testJson = function(path, done, expectedResponse) {
         expect(payload).to.be.defined;
         expect(payload).to.deep.equal(expectedResponse);
     };
-    this._test('get', path, done, {
+    this._test('get', path, done, {}, {
         code: 200,
         headers: {
             'content-type': /application\/json/
-        },
-        finish: finish
-    });
+        }
+    }, finish);
 };
 
 module.exports = HttpHelper;

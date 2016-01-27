@@ -19,6 +19,7 @@ describe('[server.routers.authRouter]', function() {
     var _authHandlerProviderMock;
     var _sessionMock;
     var _passportMock;
+    var _bodyParserMock;
 
     beforeEach(function() {
         _sessionMock = {
@@ -26,6 +27,9 @@ describe('[server.routers.authRouter]', function() {
         };
         _passportMock = {
             initialize: _sinon.stub().returns(function() {})
+        };
+        _bodyParserMock = {
+            urlencoded: _sinon.stub().returns(function() {})
         };
 
         _authHandlerProviderMock = _sinon.stub().returns({
@@ -38,6 +42,7 @@ describe('[server.routers.authRouter]', function() {
         _authRouter.__set__('_logger', _loggerHelper.initLogger(true));
         _authRouter.__set__('_session', _sessionMock);
         _authRouter.__set__('_passport', _passportMock);
+        _authRouter.__set__('_bodyParser', _bodyParserMock);
         _authRouter.__set__('AuthHandlerProvider', _authHandlerProviderMock);
     });
 
@@ -156,6 +161,25 @@ describe('[server.routers.authRouter]', function() {
                     expect(mockExpress._router.get.args[1][1]).to.equal(handler);
                 });
 
+                it('should attach the the body parser middleware to the path POST /login', function() {
+                    var path = '/login';
+
+                    expect(mockExpress._router.post).to.not.have.been.called;
+                    expect(_bodyParserMock.urlencoded).to.not.have.been.called;
+
+                    _authRouter.createRouter();
+
+                    expect(_bodyParserMock.urlencoded).to.have.been.calledOnce;
+                    expect(_bodyParserMock.urlencoded.args[0][0]).to.deep.equal({
+                        extended: false
+                    });
+
+                    var handler = _bodyParserMock.urlencoded();
+                    expect(mockExpress._router.post.callCount).to.be.at.least(1);
+                    expect(mockExpress._router.post.args[0][0]).to.equal(path);
+                    expect(mockExpress._router.post.args[0][1]).to.equal(handler);
+                });
+
                 it('should attach the username-password authentication handler to the path POST /login', function() {
                     var path = '/login';
                     var provider = _authHandlerProviderMock();
@@ -169,7 +193,8 @@ describe('[server.routers.authRouter]', function() {
                     var handler = provider.authUsernamePasswordHandler();
                     expect(mockExpress._router.post.callCount).to.be.at.least(1);
                     expect(mockExpress._router.post.args[0][0]).to.equal(path);
-                    expect(mockExpress._router.post.args[0][1]).to.equal(handler);
+                    //expect(mockExpress._router.post.args[0][1]).to.equal(handler);
+                    expect(mockExpress._router.post.args[0][2]).to.equal(handler);
                 });
             });
         });

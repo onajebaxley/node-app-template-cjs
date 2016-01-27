@@ -7,6 +7,7 @@
 
 var _express = require('express');
 var _passport = require('passport');
+var _bodyParser = require('body-parser');
 
 var _session = require('../session');
 var _logger = require('../logger');
@@ -30,7 +31,11 @@ module.exports = {
 
         router.get('/login', routesHandler.loginPageHandler());
         router.get('/logout', routesHandler.logoutHandler());
-        router.post('/login', routesHandler.authUsernamePasswordHandler());
+        router.post('/login',
+                    _bodyParser.urlencoded({
+                        extended: false
+                    }),
+                    routesHandler.authUsernamePasswordHandler());
 
         return router;
     }

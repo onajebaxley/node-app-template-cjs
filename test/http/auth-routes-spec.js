@@ -29,11 +29,34 @@ describe('[authentication routes]', function() {
         });
     });
 
+    describe('[POST /login]', function() {
+        var path = '/login';
+
+        it('should return an html page if an invalid username/password is provided', function(done) {
+            httpHelper.testPost(path, done, {
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: {
+                    username: 'bad user',
+                    password: 'bad password',
+                }
+            }, {});
+        });
+
+    });
+
     describe('[GET /logout]', function() {
         var path = '/logout';
 
-        it('should return redirect the user to the home page when invoked without a redirect url', function(done) {
+        it('should redirect the user to the home page when invoked without a redirect url', function(done) {
             httpHelper.test302(path, '/', done);
+        });
+
+        it('should redirect the user to the specified page when invoked with a redirect url', function(done) {
+            var redirectUrl = '/foo';
+            path = path + '?redirect=' + redirectUrl
+            httpHelper.test302(path, redirectUrl, done);
         });
     });
 });

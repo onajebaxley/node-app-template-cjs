@@ -120,6 +120,8 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
                 res.redirect(redirectUrl);
             }.bind(this));
         }.bind(this));
+
+        handler(req, res, next);
     }.bind(this);
 };
 
