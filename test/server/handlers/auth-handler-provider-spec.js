@@ -232,7 +232,7 @@ describe('AuthHandlerProvider', function() {
             expect(_passportMock.authenticate.args[0][0]).to.equal('username-password');
             expect(_passportMock.authenticate.args[0][1]).to.be.a('function');
 
-            var handler = _passportMock.authenticate();
+            handler = _passportMock.authenticate();
             expect(handler).to.have.been.calledOnce;
             expect(handler).to.have.been.calledWith(req, res, next);
         });
