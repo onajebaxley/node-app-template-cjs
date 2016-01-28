@@ -4,9 +4,12 @@
 var _path = require('path');
 var _supertest = require('supertest');
 var _clone = require('clone');
+var _q = require('q');
 
 var _chai = require('chai');
 var expect = require('chai').expect;
+
+var _packageJson = require('../../package.json');
 
 /**
  * Class that represents a helper object that can be used to perform http
@@ -58,6 +61,19 @@ HttpHelper.prototype._ensureOptions = function(options) {
 
 /**
  * @class HttpHelper
+ * @method _getRequest
+ * @private
+ */
+HttpHelper.prototype._getRequest = function(verb, path) {
+    var requestPath = _path.join(this._basePath, path);
+    var request = _supertest(this._baseUrl);
+    request = request[verb](requestPath);
+
+    return request;
+};
+
+/**
+ * @class HttpHelper
  * @method _test
  * @private
  */
@@ -84,8 +100,7 @@ HttpHelper.prototype._test = function(verb, path, done, request, response, finis
     var name = null;
 
     // ----------- REQUEST ----------------
-    var handler = _supertest(this._baseUrl);
-    handler = handler[verb](requestPath);
+    var handler = this._getRequest(verb, path);
 
     for (name in request.headers) {
         handler = handler.set(name, request.headers[name]);
@@ -291,5 +306,47 @@ HttpHelper.prototype.testJson = function(path, done, expectedResponse) {
         }
     }, finish);
 };
+
+/**
+ * Performs an HTTP request to retrieve an authentication token from the
+ * server. The token is assumed to be present in a cookie header present in the
+ * HTTP response.
+ *
+ * @class HttpHelper
+ * @param {String} path The path to the resource to query
+ * @param {Object} username The username to use when making the authentication
+ *          request
+ * @param {Object} password The password to use when making the authentication
+ *          request
+ * @return {Object} A promise that is resolved/rejected based on the outcome of the
+ *          http operation.
+ */
+HttpHelper.prototype.getAuthToken = function(path, username, password) {
+    var cookieName = _packageJson.name.replace(/-/g, '_') + '_session';
+    var cookiePattern = new RegExp(cookieName);
+    var def = _q.defer();
+
+    this._getRequest('post', path)
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .expect(302)
+            .expect('set-cookie', cookiePattern)
+            .send({
+                username: username,
+                password: password
+            }).end(function(err, resp) {
+                if(err) {
+                    def.reject(err);
+                    return;
+                }
+                var cookies = resp.headers['set-cookie'];
+                var token = cookies.map(function(cookie) {
+                    return cookie.split(';')[0];
+                }).join('; ');
+
+                def.resolve(token);
+            });
+
+   return def.promise;
+}
 
 module.exports = HttpHelper;
