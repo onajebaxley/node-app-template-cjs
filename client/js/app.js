@@ -1,28 +1,28 @@
+/**
+ * Entry point for the javascript application. Initializes all required modules
+ * and ui routes.
+ */
 'use strict';
 
+var console = require('console');
 var angular = require('angular');
+var angularMaterial = require('angular-material');
 var uiRouter = require('angular-ui-router');
 
+var routes = require('./routes');
 var templates = require('./templates');
-var helloWorldModule = require('./hello-world-module');
-
 var moduleName = 'app';
 
-angular.module(moduleName, [templates, 'ui.router', helloWorldModule])
+angular.module(moduleName, [
+    templates,
+    'ngMaterial',
+    'ui.router'
+]).config(routes) // Route configuration
+.controller('app.layout.MasterLayoutController', [ '$scope', function($scope) {
+}]).controller('app.core.LoginController', [ '$scope', function($scope) {
+    $scope.username = 'witchcraft';
+    $scope.password = '';
+}]);
 
-    //Route configuration
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-
-        $urlRouterProvider.otherwise('/home');
-
-        $stateProvider.state('home', {
-            url: '/home',
-            templateUrl: '/views/home-view.html'
-        }).state('help', {
-            url: '/help',
-            templateUrl: '/views/help-view.html'
-        });
-    }]);
-
-angular.bootstrap(document, [moduleName]);
-console.debug('Application launched');
+//angular.bootstrap(document, [moduleName]);
+console.info('Application ready');

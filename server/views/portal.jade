@@ -1,1 +1,13 @@
 extends layout
+block body
+	md-toolbar(layout='row')
+		h3 Portal Page
+	div(flex class='container' layout='row')
+		md-sidenav(md-is-locked-open='true' class='md-whiteframe-z2')
+			md-list
+				md-list-item
+					md-button
+						md-icon(md-svg-src='#{rootPath}img/user.svg' class='avatar')
+						|Lia Luogo
+		md-content(flex id='content')
+			|content

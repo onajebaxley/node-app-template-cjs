@@ -1,50 +1,30 @@
-$font-primary: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-$back-color-primary: #fefefe;
-$back-color-secondary: #f8f8f8;
-
-$fore-color-emphasis: navy;
-
-$fore-color-primary: #c6538c;
-$fore-color-secondary: #669999;
-
-$section-width: 640px;
-
-/* ui.bootstrap adjustments for bootstrap.css */
-.nav, .pagination, .carousel, .panel-title a {
-    cursor: pointer;
-}
-
 body {
-    font-family: $font-primary;
-    font-size: 14px;
-    padding: 5px;
-    background-color: $back-color-primary;
-    color: $fore-color-primary;
+    background-color: #fafafa;
 }
 
-.form {
-    padding: 10px;
-    width: $section-width;
-    background-color: $back-color-secondary;
-
-    .field {
-        margin-top: 10px;
-    }
+.app-text-center {
+    text-align: 'center';
 }
 
-.message {
-    margin-top: 10px;
-    padding: 10px;
-    width: $section-width;
-    display: block;
-    background-color: $back-color-secondary;
+.app-text-error {
+    text-align: 'middle';
+    color: #dd2c00;
+}
 
-    .greeting {}
+.app-login-box {
+    width: 320px;
+    background-color: #eeeeee;
+}
 
-    .salutation {}
+/* Debug Styles */
+.debug_border_red {
+    border: 1px solid red;
+}
 
-    .name {
-        font-weight: bold;
-        color: $fore-color-secondary;
-    }
+.debug_border_green {
+    border: 1px solid green;
+}
+
+.debug_border_blue {
+    border: 1px solid blue;
 }

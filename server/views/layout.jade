@@ -1,22 +1,30 @@
-- var version = GLOBAL.config.cfg_app_version;
+- var appVersion = GLOBAL.config.cfg_app_version;
 - var rootPath = GLOBAL.config.cfg_root_path;
 - var useMinifiedFiles = GLOBAL.config.cfg_enable_minified_files;
+- var appTitle = GLOBAL.config.cfg_app_title;
 
 doctype html
-html
+html(lang='en' data-ng-cloak data-ng-app='app' data-ng-controller='app.layout.MasterLayoutController')
 	head
 		title=title
 		if useMinifiedFiles === true
-			link(rel='stylesheet', href='#{rootPath}css/app.min.css?#{version}')
+			link(rel='stylesheet', href='#{rootPath}css/angular-material.min.css?#{appVersion}')
+			link(rel='stylesheet', href='#{rootPath}css/app.min.css?#{appVersion}')
 		else
-			link(rel='stylesheet', href='#{rootPath}css/app.css?#{version}')
-	body
-		block content
-
+			link(rel='stylesheet', href='#{rootPath}css/angular-material.css?#{appVersion}')
+			link(rel='stylesheet', href='#{rootPath}css/app.css?#{appVersion}')
+	body(layout='column')
+		div(flex='10' layout='row')
+			block header
+		div(flex='90' layout='column')
+			block content
+		div(flex='10' layout='row' layout-margin layout-padding)
+			div.md-caption(flex) © 2016 &nbsp;-&nbsp; #{appTitle}
+			block footer
 
 		if useMinifiedFiles === true
-			script(type='text/javascript', src='#{rootPath}js/app.min.js')
+			script(type='text/javascript', src='#{rootPath}js/app.min.js?#{appVersion}')
 		else
-			script(type='text/javascript', src='#{rootPath}js/app.js?#{version}')
+			script(type='text/javascript', src='#{rootPath}js/app.js?#{appVersion}')
 
 		block scripts

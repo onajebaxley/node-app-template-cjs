@@ -40,6 +40,8 @@ var _configOverrides = {
         _setConfig('cfg_enable_minified_files', false);
         _setConfig('cfg_session_secure_proxy', false);
         _setConfig('cfg_session_timeout', 900 * 1000); // 15 minutes
+
+        GLOBAL.config.cfg_app_title = 'Template App';
     },
 
     /**
