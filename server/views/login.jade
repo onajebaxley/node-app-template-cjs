@@ -9,13 +9,15 @@ block content
 			form(name='loginForm' method='post' action='#{rootPath}auth/login' layout-fill layout='column' layout-padding layout-margin)
 				md-input-container(flex)
 					label username
-					input.md-body-1(type='text' value='#{username?username:""}' name='username' required) 
+					input.md-body-1(type='text' ng-model='username' name='username' required) 
 				md-input-container(flex)
 						label password
-						input.md-body-1(type='password' name='password' required)
+						input.md-body-1(type='password' ng-model='password' name='password' required)
 				div(flex layout='row' layout-align='center center')
 					label.md-body-1.app-text-error(flex) #{errorMessage}
 				md-input-container(flex layout='row' layout-align='center center')
 					md-button.md-raised.md-primary(type='submit') Login
-block scripts
-	script(type='text/javascript')
+		block scripts
+			script(type='text/javascript')
+//				| var username= '#{username}'
+//				| $scope.username = (typeof username === 'string')? username:'';

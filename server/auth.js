@@ -39,7 +39,7 @@ function _initUser(username) {
         var userProfileDao = _dataAccessFactory.getDataAccessObject('user-profile');
         userProfileDao.lookupUser(username).then(function(user) {
             if (!user) {
-                def.reject('Could not find user with username: [%s]', username);
+                def.reject(_util.format('Could not find user with username: [%s]', username));
                 return;
             }
             user.sessionTimestamp = Date.now();
