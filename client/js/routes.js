@@ -7,25 +7,19 @@
  *
  * @module client.routes
  */
-/**
- */
 'use strict';
 
 var console = require('console');
 
 module.exports = [ '$stateProvider', '$urlRouterProvider', 
     function(stateProvider, urlRouterProvider) {
-
         // Default route
         urlRouterProvider.otherwise('/');
 
         // Application routes
-        stateProvider.state('portal', {
+        stateProvider.state('home', {
             url: '/',
             templateUrl: '/views/portal-view.html'
-        }).state('help', {
-            url: '/help',
-            templateUrl: '/views/help-view.html'
         });
 
         console.debug('Routes configured');

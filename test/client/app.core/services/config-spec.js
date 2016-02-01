@@ -1,17 +1,19 @@
 /* jshint expr:true */
-/* global alert:true */
+'use strict';
 
-var _angular = require('angular');
-var _ngMocks = require('angular-mocks');
 var _chai = require('chai');
 var _sinon = require('sinon');
 var _sinonChai = require('sinon-chai');
 var _chaiAsPromised = require('chai-as-promised');
-var _module = 'app.core';
 
 _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
+
+var _angular = require('angular');
+var _ngMocks = require('angular-mocks');
+
+var _module = 'app.core';
 
 describe('[app.core.config]', function() {
     'use strict';
