@@ -25,6 +25,7 @@ module.exports = {
             GLOBAL.config.cfg_app_version);
 
         router.get('/', routesHandler.portalPageHandler());
+        router.get('/help', routesHandler.helpPageHandler());
         router.get('/__status', routesHandler.appStatusHandler());
 
         return router;

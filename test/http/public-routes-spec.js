@@ -53,6 +53,14 @@ describe('[public routes]', function() {
         });
     });
 
+    describe('[GET /help]', function() {
+        var path = '/help';
+
+        it('should return the help page', function(done) {
+            httpHelper.testHtml(path, done);
+        });
+    });
+
     describe('[GET /__status]', function() {
         var path = '/__status';
 

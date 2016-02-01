@@ -23,6 +23,7 @@ describe('[server.routers.publicRouter]', function() {
     beforeEach(function() {
         _publicHandlerProviderMock = _sinon.stub().returns({
             portalPageHandler: _sinon.stub().returns(function() {}),
+            helpPageHandler: _sinon.stub().returns(function() {}),
             appStatusHandler: _sinon.stub().returns(function() {})
         });
 
@@ -91,6 +92,22 @@ describe('[server.routers.publicRouter]', function() {
                     expect(mockExpress._router.get.args[0][1]).to.equal(handler);
                 });
 
+                it('should attach the help page handler to the path GET /', function() {
+                    var path = '/help';
+                    var provider = _publicHandlerProviderMock();
+
+                    expect(mockExpress._router.get).to.not.have.been.called;
+                    expect(provider.helpPageHandler).to.not.have.been.called;
+
+                    _publicRouter.createRouter();
+
+                    expect(provider.helpPageHandler).to.have.been.calledOnce;
+                    var handler = provider.helpPageHandler();
+                    expect(mockExpress._router.get.callCount).to.be.at.least(2);
+                    expect(mockExpress._router.get.args[1][0]).to.equal(path);
+                    expect(mockExpress._router.get.args[1][1]).to.equal(handler);
+                });
+
                 it('should attach the status page handler to the path GET /__status', function() {
                     var path = '/__status';
                     var provider = _publicHandlerProviderMock();
@@ -102,9 +119,9 @@ describe('[server.routers.publicRouter]', function() {
 
                     expect(provider.appStatusHandler).to.have.been.calledOnce;
                     var handler = provider.appStatusHandler();
-                    expect(mockExpress._router.get.callCount).to.be.at.least(2);
-                    expect(mockExpress._router.get.args[1][0]).to.equal(path);
-                    expect(mockExpress._router.get.args[1][1]).to.equal(handler);
+                    expect(mockExpress._router.get.callCount).to.be.at.least(3);
+                    expect(mockExpress._router.get.args[2][0]).to.equal(path);
+                    expect(mockExpress._router.get.args[2][1]).to.equal(handler);
                 });
             });
         });
