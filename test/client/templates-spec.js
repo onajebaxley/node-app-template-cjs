@@ -33,7 +33,9 @@ describe('[templates]', function() {
 
             //We're really not testing here, and this call simply helps
             //code coverage numbers.
-            blockFunction();
+            blockFunction({
+                put: _sinon.spy()
+            });
         });
     });
 });
