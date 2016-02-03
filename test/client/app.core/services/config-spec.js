@@ -124,7 +124,7 @@ describe('[app.core.config]', function() {
 
             it('should return a deep copy of the property value, instead of a reference', function() {
                 var settings = {
-                    options: [ 'foo', 'bar', 'baz' ],
+                    options: ['foo', 'bar', 'baz'],
                     endpoints: {
                         api: {
                             url: '/foo',

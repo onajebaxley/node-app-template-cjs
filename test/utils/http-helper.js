@@ -327,26 +327,26 @@ HttpHelper.prototype.getAuthToken = function(path, username, password) {
     var def = _q.defer();
 
     this._getRequest('post', path)
-            .set('content-type', 'application/x-www-form-urlencoded')
-            .expect(302)
-            .expect('set-cookie', cookiePattern)
-            .send({
-                username: username,
-                password: password
-            }).end(function(err, resp) {
-                if(err) {
-                    def.reject(err);
-                    return;
-                }
-                var cookies = resp.headers['set-cookie'];
-                var token = cookies.map(function(cookie) {
-                    return cookie.split(';')[0];
-                }).join('; ');
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .expect(302)
+        .expect('set-cookie', cookiePattern)
+        .send({
+            username: username,
+            password: password
+        }).end(function(err, resp) {
+            if (err) {
+                def.reject(err);
+                return;
+            }
+            var cookies = resp.headers['set-cookie'];
+            var token = cookies.map(function(cookie) {
+                return cookie.split(';')[0];
+            }).join('; ');
 
-                def.resolve(token);
-            });
+            def.resolve(token);
+        });
 
-   return def.promise;
+    return def.promise;
 }
 
 module.exports = HttpHelper;

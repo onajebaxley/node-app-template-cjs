@@ -33,13 +33,13 @@ describe('[application routes]', function() {
 
         it('should render an HTML page when a valid authentication token is present', function(done) {
             httpHelper.getAuthToken('/auth/login', DEFAULT_USERNAME, DEFAULT_PASSWORD)
-                        .then(function(token) {
-                            httpHelper.testGet(path, done, {
-                                headers: {
-                                    'cookie': token
-                                }
-                            }, {});
-                        }, _assertionHelper.getNotifyFailureHandler(done));
+                .then(function(token) {
+                    httpHelper.testGet(path, done, {
+                        headers: {
+                            'cookie': token
+                        }
+                    }, {});
+                }, _assertionHelper.getNotifyFailureHandler(done));
         });
     });
 });
