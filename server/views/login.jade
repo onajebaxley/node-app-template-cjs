@@ -1,6 +1,6 @@
 extends layout
 block content
-	div(flex layout='row' layout-align='center center')
+	div(flex layout='row' layout-align='center center' ng-controller='app.auth.LoginController')
 		md-whiteframe.app-login-box.md-whiteframe-z3(layout='column' layout-align='center center' layout-margin layout-padding)
 			div.md-headline(flex layout='row' layout-padding layout-margin)
 				div(flex='10')
@@ -17,7 +17,9 @@ block content
 					label.md-body-1.app-text-error(flex) #{errorMessage}
 				md-input-container(flex layout='row' layout-align='center center')
 					md-button.md-raised.md-primary(type='submit') Login
-		block scripts
-			script(type='text/javascript')
-//				| var username= '#{username}'
-//				| $scope.username = (typeof username === 'string')? username:'';
+block scripts
+	script(type='text/javascript')
+		| var username= '#{username}'
+		| angular.module('app').config(['app.core.configProvider', function(configProvider) {
+		|     configProvider.set('username', username);
+		| }]);
