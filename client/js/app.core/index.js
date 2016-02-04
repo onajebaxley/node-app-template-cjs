@@ -12,6 +12,7 @@ var angular = require('angular');
 var moduleName = 'app.core';
 angular.module(moduleName, [ ])
     .provider('app.core.config', require('./services/config'))
+    .factory('app.core.utils', require('./services/utils'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');

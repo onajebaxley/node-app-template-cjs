@@ -80,23 +80,34 @@ describe('[app.core.config]', function() {
         });
 
         describe('get()', function() {
-            it('should return an undefined value if an invalid key is specified', function() {
+            it('should return an undefined value if the configuration setting is undefined', function() {
                 var service = _initService();
 
                 expect(service.get()).to.be.undefined;
                 expect(service.get(null)).to.be.undefined;
                 expect(service.get(123)).to.be.undefined;
-                expect(service.get('')).to.be.undefined;
+                expect(service.get('bad-key')).to.be.undefined;
                 expect(service.get(true)).to.be.undefined;
                 expect(service.get([])).to.be.undefined;
                 expect(service.get({})).to.be.undefined;
                 expect(service.get(function() {})).to.be.undefined;
             });
 
-            it('should return an undefined value if invoked with a key that has no value defined', function() {
+            it('should return the default value if the setting is undefined, and a default value is specified', function() {
                 var service = _initService();
 
-                expect(service.get('bad-key')).to.be.undefined;
+                function doTest(key, defaultValue) {
+                    expect(service.get(key, defaultValue)).to.equal(defaultValue);
+                }
+
+                doTest('bad-key', null);
+                doTest('bad-key', undefined);
+                doTest('bad-key', 1234);
+                doTest('bad-key', 'foobar');
+                doTest('bad-key', true);
+                doTest('bad-key', []);
+                doTest('bad-key', {});
+                doTest('bad-key', function(){});
             });
 
             it('should return the property set using the provider if invoked with a valid key', function() {

@@ -29,10 +29,16 @@ describe('[app.auth.LoginController]', function() {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
 
-                controller = _$controller('app.auth.LoginController', {
+                var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope
-                });
+                };
+
+                for(var mockName in mocks) {
+                    options[mockName] = mocks[mockName];
+                }
+
+                controller = _$controller('app.auth.LoginController', options);
             }
         ]);
     }
@@ -48,6 +54,33 @@ describe('[app.auth.LoginController]', function() {
     describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
+            expect($scope).to.have.property('username').and.to.equal('');
+            expect($scope).to.have.property('password').and.to.equal('');
+            expect($scope).to.have.property('errorMessage').and.to.equal('');
+        });
+
+        it('should initialize the username field based on the value specified in the config service', function() {
+            var map = { username: 'jdoe' };
+            var mocks = {
+                'app.core.config': {
+                    get: function(key) { return map[key]; }
+                }
+            };
+
+            _initController(mocks);
+            expect($scope.username).to.equal(map.username);
+        });
+
+        it('should initialize the username field based on the value specified in the config service', function() {
+            var map = { errorMessage: 'error message' };
+            var mocks = {
+                'app.core.config': {
+                    get: function(key) { return map[key]; }
+                }
+            };
+
+            _initController(mocks);
+            expect($scope.errorMessage).to.equal(map.errorMessage);
         });
     });
 });

@@ -28,8 +28,21 @@ module.exports = [ function() {
 
     this.$get = [ function() {
         return {
-            get: function(key) {
-                return _properties[key];
+            /**
+             * Gets a value from a previously set value.
+             *
+             * @module app.core.config
+             * @method get
+             * @param {String} key The key of the configuration setting
+             * @param {Object/String/Number} defaultValue The default value to
+             *          return if the configuration setting is not defined.
+             * @return {Object/String/Number} The value of the configuration
+             *          setting, or the default value if the setting is
+             *          undefined.
+             */
+            get: function(key, defaultValue) {
+                var value = _properties[key];
+                return (typeof value !== 'undefined') ? value: defaultValue;
             }
         };
     } ];
