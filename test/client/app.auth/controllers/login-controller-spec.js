@@ -72,7 +72,7 @@ describe('[app.auth.LoginController]', function() {
         });
 
         it('should initialize the username field based on the value specified in the config service', function() {
-            var map = { errorMessage: 'error message' };
+            var map = { error_message: 'error message' };
             var mocks = {
                 'app.core.config': {
                     get: function(key) { return map[key]; }
@@ -80,7 +80,7 @@ describe('[app.auth.LoginController]', function() {
             };
 
             _initController(mocks);
-            expect($scope.errorMessage).to.equal(map.errorMessage);
+            expect($scope.errorMessage).to.equal(map.error_message);
         });
     });
 });
