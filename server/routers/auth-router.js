@@ -28,6 +28,7 @@ module.exports = {
 
         router.use(_session.getSessionHandler());
         router.use(_passport.initialize());
+        router.use(_passport.session());
 
         router.get('/login', routesHandler.loginPageHandler());
         router.get('/logout', routesHandler.logoutHandler());

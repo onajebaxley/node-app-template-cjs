@@ -26,7 +26,8 @@ describe('[server.routers.authRouter]', function() {
             getSessionHandler: _sinon.stub().returns(function() {})
         };
         _passportMock = {
-            initialize: _sinon.stub().returns(function() {})
+            initialize: _sinon.stub().returns(function() {}),
+            session: _sinon.stub().returns(function() {})
         };
         _bodyParserMock = {
             urlencoded: _sinon.stub().returns(function() {})
@@ -110,10 +111,12 @@ describe('[server.routers.authRouter]', function() {
             describe('[passport middleware]', function() {
                 it('should initialize a session handler', function() {
                     expect(_passportMock.initialize).to.not.have.been.called;
+                    expect(_passportMock.session).to.not.have.been.called;
 
                     _authRouter.createRouter();
 
                     expect(_passportMock.initialize).to.have.been.calledOnce;
+                    expect(_passportMock.session).to.have.been.calledOnce;
                 });
 
                 it('should bind an authentication handler as a middleware for all routes defined in the router', function() {
@@ -125,6 +128,17 @@ describe('[server.routers.authRouter]', function() {
 
                     expect(mockExpress._router.use.callCount).to.be.at.least(2);
                     expect(mockExpress._router.use.args[1][0]).to.equal(passportMiddleware);
+                });
+
+                it('should bind a session initialization handler as a middleware for all routes defined in the router', function() {
+                    var passportMiddleware = _passportMock.session();
+
+                    expect(mockExpress._router.use).to.not.have.been.called;
+
+                    _authRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(3);
+                    expect(mockExpress._router.use.args[2][0]).to.equal(passportMiddleware);
                 });
             });
 
