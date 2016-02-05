@@ -4,7 +4,7 @@ block content
 		md-whiteframe.app-login-box.md-whiteframe-z3(layout='column' layout-align='center center' layout-margin layout-padding)
 			div.md-headline(flex layout='row' layout-padding layout-margin)
 				div(flex='10')
-					md-icon(md-svg-src='#{rootPath}img/logo.svg')
+					md-icon(md-svg-icon='logo')
 				div(flex='90') #{appTitle}
 			form(name='loginForm' method='post' action='#{rootPath}auth/login' layout-fill layout='column' layout-padding layout-margin)
 				md-input-container(flex)
@@ -13,6 +13,7 @@ block content
 				md-input-container(flex)
 						label password
 						input.md-body-1(type='password' ng-model='password' name='password' required)
+				input#redirect(type='hidden', name='redirect', value='#{redirect}')
 				div(flex layout='row' layout-align='center center')
 					label.md-body-1.app-text-error(flex) #{errorMessage}
 				md-input-container(flex layout='row' layout-align='center center')
