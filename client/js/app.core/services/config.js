@@ -1,13 +1,13 @@
-'use strict';
-
-var _clone = require('clone');
-
 /**
  * Returns a client side configuration object that can be used by the client to
  * retrieve config parametres set by the server. Configuration parameters can
  * be initialized by the server dynamically by injecting script snippets into
  * the web page served to the client.
  */
+'use strict';
+
+var _clone = require('clone');
+
 module.exports = [ function() {
     var _properties = {};
 
