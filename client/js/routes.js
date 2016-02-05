@@ -5,7 +5,7 @@
  * Exports an array that includes necessary dependencies, which can then be
  * directly used in an application initialization routine.
  *
- * @module client.routes
+ * @module app.routes
  */
 'use strict';
 
