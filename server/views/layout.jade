@@ -1,7 +1,7 @@
+- var appTitle = GLOBAL.config.cfg_app_title;
 - var appVersion = GLOBAL.config.cfg_app_version;
 - var rootPath = GLOBAL.config.cfg_root_path;
 - var useMinifiedFiles = GLOBAL.config.cfg_enable_minified_files;
-- var appTitle = GLOBAL.config.cfg_app_title;
 
 doctype html
 html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutController')
@@ -13,14 +13,12 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 		else
 			link(rel='stylesheet', href='#{rootPath}css/angular-material.css?#{appVersion}')
 			link(rel='stylesheet', href='#{rootPath}css/app.css?#{appVersion}')
+		script(type='text/javascript')
+			| window.cfg_app_title = '#{appTitle}';
+			| window.cfg_app_version = '#{appVersion}';
+			| window.cfg_root_path = '#{rootPath}';
 	body(layout='column')
-		div(flex='10' layout='row')
-			block header
-		div(flex='90' layout='column')
-			block content
-		div(flex='10' layout='row' layout-margin layout-padding)
-			div.md-caption(flex) © 2016 &nbsp;-&nbsp; #{appTitle}
-			block footer
+		block content
 
 		if useMinifiedFiles === true
 			script(type='text/javascript', src='#{rootPath}js/app.min.js?#{appVersion}')
