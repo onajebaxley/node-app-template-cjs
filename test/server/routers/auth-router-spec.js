@@ -129,17 +129,6 @@ describe('[server.routers.authRouter]', function() {
                     expect(mockExpress._router.use.callCount).to.be.at.least(2);
                     expect(mockExpress._router.use.args[1][0]).to.equal(passportMiddleware);
                 });
-
-                it('should bind a session initialization handler as a middleware for all routes defined in the router', function() {
-                    var passportMiddleware = _passportMock.session();
-
-                    expect(mockExpress._router.use).to.not.have.been.called;
-
-                    _authRouter.createRouter();
-
-                    expect(mockExpress._router.use.callCount).to.be.at.least(3);
-                    expect(mockExpress._router.use.args[2][0]).to.equal(passportMiddleware);
-                });
             });
 
             describe('[routes]', function() {
@@ -159,8 +148,9 @@ describe('[server.routers.authRouter]', function() {
                     expect(mockExpress._router.get.args[0][1]).to.equal(handler);
                 });
 
-                it('should attach the logout handler to the path GET /logout', function() {
+                it('should attach the passport session middleware and logout handler to the path GET /logout', function() {
                     var path = '/logout';
+                    var passportMiddleware = _passportMock.session();
                     var provider = _authHandlerProviderMock();
 
                     expect(mockExpress._router.get).to.not.have.been.called;
@@ -172,7 +162,8 @@ describe('[server.routers.authRouter]', function() {
                     var handler = provider.logoutHandler();
                     expect(mockExpress._router.get.callCount).to.be.at.least(2);
                     expect(mockExpress._router.get.args[1][0]).to.equal(path);
-                    expect(mockExpress._router.get.args[1][1]).to.equal(handler);
+                    expect(mockExpress._router.get.args[1][1]).to.equal(passportMiddleware);
+                    expect(mockExpress._router.get.args[1][2]).to.equal(handler);
                 });
 
                 it('should attach the the body parser middleware to the path POST /login', function() {
