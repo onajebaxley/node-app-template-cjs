@@ -1,3 +1,11 @@
+// ============================================================================
+//  Variables
+// ============================================================================
+$medium_gray: #eeeeee;
+$light_gray: #dd2c00;
+// ============================================================================
+//  General styles
+// ============================================================================
 body {
     background-color: #fafafa;
 }
@@ -6,29 +14,62 @@ body {
   display: none !important;
 }
 
+// ============================================================================
+//  Application styles
+// ============================================================================
+.app-avatar {
+    position:relative;
+    border: 1px solid $light_gray;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0px;
+    vertical-align: middle;
+}
+
+.app-avatar-large {
+    @extend .app-avatar;
+    width:54px;
+    height:54px;
+}
+
+.app-avatar-medium {
+    @extend .app-avatar;
+    width:40px;
+    height:40px;
+}
+
+.app-avatar-small {
+    @extend .app-avatar;
+    width:27px;
+    height:27px;
+}
+
 .app-text-center {
     text-align: 'center';
 }
 
 .app-text-error {
     text-align: 'middle';
-    color: #dd2c00;
+    color: $light_gray;
 }
 
-.app-login-box {
+.app-focus-box {
     width: 320px;
-    background-color: #eeeeee;
+    background-color: $medium_gray;
 }
 
-/* Debug Styles */
-.debug_border_red {
+// ============================================================================
+//  Debug styles
+// ============================================================================
+.debug_border_1 {
     border: 1px solid red;
 }
 
-.debug_border_green {
+.debug_border_2 {
     border: 1px solid green;
 }
 
-.debug_border_blue {
+.debug_border_3 {
     border: 1px solid blue;
 }

@@ -1,1 +1,15 @@
 extends layout
+block content
+	md-sidenav.md-sidenav-left.md-whiteframe-z2(layout='column' md-component-id='left' md-is-locked-open='$mdMedia("gt-md")')
+		md-toolbar.md-hue-2
+			div.md-toolbar-tools-bottom.inset(layout='row')
+				div.md-tile-left.inset
+					md-icon.app-avatar-large(md-svg-icon='avatar')
+				div.md-tile-content Firstname Lastname
+		md-list
+			md-item
+				a
+					md-item-content(md-ink-ripple layout='row' layout-align='start center')
+						div.inset
+							md-icon(md-font-set='material-icons') dashboard
+						div.inset Dashboard
