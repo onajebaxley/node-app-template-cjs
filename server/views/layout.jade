@@ -13,13 +13,14 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 		else
 			link(rel='stylesheet', href='#{rootPath}css/angular-material.css?#{appVersion}')
 			link(rel='stylesheet', href='#{rootPath}css/app.css?#{appVersion}')
+		link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
+	body(layout='column')
+		block content
+
 		script(type='text/javascript')
 			| window.cfg_app_title = '#{appTitle}';
 			| window.cfg_app_version = '#{appVersion}';
 			| window.cfg_root_path = '#{rootPath}';
-	body(layout='column')
-		block content
-
 		if useMinifiedFiles === true
 			script(type='text/javascript', src='#{rootPath}js/app.min.js?#{appVersion}')
 		else
