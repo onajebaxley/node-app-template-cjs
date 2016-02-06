@@ -1,5 +1,4 @@
 /* jshint expr:true */
-'use strict';
 
 var _chai = require('chai');
 var _sinon = require('sinon');
@@ -14,6 +13,7 @@ var _routes = require('../../client/js/routes');
 
 
 describe('[app.routes]', function() {
+    'use strict';
 
     describe('[init]', function() {
         it('should return an array', function() {

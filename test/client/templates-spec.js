@@ -1,5 +1,4 @@
 /* jshint expr:true */
-'use strict';
 
 var _chai = require('chai');
 var _sinon = require('sinon');
@@ -13,6 +12,7 @@ var expect = _chai.expect;
 var _module = require('../../client/js/templates');
 
 describe('[templates]', function() {
+    'use strict';
 
     beforeEach(angular.mock.module(_module));
 

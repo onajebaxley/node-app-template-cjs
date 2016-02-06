@@ -1,5 +1,4 @@
 /* jshint expr:true */
-'use strict';
 
 var _chai = require('chai');
 var _sinon = require('sinon');
@@ -14,6 +13,7 @@ var _icons = require('../../client/js/icons');
 
 
 describe('[app.icons]', function() {
+    'use strict';
 
     describe('[init]', function() {
         it('should return an array', function() {
@@ -38,7 +38,7 @@ describe('[app.icons]', function() {
                 root_path: rootPath
             };
             module = _icons[_icons.length - 1];
-        };
+        }
 
         function _checkIconConfig(module, mdIconProvider, count, key, path) {
             expect(mdIconProvider.icon.callCount).to.be.at.least(count);
