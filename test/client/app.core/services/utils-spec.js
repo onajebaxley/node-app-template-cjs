@@ -44,7 +44,7 @@ describe('[app.core.utils]', function() {
                 doTest(true, undefined);
                 doTest([], undefined);
                 doTest({}, undefined);
-                doTest(function(){}, undefined);
+                doTest(function() {}, undefined);
             });
 
             it('should return the default value if the input value is falsy', function() {
@@ -59,7 +59,7 @@ describe('[app.core.utils]', function() {
                 doTest(undefined, true);
                 doTest(undefined, []);
                 doTest(undefined, {});
-                doTest(undefined, function(){});
+                doTest(undefined, function() {});
             });
         });
     });

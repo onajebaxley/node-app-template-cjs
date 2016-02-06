@@ -3,6 +3,7 @@
 // ============================================================================
 $medium_gray: #eeeeee;
 $light_gray: #dd2c00;
+
 // ============================================================================
 //  General styles
 // ============================================================================
@@ -11,14 +12,14 @@ body {
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
-  display: none !important;
+    display: none !important;
 }
 
 // ============================================================================
 //  Application styles
 // ============================================================================
 .app-avatar {
-    position:relative;
+    position: relative;
     border: 1px solid $light_gray;
     border-radius: 50%;
     display: inline-block;
@@ -29,20 +30,23 @@ body {
 
 .app-avatar-large {
     @extend .app-avatar;
-    width:54px;
-    height:54px;
+
+    width: 54px;
+    height: 54px;
 }
 
 .app-avatar-medium {
     @extend .app-avatar;
-    width:40px;
-    height:40px;
+
+    width: 40px;
+    height: 40px;
 }
 
 .app-avatar-small {
     @extend .app-avatar;
-    width:27px;
-    height:27px;
+
+    width: 27px;
+    height: 27px;
 }
 
 .app-text-center {

@@ -34,7 +34,7 @@ describe('[app.auth.LoginController]', function() {
                     $scope: $scope
                 };
 
-                for(var mockName in mocks) {
+                for (var mockName in mocks) {
                     options[mockName] = mocks[mockName];
                 }
 
@@ -60,10 +60,14 @@ describe('[app.auth.LoginController]', function() {
         });
 
         it('should initialize the username field based on the value specified in the config service', function() {
-            var map = { username: 'jdoe' };
+            var map = {
+                username: 'jdoe'
+            };
             var mocks = {
                 'app.core.config': {
-                    get: function(key) { return map[key]; }
+                    get: function(key) {
+                        return map[key];
+                    }
                 }
             };
 
@@ -72,10 +76,14 @@ describe('[app.auth.LoginController]', function() {
         });
 
         it('should initialize the username field based on the value specified in the config service', function() {
-            var map = { error_message: 'error message' };
+            var map = {
+                error_message: 'error message'
+            };
             var mocks = {
                 'app.core.config': {
-                    get: function(key) { return map[key]; }
+                    get: function(key) {
+                        return map[key];
+                    }
                 }
             };
 

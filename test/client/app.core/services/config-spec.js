@@ -107,7 +107,7 @@ describe('[app.core.config]', function() {
                 doTest('bad-key', true);
                 doTest('bad-key', []);
                 doTest('bad-key', {});
-                doTest('bad-key', function(){});
+                doTest('bad-key', function() {});
             });
 
             it('should return the property set using the provider if invoked with a valid key', function() {

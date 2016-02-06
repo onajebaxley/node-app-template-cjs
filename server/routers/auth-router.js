@@ -32,8 +32,8 @@ module.exports = {
 
         router.get('/login', routesHandler.loginPageHandler());
         router.get('/logout',
-                   _passport.session(),
-                   routesHandler.logoutHandler());
+            _passport.session(),
+            routesHandler.logoutHandler());
         router.post('/login',
             _bodyParser.urlencoded({
                 extended: false
