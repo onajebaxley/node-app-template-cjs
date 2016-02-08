@@ -28,12 +28,21 @@ describe('[app.core.config]', function() {
         $injector = _$injector;
     }]));
 
+    function _applySettings(settings) {
+        settings = settings || {};
+
+        for (var prop in settings) {
+            provider.set(prop, settings[prop]);
+        }
+    }
+
     describe('[app.core.configProvider]', function() {
         describe('[init]', function() {
             it('should define the necessary fields and methods', function() {
                 expect(provider).to.be.an('object');
 
                 expect(provider).to.have.property('set').and.to.be.a('function');
+                expect(provider).to.have.property('get').and.to.be.a('function');
             });
         });
 
@@ -57,15 +66,83 @@ describe('[app.core.config]', function() {
                 expect(invokeMethod(function() {})).to.throw(error);
             });
         });
+
+        describe('get()', function() {
+            it('should return an undefined value if the configuration setting is undefined', function() {
+                expect(provider.get()).to.be.undefined;
+                expect(provider.get(null)).to.be.undefined;
+                expect(provider.get(123)).to.be.undefined;
+                expect(provider.get('bad-key')).to.be.undefined;
+                expect(provider.get(true)).to.be.undefined;
+                expect(provider.get([])).to.be.undefined;
+                expect(provider.get({})).to.be.undefined;
+                expect(provider.get(function() {})).to.be.undefined;
+            });
+
+            it('should return the default value if the setting is undefined, and a default value is specified', function() {
+                function doTest(key, defaultValue) {
+                    expect(provider.get(key, defaultValue)).to.equal(defaultValue);
+                }
+
+                doTest('bad-key', null);
+                doTest('bad-key', undefined);
+                doTest('bad-key', 1234);
+                doTest('bad-key', 'foobar');
+                doTest('bad-key', true);
+                doTest('bad-key', []);
+                doTest('bad-key', {});
+                doTest('bad-key', function() {});
+            });
+
+            it('should return the property set using the provider if invoked with a valid key', function() {
+                var settings = {
+                    environment: 'production',
+                    endpoints: {
+                        api: {
+                            url: '/foo',
+                            security: null
+                        },
+                        thirdParty: {
+                            url: 'http://thirdparty/api',
+                            security: 'HEADER'
+                        }
+                    },
+                    counter: 20,
+                    isTest: false
+                };
+                _applySettings(settings);
+
+                for (var prop in settings) {
+                    expect(provider.get(prop)).to.deep.equal(settings[prop]);
+                }
+            });
+
+            it('should return a deep copy of the property value, instead of a reference', function() {
+                var settings = {
+                    options: ['foo', 'bar', 'baz'],
+                    endpoints: {
+                        api: {
+                            url: '/foo',
+                            security: null
+                        },
+                        thirdParty: {
+                            url: 'http://thirdparty/api',
+                            security: 'HEADER'
+                        }
+                    }
+                };
+                _applySettings(settings);
+
+                for (var prop in settings) {
+                    expect(provider.get(prop)).to.not.equal(settings[prop]);
+                }
+            });
+        });
     });
 
     describe('[app.core.config]', function() {
         function _initService(settings) {
-            settings = settings || {};
-
-            for (var prop in settings) {
-                provider.set(prop, settings[prop]);
-            }
+            _applySettings(settings);
             return $injector.invoke(provider.$get);
         }
 

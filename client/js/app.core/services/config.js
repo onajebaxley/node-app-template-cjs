@@ -24,12 +24,33 @@ module.exports = [ function() {
             throw new Error('Invalid key specified (arg #1)');
         }
         _properties[key] = _clone(value);
-    }
+    };
+
+    /**
+     * Gets a previously set value. This method is included in the
+     * provider to allow other providers access to these values during the
+     * configuration block of those providers.
+     *
+     * @module app.core.configProvider
+     * @method get
+     * @param {String} key The key of the configuration setting
+     * @param {Object/String/Number} defaultValue The default value to
+     *          return if the configuration setting is not defined.
+     * @return {Object/String/Number} The value of the configuration
+     *          setting, or the default value if the setting is
+     *          undefined.
+     */
+    this.get = function(key, defaultValue) {
+        var value = _properties[key];
+        return (typeof value !== 'undefined') ? value: defaultValue;
+    };
+
+    var _getRef = this.get;
 
     this.$get = [ function() {
         return {
             /**
-             * Gets a value from a previously set value.
+             * Gets a previously set value.
              *
              * @module app.core.config
              * @method get
@@ -40,10 +61,7 @@ module.exports = [ function() {
              *          setting, or the default value if the setting is
              *          undefined.
              */
-            get: function(key, defaultValue) {
-                var value = _properties[key];
-                return (typeof value !== 'undefined') ? value: defaultValue;
-            }
+            get: _getRef
         };
     } ];
 } ];
