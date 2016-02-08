@@ -161,6 +161,15 @@ module.exports = {
 
         _setConfig('cfg_mount_path', mountPath);
 
+        // Configuration object that can be injected into the client.
+        app.locals.g_config = {
+            app_name: GLOBAL.config.cfg_app_name,
+            app_title: GLOBAL.config.cfg_app_title,
+            app_version: GLOBAL.config.cfg_app_version,
+            root_path: GLOBAL.config.cfg_root_path
+            // Additional configuration can go here:
+        };
+
         _isInitialized = true;
     }
 }
