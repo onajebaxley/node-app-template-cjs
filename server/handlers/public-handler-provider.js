@@ -44,13 +44,13 @@ PublicHandlerProvider.prototype.portalPageHandler = function() {
  * app.
  *
  * @class PublicHandlerProvider
- * @method helpPageHandler
+ * @method aboutPageHandler
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-PublicHandlerProvider.prototype.helpPageHandler = function() {
+PublicHandlerProvider.prototype.aboutPageHandler = function() {
     return function(req, res, next) {
-        res.render('help', {});
+        res.render('about', {});
     }.bind(this);
 };
 

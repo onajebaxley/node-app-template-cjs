@@ -74,7 +74,7 @@ describe('PublicHandlerProvider', function() {
 
             expect(provider).to.be.an('object');
             expect(provider).to.have.property('portalPageHandler').and.to.be.a('function');
-            expect(provider).to.have.property('helpPageHandler').and.to.be.a('function');
+            expect(provider).to.have.property('aboutPageHandler').and.to.be.a('function');
             expect(provider).to.have.property('appStatusHandler').and.to.be.a('function');
         });
     });
@@ -103,17 +103,17 @@ describe('PublicHandlerProvider', function() {
         });
     });
 
-    describe('helpPageHandler()', function() {
+    describe('aboutPageHandler()', function() {
         it('should return a function when invoked', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
-            var handler = provider.helpPageHandler();
+            var handler = provider.aboutPageHandler();
 
             expect(handler).to.be.a('function');
         });
 
         it('should render the portal page when invoked', function() {
             var provider = new PublicHandlerProvider(DEFAULT_APP_NAME, DEFAULT_APP_VERSION);
-            var handler = provider.helpPageHandler();
+            var handler = provider.aboutPageHandler();
 
             var req = _expressMocks.getMockReq();
             var res = _expressMocks.getMockRes();
@@ -122,7 +122,7 @@ describe('PublicHandlerProvider', function() {
             handler(req, res, next);
 
             expect(res.render).to.have.been.calledOnce;
-            expect(res.render.args[0][0]).to.equal('help');
+            expect(res.render.args[0][0]).to.equal('about');
             expect(res.render.args[0][1]).to.deep.equal({});
         });
     });

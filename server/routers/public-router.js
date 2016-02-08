@@ -26,7 +26,7 @@ module.exports = {
         var routesHandler = new PublicHandlerProvider(appName, appVersion);
 
         router.get('/', routesHandler.portalPageHandler());
-        router.get('/help', routesHandler.helpPageHandler());
+        router.get('/about', routesHandler.aboutPageHandler());
         router.get('/__status', routesHandler.appStatusHandler());
 
         return router;
