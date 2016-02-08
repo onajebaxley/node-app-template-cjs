@@ -27,15 +27,17 @@ describe('[app.icons]', function() {
     describe('[icons setup]', function() {
         var module = null;
         var mdIconProvider = null;
-        var appSettings = null;
+        var configProvider = null;
 
         function _initModule(rootPath) {
             mdIconProvider = {};
             mdIconProvider.icon = _sinon.stub().returns(mdIconProvider);
             mdIconProvider.iconSet = _sinon.stub().returns(mdIconProvider);
 
-            appSettings = {
-                root_path: rootPath
+            configProvider = {
+				get: function(key, defaultValue) {
+					return rootPath? rootPath:defaultValue;
+				}
             };
             module = _icons[_icons.length - 1];
         }
@@ -56,7 +58,7 @@ describe('[app.icons]', function() {
 
             expect(mdIconProvider.icon).to.not.have.been.called;
 
-            module(mdIconProvider, appSettings);
+            module(mdIconProvider, configProvider);
 
             _checkIconConfig(module, mdIconProvider, count, key, rootPath + path);
         }
@@ -64,11 +66,6 @@ describe('[app.icons]', function() {
         it('should setup an application route for the home state when invoked', function() {
             _runIconConfigTest(1, 'logo', 'img/logo.svg');
             _runIconConfigTest(1, 'logo', 'img/logo.svg', '/root/');
-        });
-
-        it('should setup an application route for the home state when invoked', function() {
-            _runIconConfigTest(2, 'avatar', 'img/user.svg');
-            _runIconConfigTest(2, 'avatar', 'img/user.svg', '/root/');
         });
     });
 });

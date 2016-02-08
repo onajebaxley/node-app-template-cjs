@@ -28,13 +28,6 @@ angular.module(moduleName, [
     authModule
 ])
 
-//Application configuration settings
-.constant('app.SETTINGS', {
-    app_title: window.cfg_app_title,
-    app_version: window.cfg_app_version,
-    root_path: window.cfg_root_path
-})
-
 //UI Route configuration
 .config(routes)
 

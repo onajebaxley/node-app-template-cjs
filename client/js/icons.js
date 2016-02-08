@@ -10,12 +10,9 @@
 
 var console = require('console');
 
-module.exports = [ '$mdIconProvider', 'app.SETTINGS',
-    function($mdIconProvider, appSettings) {
-        var rootPath = appSettings.root_path;
-        if(typeof rootPath !== 'string') {
-            rootPath = '/';
-        }
+module.exports = [ '$mdIconProvider', 'app.core.configProvider',
+    function($mdIconProvider, configProvider) {
+        var rootPath = configProvider.get('root_path', '/');
 
         $mdIconProvider
             .icon('logo', rootPath + 'img/logo.svg')
