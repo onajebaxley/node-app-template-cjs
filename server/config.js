@@ -125,7 +125,7 @@ module.exports = {
         _setConfig('cfg_env', env);
         _setConfig('cfg_app_name', _packageInfo.name);
         _setConfig('cfg_app_version', _packageInfo.version);
-        _setConfig('cfg_app_title', appConfig.title );
+        _setConfig('cfg_app_title', appConfig.title);
 
         _setConfig('cfg_port', appConfig.port);
         _setConfig('cfg_root_path', appConfig.rootPath);
@@ -167,7 +167,7 @@ module.exports = {
             app_title: GLOBAL.config.cfg_app_title,
             app_version: GLOBAL.config.cfg_app_version,
             root_path: GLOBAL.config.cfg_root_path
-            // Additional configuration can go here:
+                // Additional configuration can go here:
         };
 
         _isInitialized = true;

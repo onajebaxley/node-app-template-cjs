@@ -35,9 +35,9 @@ describe('[app.icons]', function() {
             mdIconProvider.iconSet = _sinon.stub().returns(mdIconProvider);
 
             configProvider = {
-				get: function(key, defaultValue) {
-					return rootPath? rootPath:defaultValue;
-				}
+                get: function(key, defaultValue) {
+                    return rootPath ? rootPath : defaultValue;
+                }
             };
             module = _icons[_icons.length - 1];
         }
