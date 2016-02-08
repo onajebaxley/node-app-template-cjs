@@ -11,6 +11,7 @@ module.exports = [ function() {
     var _roles = [];
     var _properties = {};
     var _isInitialized = false;
+    var _dummyLogin = false;
 
     /**
      * Allows the initialization of the user object prior to instantiation.
@@ -22,11 +23,15 @@ module.exports = [ function() {
      * @method initialize
      * @param {Array} roles An array of roles that the user belongs to
      * @param {Object} properties A map of user properties for the user
+     * @param {Boolean} [dummyLogin=false] An optional boolean parameter that
+     *          if set to true, indicates that the user object does not
+     *          represent a logged in user
      */
-    this.initialize = function(roles, properties) {
+    this.initialize = function(roles, properties, dummyLogin) {
         if(!(roles instanceof Array)) {
             throw new Error('Invalid user roles specified (arg #1)');
         }
+        _dummyLogin = !!dummyLogin;
         properties = properties || {};
 
         for(var index=0; index<roles.length; index++) {
@@ -47,7 +52,11 @@ module.exports = [ function() {
         if(!_isInitialized) {
             throw new Error('Cannot inject user. The user object has not been initialized');
         }
-        return new User(_roles, _properties);
+        var user = new User(_roles, _properties);
+        user.isLoggedIn = function() {
+            return !_dummyLogin;
+        };
+        return user;
     } ];
 }];
 

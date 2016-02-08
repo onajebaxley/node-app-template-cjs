@@ -113,6 +113,7 @@ describe('[app.core.user]', function() {
                 var service = _initService();
                 expect(service).to.be.an('object');
                 expect(service).to.have.property('hasRole').and.to.be.a('function');
+                expect(service).to.have.property('isLoggedIn').and.to.be.a('function');
                 expect(service).to.have.property('getServiceToken').and.to.be.a('function');
             });
 
@@ -210,6 +211,22 @@ describe('[app.core.user]', function() {
                 var service = $injector.invoke(provider.$get);
 
                 expect(service.hasRole('uSeR')).to.be.true;
+            });
+        });
+
+        describe('isLoggedIn()', function() {
+            it('should return true if the dummy login parameter is not set to true during initialization', function() {
+                provider.initialize(['user'], {});
+                var service = $injector.invoke(provider.$get);
+
+                expect(service.isLoggedIn()).to.be.true;
+            });
+
+            it('should return false if the dummy login parameter is set to true during initialization', function() {
+                provider.initialize(['user'], {}, true);
+                var service = $injector.invoke(provider.$get);
+
+                expect(service.isLoggedIn()).to.be.false;
             });
         });
     });
