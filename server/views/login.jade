@@ -5,8 +5,8 @@ block content
 			div.md-headline(flex layout='row' layout-padding layout-margin)
 				div(flex='10')
 					md-icon(md-svg-icon='logo')
-				div(flex='90') #{appTitle}
-			form(name='loginForm' method='post' action='#{rootPath}auth/login' layout-fill layout='column' layout-padding layout-margin)
+				div(flex='90') #{jv_app_title}
+			form(name='loginForm' method='post' action='#{jv_root_path}auth/login' layout-fill layout='column' layout-padding layout-margin)
 				md-input-container(flex)
 					label username
 					input.md-body-1(type='text' ng-model='username' name='username' required) 

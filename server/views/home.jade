@@ -2,10 +2,10 @@ extends layout
 block content
 	md-sidenav.md-sidenav-left.md-whiteframe-z2(layout='column' md-component-id='left' md-is-locked-open='$mdMedia("gt-md")')
 		md-toolbar.md-hue-2
-			div.md-toolbar-tools-bottom.inset(layout='row')
-				div.md-tile-left.inset
+			div.md-toolbar-tools-bottom.inset(layout='column')
+				div.inset
 					md-icon.app-avatar-large(md-svg-icon='avatar')
-				div.md-tile-content Firstname Lastname
+				div.inset Firstname Lastname
 		md-list
 			md-item
 				a

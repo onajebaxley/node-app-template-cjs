@@ -1,29 +1,64 @@
-- var appTitle = GLOBAL.config.cfg_app_title;
-- var appVersion = GLOBAL.config.cfg_app_version;
-- var rootPath = GLOBAL.config.cfg_root_path;
-- var useMinifiedFiles = GLOBAL.config.cfg_enable_minified_files;
+// Variable prefix conventions:
+// jv = "jade variable". These are sugar variables used to make the code more
+//       readable.
+// rv = "response variable". These are local variables that are specific to a
+//      given request - response cycle.
+// gv = "global variable". These are app wide  variables that apply across the
+//      app, for the lifetime of the app.
+- var jv_app_title = GLOBAL.config.cfg_app_title;
+- var jv_app_version = GLOBAL.config.cfg_app_version;
+- var jv_root_path = GLOBAL.config.cfg_root_path;
+- var jv_use_minified = GLOBAL.config.cfg_enable_minified_files;
 
 doctype html
 html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutController')
 	head
 		title=title
-		if useMinifiedFiles === true
-			link(rel='stylesheet', href='#{rootPath}css/angular-material.min.css?#{appVersion}')
-			link(rel='stylesheet', href='#{rootPath}css/app.min.css?#{appVersion}')
+		if jv_use_minified === true
+			link(rel='stylesheet', href='#{jv_root_path}css/angular-material.min.css?#{jv_app_version}')
+			link(rel='stylesheet', href='#{jv_root_path}css/app.min.css?#{jv_app_version}')
 		else
-			link(rel='stylesheet', href='#{rootPath}css/angular-material.css?#{appVersion}')
-			link(rel='stylesheet', href='#{rootPath}css/app.css?#{appVersion}')
+			link(rel='stylesheet', href='#{jv_root_path}css/angular-material.css?#{jv_app_version}')
+			link(rel='stylesheet', href='#{jv_root_path}css/app.css?#{jv_app_version}')
 		link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
 	body(layout='column')
 		block content
 
-		script(type='text/javascript')
-			| window.cfg_app_title = '#{appTitle}';
-			| window.cfg_app_version = '#{appVersion}';
-			| window.cfg_root_path = '#{rootPath}';
-		if useMinifiedFiles === true
-			script(type='text/javascript', src='#{rootPath}js/app.min.js?#{appVersion}')
+		if jv_use_minified === true
+			script(type='text/javascript', src='#{jv_root_path}js/app.min.js?#{jv_app_version}')
 		else
-			script(type='text/javascript', src='#{rootPath}js/app.js?#{appVersion}')
+			script(type='text/javascript', src='#{jv_root_path}js/app.js?#{jv_app_version}')
+
+		// Inject client side config and user parameters
+		script(type='text/javascript')
+			| var properties = {
+			|     username: '#{username}'
+			| };
+			| var roles = [];
+			| var dummyUser = true;
+			| var settings = {};
+
+			if rv_user
+				| dummyUser = false;
+				| roles = !{JSON.stringify(rv_user.getRoles())};
+				| properties = !{JSON.stringify(rv_user.getProperties())};
+			else
+				| console.debug('User not logged in. Existing username: [#{username}]');
+
+			if gv_config
+				| settings = !{JSON.stringify(gv_config)};
+			else
+				| console.warn('No client side configuration defined');
+
+			| angular.module('app')
+			| // Setup client side configuration
+			| .config([ 'app.core.configProvider', function(configProvider) {
+			|    for(var prop in settings) {
+			|        configProvider.set(prop, settings[prop]);
+			|    }
+			| // Configure client side user object
+			| } ]).config([ 'app.core.userProvider', function(userProvider) {
+			|    userProvider.initialize(roles, properties);
+			| } ]);
 
 		block scripts
