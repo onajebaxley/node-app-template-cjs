@@ -40,8 +40,6 @@ var _configOverrides = {
         _setConfig('cfg_enable_minified_files', false);
         _setConfig('cfg_session_secure_proxy', false);
         _setConfig('cfg_session_timeout', 900 * 1000); // 15 minutes
-
-        GLOBAL.config.cfg_app_title = 'Template App';
     },
 
     /**
@@ -73,6 +71,7 @@ function _getApplicationConfig(appName) {
     // to have the desired effect.
     appName = appName.replace(/-/g, '_');
     return _rc(appName, {
+        title: 'Template App',
         port: 3000,
         rootPath: '/',
         proxyPresent: false,
@@ -126,6 +125,7 @@ module.exports = {
         _setConfig('cfg_env', env);
         _setConfig('cfg_app_name', _packageInfo.name);
         _setConfig('cfg_app_version', _packageInfo.version);
+        _setConfig('cfg_app_title', appConfig.title );
 
         _setConfig('cfg_port', appConfig.port);
         _setConfig('cfg_root_path', appConfig.rootPath);
