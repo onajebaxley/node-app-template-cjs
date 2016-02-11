@@ -1,13 +1,26 @@
 extends layout
-block body
-	md-toolbar(layout='row')
-		h3 Portal Page
-	div(flex class='container' layout='row')
-		md-sidenav(md-is-locked-open='true' class='md-whiteframe-z2')
-			md-list
-				md-list-item
-					md-button
-						md-icon(md-svg-src='#{jv_root_path}img/user.svg' class='avatar')
-						|Lia Luogo
-		md-content(flex id='content')
-			|content
+block content
+	md-toolbar.app-main-nav
+		div.md-toolbar-tools(layout-fill)
+			div.app-nav-header
+				md-button(ng-href='/')
+					md-icon(md-svg-icon='logo')
+					span.inset #{jv_app_title}
+			div
+				md-button(ng-href='/app' show-gt-sm hide-sm hide-xs) Dashboard
+				md-button(ng-href='/about' show-gt-sm hide-sm hide-xs) About
+			span(flex)
+			div
+				md-button(ng-href='/auth/login' show-gt-sm hide-sm hide-xs) Login
+	header
+		div.app-banner(style='background-image: url("#{jv_root_path}img/banner-red.jpg")')
+			div(layout='column' layout-fill layout-padding layout-align='center')
+				div
+					h1 NodeJS Web Application Template
+					h2 Express + Browserify + Angular Material
+	article(layout-padding layout-margin)
+		div(layout='column' layout-gt-sm='row')
+			div(flex='33') Foo
+			div(flex='33') Bar
+			div(flex='33') Baz
+

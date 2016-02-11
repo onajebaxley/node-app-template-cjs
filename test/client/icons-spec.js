@@ -63,9 +63,12 @@ describe('[app.icons]', function() {
             _checkIconConfig(module, mdIconProvider, count, key, rootPath + path);
         }
 
-        it('should setup an application route for the home state when invoked', function() {
+        it('should setup the application logo icon', function() {
             _runIconConfigTest(1, 'logo', 'img/logo.svg');
             _runIconConfigTest(1, 'logo', 'img/logo.svg', '/root/');
         });
+
+        //Note: Deeper test cases have been deliberately omitted, as there is limited
+        //value in testing individual icon settings.
     });
 });

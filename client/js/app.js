@@ -15,6 +15,7 @@ var moduleName = 'app';
 
 var routes = require('./routes');
 var icons = require('./icons');
+var themes = require('./themes');
 
 var templates = require('./templates');
 var coreModule = require('./app.core');
@@ -28,14 +29,23 @@ angular.module(moduleName, [
     authModule
 ])
 
-//UI Route configuration
+// UI Route configuration
 .config(routes)
 
-//Icon configuration
+// Icon configuration
 .config(icons)
 
-.controller('app.layout.MasterLayoutController', [ '$scope', function($scope) {
-}]);
+// Theme configuration
+.config(themes)
+
+.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav',
+    function($scope, $mdSidenav) {
+        $scope.toggleSideNav = function(menuId) {
+            $mdSidenav(menuId).toggle();
+        };
+    }
+])
+;
 
 //angular.bootstrap(document, [moduleName]);
 console.info('Application ready');
