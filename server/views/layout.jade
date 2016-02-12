@@ -21,7 +21,7 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 			link(rel='stylesheet', href='#{jv_root_path}css/angular-material.css?#{jv_app_version}')
 			link(rel='stylesheet', href='#{jv_root_path}css/app.css?#{jv_app_version}')
 		link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
-	body(layout='column')
+	body
 		block content
 
 		if jv_use_minified === true
