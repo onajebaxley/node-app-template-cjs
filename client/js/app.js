@@ -38,11 +38,9 @@ angular.module(moduleName, [
 // Theme configuration
 .config(themes)
 
-.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav',
-    function($scope, $mdSidenav) {
-        $scope.toggleSideNav = function(menuId) {
-            $mdSidenav(menuId).toggle();
-        };
+.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav', 'app.core.user',
+    function($scope, $mdSidenav, user) {
+        $scope.user = user;
     }
 ])
 ;

@@ -16,9 +16,12 @@ module.exports = [ '$mdThemingProvider',
             .primaryPalette('red', {
                 'default': '900'
             })
-            .accentPalette('brown')
+            .accentPalette('brown', {
+                'default': '500'
+            })
             .warnPalette('amber')
-            .backgroundPalette('grey');
+            //.backgroundPalette('grey')
+            ;
 
         console.debug('Icons configured');
     }

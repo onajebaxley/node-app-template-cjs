@@ -1,47 +1,14 @@
-extends layout
-block content
-	div(layout='row' layout-fill)
-		md-sidenav.md-sidenav-left.md-whiteframe-z2(flex layout='column' md-is-open='showSidebar')
-			md-toolbar.app-side-nav
-				div.md-toolbar-tools-bottom(layout='column')
-					div.inset
-						md-icon(md-svg-icon='logo')
-						span.inset #{jv_app_title}
-					md-button(ng-href='/')
-						md-icon(md-font-set='material-icons') home
-						span.inset Home
-					md-button(ng-href='/app')
-						md-icon(md-font-set='material-icons') dashboard
-						span.inset Dashboard
-					md-button(ng-href='/about')
-						md-icon(md-font-set='material-icons') help
-						span.inset About
-					md-button(ng-href='/auth/login')
-						md-icon(md-font-set='material-icons') person
-						span.inset Login
-		div(flex)
-			header
-				md-toolbar.app-main-nav
-					div.md-toolbar-tools(layout-fill)
-						md-button(hide-gt-sm ng-click='showSidebar = !showSidebar')
-							md-icon(md-font-set='material-icons') menu
-						div.app-nav-header
-							md-button(ng-href='/')
-								md-icon(md-svg-icon='logo')
-								span.inset #{jv_app_title}
-						div
-							md-button(ng-href='/app' show-gt-sm hide-sm hide-xs) Dashboard
-							md-button(ng-href='/about' show-gt-sm hide-sm hide-xs) About
-						span(flex)
-						div
-							md-button(ng-href='/auth/login' show-gt-sm hide-sm hide-xs) Login
-				div.app-banner(style='background-image: url("#{jv_root_path}img/banner-red.jpg")')
-					div(layout='column' layout-fill layout-padding layout-align='center')
-						div
-							h1 NodeJS Web Application Template
-							h2 Express + Browserify + Angular Material
-			article(layout-padding layout-margin)
-				div(layout='column' layout-gt-sm='row')
-					div(flex='33') Foo
-					div(flex='33') Bar
-					div(flex='33') Baz {{showSidebar}}
+extends public-layout
+
+block header
+	div.app-banner(style='background-image: url("#{jv_root_path}img/banner-red.jpg")')
+		div(layout='column' layout-fill layout-padding layout-align='center')
+			div
+				h1 NodeJS Web Application Template
+				h2 Express + Browserify + Angular Material
+block body
+	article(layout-padding layout-margin)
+		div(layout='column' layout-gt-sm='row')
+			div(flex='33') Foo
+			div(flex='33') Bar
+			div(flex='33') Baz {{user}}

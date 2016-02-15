@@ -58,7 +58,7 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 			|    }
 			| // Configure client side user object
 			| } ]).config([ 'app.core.userProvider', function(userProvider) {
-			|    userProvider.initialize(roles, properties);
+			|    userProvider.initialize(roles, properties, dummyUser);
 			| } ]);
 
 		block scripts
