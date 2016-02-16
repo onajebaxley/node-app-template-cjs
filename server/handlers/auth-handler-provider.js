@@ -101,7 +101,8 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
                 this._logger.error('Login failed: [%s]', req.body.username, info);
                 res.render('login', {
                     username: req.body.username,
-                    errorMessage: 'Invalid username and/or password'
+                    errorMessage: 'Invalid username and/or password',
+                    redirect: this._getRedirectUrl(req.body.redirect)
                 });
                 return;
             }

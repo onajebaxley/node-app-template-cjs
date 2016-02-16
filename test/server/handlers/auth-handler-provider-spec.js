@@ -267,8 +267,10 @@ describe('AuthHandlerProvider', function() {
                 var next = _sinon.spy();
                 var username = 'jdoe';
                 var errorMessage = 'Invalid username and/or password';
+				var redirect = '/app';
 
                 req.body.username = username;
+                req.body.redirect = redirect;
                 handler(req, res, next);
 
                 var authCallback = _passportMock.authenticate.args[0][1];
@@ -281,7 +283,8 @@ describe('AuthHandlerProvider', function() {
                 expect(res.render.args[0][0]).to.equal('login');
                 expect(res.render.args[0][1]).to.deep.equal({
                     username: username,
-                    errorMessage: errorMessage
+                    errorMessage: errorMessage,
+					redirect: redirect
                 });
             });
 
