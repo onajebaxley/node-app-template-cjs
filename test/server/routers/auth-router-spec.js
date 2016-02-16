@@ -16,10 +16,10 @@ var _authRouter = null;
 
 describe('[server.routers.authRouter]', function() {
     var DEFAULT_REDIRECT_URL = '/';
-    var _authHandlerProviderMock;
     var _sessionMock;
     var _passportMock;
     var _bodyParserMock;
+    var _authHandlerProviderMock;
 
     beforeEach(function() {
         _sessionMock = {
