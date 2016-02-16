@@ -64,6 +64,10 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
 
         if (user) {
             req.logOut();
+            if(req.session) {
+                // Remove the username from the session
+                delete req.session.username;
+            }
             this._logger.info('User logged out: [%s]', user.username);
         } else {
             this._logger.warn('No logout performed. User not logged in');
@@ -111,6 +115,10 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
                     this._logger.error('Error creating session: [%s]', user.username);
                     next(err);
                     return;
+                }
+                if(req.session) {
+                    // Add the username to the session
+                    req.session.username = user.username;
                 }
 
                 this._logger.info('Session created for user: [%s]', user.username);

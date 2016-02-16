@@ -167,6 +167,35 @@ describe('AuthHandlerProvider', function() {
             expect(req.logOut).to.have.been.calledOnce;
         });
 
+        it('should clear the username in the session when invoked, if the request session is defined', function() {
+            var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
+            var handler = provider.logoutHandler();
+
+            var req = _getMockReq();
+            req.session = {
+                username: req.user.username
+            };
+            var res = _expressMocks.getMockRes();
+            var next = _sinon.spy();
+
+            handler(req, res, next);
+
+            expect(req.session.username).to.be.undefined;
+        });
+
+        it('should not attempt to clear the username from the session if the request session is defined', function() {
+            var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
+            var handler = provider.logoutHandler();
+
+            var req = _getMockReq();
+            req.session = undefined;
+            var res = _expressMocks.getMockRes();
+            var next = _sinon.spy();
+
+            handler(req, res, next);
+            expect(req.session).to.be.undefined;
+        });
+
         it('should redirect the user to the resource uri specified via a query string parameter', function() {
             var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
             var handler = provider.logoutHandler();
@@ -316,13 +345,16 @@ describe('AuthHandlerProvider', function() {
                 var res = null;
                 var next = null;
                 var sessionCallback = null;
+                var username = null;
 
                 beforeEach(function() {
+                    username = 'jdoe';
                     var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
                     var handler = provider.authUsernamePasswordHandler();
-                    var user = new User('jdoe');
+                    var user = new User(username);
 
                     req = _getMockReq();
+                    req.session = {};
                     res = _expressMocks.getMockRes();
                     next = _sinon.spy();
                     handler(req, res, next);
@@ -362,6 +394,20 @@ describe('AuthHandlerProvider', function() {
                     expect(next).to.not.have.been.called;
                     expect(res.redirect).to.have.been.calledOnce;
                     expect(res.redirect).to.have.been.calledWith(DEFAULT_REDIRECT_URL);
+                });
+
+                it('should save the username in the session if a request session is defined', function() {
+                    expect(req.session).to.be.empty;
+                    sessionCallback(null);
+
+                    expect(req.session.username).to.equal(username);
+                });
+
+                it('should not save the username in the session if a request session is not defined', function() {
+                    req.session = undefined;
+                    sessionCallback(null);
+
+                    expect(req.session).to.be.undefined;
                 });
             });
         });
