@@ -32,7 +32,7 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 		// Inject client side config and user parameters
 		script(type='text/javascript')
 			| var properties = {
-			|     username: '#{username}'
+			|     username: '#{rv_username}'
 			| };
 			| var roles = [];
 			| var dummyUser = true;
@@ -41,9 +41,9 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 			if rv_user
 				| dummyUser = false;
 				| roles = !{JSON.stringify(rv_user.getRoles())};
-				| properties = !{JSON.stringify(rv_user.getProperties())};
+				| properties = !{JSON.stringify(rv_user.serialize())};
 			else
-				| console.debug('User not logged in. Existing username: [#{username}]');
+				| console.debug('User not logged in. Existing username: [#{rv_username}]');
 
 			if gv_config
 				| settings = !{JSON.stringify(gv_config)};
