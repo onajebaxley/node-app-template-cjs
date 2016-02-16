@@ -267,7 +267,7 @@ describe('AuthHandlerProvider', function() {
                 var next = _sinon.spy();
                 var username = 'jdoe';
                 var errorMessage = 'Invalid username and/or password';
-				var redirect = '/app';
+                var redirect = '/app';
 
                 req.body.username = username;
                 req.body.redirect = redirect;
@@ -284,7 +284,7 @@ describe('AuthHandlerProvider', function() {
                 expect(res.render.args[0][1]).to.deep.equal({
                     username: username,
                     errorMessage: errorMessage,
-					redirect: redirect
+                    redirect: redirect
                 });
             });
 
