@@ -13,6 +13,7 @@ var _logger = require('../logger');
 var _session = require('../session');
 var _auth = require('../auth');
 var AppHandlerProvider = require('../handlers/app-handler-provider');
+var CommonHandlerProvider = require('../handlers/common-handler-provider');
 
 module.exports = {
     /**
@@ -26,11 +27,13 @@ module.exports = {
     createRouter: function() {
         var router = _express.Router();
         var routesHandler = new AppHandlerProvider();
+        var commonHandler = new CommonHandlerProvider();
 
         router.use(_session.getSessionHandler());
         router.use(_passport.initialize());
         router.use(_auth.checkUserSession);
         router.use(_passport.session());
+        router.use(commonHandler.injectUserResponseLocals());
 
         router.get('/', routesHandler.homePageHandler());
         return router;

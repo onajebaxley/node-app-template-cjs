@@ -7,8 +7,11 @@
 'use strict';
 
 var _express = require('express');
+
+var _session = require('../session');
 var _logger = require('../logger');
 var PublicHandlerProvider = require('../handlers/public-handler-provider');
+var CommonHandlerProvider = require('../handlers/common-handler-provider');
 
 module.exports = {
     /**
@@ -24,6 +27,10 @@ module.exports = {
         var appName = GLOBAL.config.cfg_app_name;
         var appVersion = GLOBAL.config.cfg_app_version;
         var routesHandler = new PublicHandlerProvider(appName, appVersion);
+        var commanHandler = new CommonHandlerProvider();
+
+        router.use(_session.getSessionHandler());
+        router.use(commanHandler.injectUserResponseLocals());
 
         router.get('/', routesHandler.portalPageHandler());
         router.get('/about', routesHandler.aboutPageHandler());

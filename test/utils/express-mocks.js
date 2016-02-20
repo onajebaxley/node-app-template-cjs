@@ -57,6 +57,8 @@ module.exports = {
     getMockRes: function() {
         var res = new MockRes();
 
+        res.locals = {};
+
         ['set', 'status', 'send', 'render', 'redirect'].forEach(function(method) {
             res[method] = res[method] || function() {};
         });

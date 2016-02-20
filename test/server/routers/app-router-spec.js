@@ -19,6 +19,7 @@ describe('[server.routers.appRouter]', function() {
     var _sessionMock;
     var _passportMock;
     var _authMock;
+    var _commonHandlerProviderMock;
 
     beforeEach(function() {
         _sessionMock = {
@@ -36,12 +37,17 @@ describe('[server.routers.appRouter]', function() {
             homePageHandler: _sinon.stub().returns(function() {})
         });
 
+        _commonHandlerProviderMock = _sinon.stub().returns({
+            injectUserResponseLocals: _sinon.stub().returns(function() {})
+        });
+
         _appRouter = _rewire('../../../server/routers/app-router');
         _appRouter.__set__('_logger', _loggerHelper.initLogger(true));
         _appRouter.__set__('_session', _sessionMock);
         _appRouter.__set__('_passport', _passportMock);
         _appRouter.__set__('_auth', _authMock);
         _appRouter.__set__('AppHandlerProvider', _appHandlerProviderMock);
+        _appRouter.__set__('CommonHandlerProvider', _commonHandlerProviderMock);
     });
 
     afterEach(function() {
@@ -155,6 +161,26 @@ describe('[server.routers.appRouter]', function() {
 
                     expect(mockExpress._router.use.callCount).to.be.at.least(4);
                     expect(mockExpress._router.use.args[3][0]).to.equal(middleware);
+                });
+            });
+
+            describe('[user locals injection]', function() {
+                it('should initialize a user local injection handler', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals;
+                    expect(middleware).to.not.have.been.called;
+
+                    _appRouter.createRouter();
+
+                    expect(middleware).to.have.been.calledOnce;
+                });
+
+                it('should bind the user local injection handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals();
+
+                    _appRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(5);
+                    expect(mockExpress._router.use.args[4][0]).to.equal(middleware);
                 });
             });
 

@@ -18,18 +18,30 @@ describe('[server.routers.publicRouter]', function() {
     var DEFAULT_APP_NAME = 'mock-app';
     var DEFAULT_APP_VERSION = '1.0.0-mock';
 
+    var _sessionMock;
     var _publicHandlerProviderMock;
+    var _commonHandlerProviderMock;
 
     beforeEach(function() {
+        _sessionMock = {
+            getSessionHandler: _sinon.stub().returns(function() {})
+        };
+
         _publicHandlerProviderMock = _sinon.stub().returns({
             portalPageHandler: _sinon.stub().returns(function() {}),
             aboutPageHandler: _sinon.stub().returns(function() {}),
             appStatusHandler: _sinon.stub().returns(function() {})
         });
 
+        _commonHandlerProviderMock = _sinon.stub().returns({
+            injectUserResponseLocals: _sinon.stub().returns(function() {})
+        });
+
         _publicRouter = _rewire('../../../server/routers/public-router');
         _publicRouter.__set__('_logger', _loggerHelper.initLogger(true));
+        _publicRouter.__set__('_session', _sessionMock);
         _publicRouter.__set__('PublicHandlerProvider', _publicHandlerProviderMock);
+        _publicRouter.__set__('CommonHandlerProvider', _commonHandlerProviderMock);
 
         _configHelper.setConfig('cfg_app_name', DEFAULT_APP_NAME);
         _configHelper.setConfig('cfg_app_version', DEFAULT_APP_VERSION);
@@ -73,6 +85,47 @@ describe('[server.routers.publicRouter]', function() {
             beforeEach(function() {
                 mockExpress = _expressMocks.getMockExpress();
                 _publicRouter.__set__('_express', mockExpress);
+            });
+
+            describe('[session middleware]', function() {
+                it('should initialize a session handler', function() {
+                    expect(_sessionMock.getSessionHandler).to.not.have.been.called;
+
+                    _publicRouter.createRouter();
+
+                    expect(_sessionMock.getSessionHandler).to.have.been.calledOnce;
+                });
+
+                it('should bind the session handler as a middleware for all routes defined in the router', function() {
+                    var sessionMiddleware = _sessionMock.getSessionHandler();
+
+                    expect(mockExpress._router.use).to.not.have.been.called;
+
+                    _publicRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(1);
+                    expect(mockExpress._router.use.args[0][0]).to.equal(sessionMiddleware);
+                });
+            });
+
+            describe('[user locals injection]', function() {
+                it('should initialize a user local injection handler', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals;
+                    expect(middleware).to.not.have.been.called;
+
+                    _publicRouter.createRouter();
+
+                    expect(middleware).to.have.been.calledOnce;
+                });
+
+                it('should bind the user local injection handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals();
+
+                    _publicRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(2);
+                    expect(mockExpress._router.use.args[1][0]).to.equal(middleware);
+                });
             });
 
             describe('[routes]', function() {
