@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	div(layout='row' layout-fill)
+	div(layout='row' layout-fill ng-controller='app.auth.LoginController')
 		section(layout='column' flex layout-align='center center')
 			md-card.app-focus-box.md-whiteframe-10dp
 				md-toolbar
@@ -27,7 +27,9 @@ block content
 
 block scripts
 	script(type='text/javascript')
-		| var username= '#{username}'
+		| var username= '#{username}';
+		| var responseUsername = '#{rv_username}';
+		| username = (username) ? username:responseUsername;
 		| angular.module('app').config(['app.core.configProvider', function(configProvider) {
 		|     configProvider.set('username', username);
 		| }]);

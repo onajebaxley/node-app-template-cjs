@@ -20,6 +20,7 @@ describe('[server.routers.authRouter]', function() {
     var _passportMock;
     var _bodyParserMock;
     var _authHandlerProviderMock;
+    var _commonHandlerProviderMock;
 
     beforeEach(function() {
         _sessionMock = {
@@ -39,12 +40,17 @@ describe('[server.routers.authRouter]', function() {
             authUsernamePasswordHandler: _sinon.stub().returns(function() {})
         });
 
+        _commonHandlerProviderMock = _sinon.stub().returns({
+            injectUserResponseLocals: _sinon.stub().returns(function() {})
+        });
+
         _authRouter = _rewire('../../../server/routers/auth-router');
         _authRouter.__set__('_logger', _loggerHelper.initLogger(true));
         _authRouter.__set__('_session', _sessionMock);
         _authRouter.__set__('_passport', _passportMock);
         _authRouter.__set__('_bodyParser', _bodyParserMock);
         _authRouter.__set__('AuthHandlerProvider', _authHandlerProviderMock);
+        _authRouter.__set__('CommonHandlerProvider', _commonHandlerProviderMock);
     });
 
     afterEach(function() {
@@ -128,6 +134,26 @@ describe('[server.routers.authRouter]', function() {
 
                     expect(mockExpress._router.use.callCount).to.be.at.least(2);
                     expect(mockExpress._router.use.args[1][0]).to.equal(passportMiddleware);
+                });
+            });
+
+            describe('[user locals injection]', function() {
+                it('should initialize a user local injection handler', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals;
+                    expect(middleware).to.not.have.been.called;
+
+                    _authRouter.createRouter();
+
+                    expect(middleware).to.have.been.calledOnce;
+                });
+
+                it('should bind the user local injection handler as a middleware for all routes defined in the router', function() {
+                    var middleware = _commonHandlerProviderMock().injectUserResponseLocals();
+
+                    _authRouter.createRouter();
+
+                    expect(mockExpress._router.use.callCount).to.be.at.least(3);
+                    expect(mockExpress._router.use.args[2][0]).to.equal(middleware);
                 });
             });
 
