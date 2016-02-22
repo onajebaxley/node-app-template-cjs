@@ -29,6 +29,8 @@ describe('[app.core.utils]', function() {
             it('should define the necessary fields and methods', function() {
                 expect(service).to.be.an('object');
                 expect(service.applyDefault).and.to.be.a('function');
+                expect(service.applyDefaultIfNotString).and.to.be.a('function');
+                expect(service.applyDefaultIfNotNumber).and.to.be.a('function');
             });
         });
 
@@ -59,6 +61,102 @@ describe('[app.core.utils]', function() {
                 doTest(undefined, []);
                 doTest(undefined, {});
                 doTest(undefined, function() {});
+            });
+        });
+
+        describe('applyDefaultIfNotString()', function() {
+            it('should return the default value if the value is not a string, or is empty and canBeFalsy==false', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotString(value, defaultValue, false)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest(1234, defaultValue);
+                doTest('', defaultValue);
+                doTest(true, defaultValue);
+                doTest([], defaultValue);
+                doTest({}, defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the default value if the value is not a string and canBeFalsy==true', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotString(value, defaultValue, true)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest(1234, defaultValue);
+                doTest(true, defaultValue);
+                doTest([], defaultValue);
+                doTest({}, defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the input value if the value is a non empty string, and canBeFalsy==false', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotString(value, defaultValue, false)).to.equal(value);
+                }
+
+                doTest('foo', undefined);
+                doTest('bar', undefined);
+            });
+
+            it('should return the input value if the value is a string, and canBeFalsy==true', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotString(value, defaultValue, true)).to.equal(value);
+                }
+
+                doTest('foo', undefined);
+                doTest('bar', undefined);
+                doTest('', undefined);
+            });
+        });
+
+        describe('applyDefaultIfNotNumber()', function() {
+            it('should return the default value if the value is not a number, or is empty and canBeFalsy==false', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotNumber(value, defaultValue, false)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest(0, defaultValue);
+                doTest('abc', defaultValue);
+                doTest(true, defaultValue);
+                doTest([], defaultValue);
+                doTest({}, defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the default value if the value is not a number and canBeFalsy==true', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotNumber(value, defaultValue, true)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest('abc', defaultValue);
+                doTest(true, defaultValue);
+                doTest([], defaultValue);
+                doTest({}, defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the input value if the value is a number, and canBeFalsy==false', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotNumber(value, defaultValue, false)).to.equal(value);
+                }
+
+                doTest(123, undefined);
+                doTest(456, undefined);
+            });
+
+            it('should return the input value if the value is a number, and canBeFalsy==true', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotNumber(value, defaultValue, true)).to.equal(value);
+                }
+
+                doTest(123, undefined);
+                doTest(456, undefined);
+                doTest(0, undefined);
             });
         });
     });

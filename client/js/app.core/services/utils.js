@@ -19,6 +19,48 @@ module.exports = [ function() {
          */
         applyDefault: function(value, defaultValue) {
             return (value)? value: defaultValue;
+        },
+
+        /**
+         * Returns the default value if the input value is not a string, or is
+         * empty. Check for empty string can be excluded if necessary.
+         *
+         * @module app.core.utils
+         * @method applyDefaultIfNotString
+         * @param {Object/String/Number} value The value to check for
+         *          falsiness/truthiness
+         * @param {String} defaultValue The default value to use
+         *          if the input value is falsy.
+         * @param {Boolean} [canBeFalsy=false] If set to true, omits
+         *          test for falsy value.
+         */
+        applyDefaultIfNotString: function(value, defaultValue, canBeFalsy) {
+            if(typeof value !== 'string' || (value.length <= 0 && !canBeFalsy)) {
+                return defaultValue;
+            } else {
+                return value;
+            }
+        },
+
+        /**
+         * Returns the default value if the input value is not a string, or is
+         * empty. Check for empty string can be excluded if necessary.
+         *
+         * @module app.core.utils
+         * @method applyDefaultIfNotString
+         * @param {Object/String/Number} value The value to check for
+         *          falsiness/truthiness
+         * @param {String} defaultValue The default value to use
+         *          if the input value is falsy.
+         * @param {Boolean} [canBeFalsy=false] If set to true, omits
+         *          test for falsy value.
+         */
+        applyDefaultIfNotNumber: function(value, defaultValue, canBeFalsy) {
+            if(typeof value !== 'number' || (!value && !canBeFalsy)) {
+                return defaultValue;
+            } else {
+                return value;
+            }
         }
     };
 } ];
