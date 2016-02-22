@@ -61,6 +61,41 @@ module.exports = [ function() {
             } else {
                 return value;
             }
+        },
+
+        /**
+         * Returns the default value if the input value is not an object.
+         *
+         * @module app.core.utils
+         * @method applyDefaultIfNotString
+         * @param {Object/String/Number} value The value to check for
+         *          falsiness/truthiness
+         * @param {String} defaultValue The default value to use
+         *          if the input value is falsy.
+         */
+        applyDefaultIfNotObject: function(value, defaultValue) {
+            if(!value || value instanceof Array || typeof value !== 'object') {
+                return defaultValue;
+            } else {
+                return value;
+            }
+        },
+
+        /**
+         * Returns the default value if the input value is not an array.
+         * @module app.core.utils
+         * @method applyDefaultIfNotString
+         * @param {Object/String/Number} value The value to check for
+         *          falsiness/truthiness
+         * @param {String} defaultValue The default value to use
+         *          if the input value is falsy.
+         */
+        applyDefaultIfNotArray: function(value, defaultValue) {
+            if(!(value instanceof Array)) {
+                return defaultValue;
+            } else {
+                return value;
+            }
         }
     };
 } ];

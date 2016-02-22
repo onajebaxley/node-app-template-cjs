@@ -31,6 +31,8 @@ describe('[app.core.utils]', function() {
                 expect(service.applyDefault).and.to.be.a('function');
                 expect(service.applyDefaultIfNotString).and.to.be.a('function');
                 expect(service.applyDefaultIfNotNumber).and.to.be.a('function');
+                expect(service.applyDefaultIfNotObject).and.to.be.a('function');
+                expect(service.applyDefaultIfNotArray).and.to.be.a('function');
             });
         });
 
@@ -157,6 +159,54 @@ describe('[app.core.utils]', function() {
                 doTest(123, undefined);
                 doTest(456, undefined);
                 doTest(0, undefined);
+            });
+        });
+
+        describe('applyDefaultIfNotObject()', function() {
+            it('should return the default value if the value is not an object', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotObject(value, defaultValue)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest(1234, defaultValue);
+                doTest('abc', defaultValue);
+                doTest(true, defaultValue);
+                doTest([], defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the input value if the value is an object', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotObject(value, defaultValue)).to.equal(value);
+                }
+
+                doTest({}, undefined);
+                doTest({ foo: 'bar' }, undefined);
+            });
+        });
+
+        describe('applyDefaultIfNotArray()', function() {
+            it('should return the default value if the value is not an array', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotArray(value, defaultValue)).to.equal(defaultValue);
+                }
+
+                var defaultValue = 'default';
+                doTest(1234, defaultValue);
+                doTest('abc', defaultValue);
+                doTest(true, defaultValue);
+                doTest({}, defaultValue);
+                doTest(function() {}, defaultValue);
+            });
+
+            it('should return the input value if the value is an array', function() {
+                function doTest(value, defaultValue) {
+                    expect(service.applyDefaultIfNotArray(value, defaultValue)).to.equal(value);
+                }
+
+                doTest([], undefined);
+                doTest([1,2,3], undefined);
             });
         });
     });
