@@ -57,7 +57,7 @@ describe('CommonHandlerProvider', function() {
             expect(next).to.have.been.calledOnce;
         });
 
-        it('should not set the username or user variables if the request session is not defined', function() {
+        it('should not set the username variable if the request session is not defined', function() {
             var provider = new CommonHandlerProvider();
             var handler = provider.injectUserResponseLocals();
             var username = 'jdoe';
@@ -69,7 +69,6 @@ describe('CommonHandlerProvider', function() {
 
             handler(req, res, next);
             expect(res.locals.rv_username).to.be.undefined;
-            expect(res.locals.rv_user).to.be.undefined;
         });
 
         it('should set a username variable if the request session is defined', function() {
@@ -86,13 +85,13 @@ describe('CommonHandlerProvider', function() {
             expect(res.locals.rv_username).to.equal(username);
         });
 
-        it('should set a user variable if the request session is defined', function() {
+        it('should set a user variable if the request object defines the user object', function() {
             var provider = new CommonHandlerProvider();
             var handler = provider.injectUserResponseLocals();
             var user = new User('jdoe');
 
             var req = _expressMocks.getMockReq();
-            req.session = { user: user };
+            req.user = user;
             var res = _expressMocks.getMockRes();
             var next = _sinon.spy();
 
