@@ -183,7 +183,7 @@ module.exports = {
      * @param {Object} res The HTTP response object
      * @param {Object} next A method that invokes the next handler in the chain
      */
-    checkUserSession: function(req, rep, next) {
+    checkUserSession: function(req, res, next) {
         var logger = _logger.getLogger();
         if (req.session.isNew || !req._passport || !req._passport.session || !req._passport.session.user) {
             logger.warn('No user session detected');
