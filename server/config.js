@@ -71,7 +71,7 @@ function _getApplicationConfig(appName) {
     // to have the desired effect.
     appName = appName.replace(/-/g, '_');
     return _rc(appName, {
-        title: 'Template App',
+        title: 'template app',
         port: 3000,
         rootPath: '/',
         proxyPresent: false,
