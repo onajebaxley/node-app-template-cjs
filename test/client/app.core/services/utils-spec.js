@@ -182,7 +182,9 @@ describe('[app.core.utils]', function() {
                 }
 
                 doTest({}, undefined);
-                doTest({ foo: 'bar' }, undefined);
+                doTest({
+                    foo: 'bar'
+                }, undefined);
             });
         });
 
@@ -206,7 +208,7 @@ describe('[app.core.utils]', function() {
                 }
 
                 doTest([], undefined);
-                doTest([1,2,3], undefined);
+                doTest([1, 2, 3], undefined);
             });
         });
     });

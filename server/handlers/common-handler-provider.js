@@ -27,7 +27,7 @@ function CommonHandlerProvider() {
  */
 CommonHandlerProvider.prototype.injectUserResponseLocals = function() {
     return function(req, res, next) {
-        if(req.session) {
+        if (req.session) {
             res.locals.rv_username = req.session.username;
         }
         res.locals.rv_user = req.user;

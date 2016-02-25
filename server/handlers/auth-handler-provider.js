@@ -64,7 +64,7 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
 
         if (user) {
             req.logOut();
-            if(req.session) {
+            if (req.session) {
                 // Remove the username from the session
                 delete req.session.username;
             }
@@ -116,7 +116,7 @@ AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
                     next(err);
                     return;
                 }
-                if(req.session) {
+                if (req.session) {
                     // Add the username to the session
                     req.session.username = user.username;
                 }

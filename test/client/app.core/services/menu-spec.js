@@ -102,6 +102,7 @@ describe('app.core.menu: ', function() {
     describe('[ctor]', function() {
         it('should throw an error if invoked without a valid menu options object', function() {
             var error = 'Invalid menu options specified (arg #1)';
+
             function invokeMethod(options) {
                 return function() {
                     return new Service(options);
@@ -134,7 +135,7 @@ describe('app.core.menu: ', function() {
             expect(invokeMethod('')).to.throw(error);
             expect(invokeMethod(123)).to.throw(error);
             expect(invokeMethod(true)).to.throw(error);
-            expect(invokeMethod({ })).to.throw(error);
+            expect(invokeMethod({})).to.throw(error);
             expect(invokeMethod([])).to.throw(error);
             expect(invokeMethod(function() {})).to.throw(error);
         });
@@ -419,4 +420,3 @@ describe('app.core.menu: ', function() {
         });
     });
 });
-

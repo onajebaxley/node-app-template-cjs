@@ -49,7 +49,9 @@ describe('CommonHandlerProvider', function() {
             var handler = provider.injectUserResponseLocals();
 
             var req = _expressMocks.getMockReq();
-            req.session = { username: 'jdoe' };
+            req.session = {
+                username: 'jdoe'
+            };
             var res = _expressMocks.getMockRes();
             var next = _sinon.spy();
 
@@ -77,7 +79,9 @@ describe('CommonHandlerProvider', function() {
             var username = 'jdoe';
 
             var req = _expressMocks.getMockReq();
-            req.session = { username: username };
+            req.session = {
+                username: username
+            };
             var res = _expressMocks.getMockRes();
             var next = _sinon.spy();
 
