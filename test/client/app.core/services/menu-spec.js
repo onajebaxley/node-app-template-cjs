@@ -18,13 +18,13 @@ describe('app.core.menu: ', function() {
 
     var $stateMock = null;
     var userMock = null;
-    var service = null;
+    var Service = null;
 
     function _createDefaultMenu(options) {
         options = options || {
             title: 'menu1'
         };
-        return new service(options);
+        return new Service(options);
     }
 
     function _getHierarchicalOptions() {
@@ -90,12 +90,12 @@ describe('app.core.menu: ', function() {
         $provide.value('app.core.user', userMock);
     }]));
     beforeEach(inject(['app.core.menu', function(injectedService) {
-        service = injectedService;
+        Service = injectedService;
     }]));
 
     describe('[init]', function() {
         it('should define the necessary fields and methods', function() {
-            expect(service).to.be.a('function');
+            expect(Service).to.be.a('function');
         });
     });
 
@@ -104,7 +104,7 @@ describe('app.core.menu: ', function() {
             var error = 'Invalid menu options specified (arg #1)';
             function invokeMethod(options) {
                 return function() {
-                    return new service(options);
+                    return new Service(options);
                 };
             }
 
@@ -125,7 +125,7 @@ describe('app.core.menu: ', function() {
                     var options = {
                         title: title
                     };
-                    return new service(options);
+                    return new Service(options);
                 };
             }
 
@@ -142,7 +142,7 @@ describe('app.core.menu: ', function() {
         it('should return an object with required properties when invoked with valid options', function() {
             var title = 'menu1';
 
-            var menu = new service({
+            var menu = new Service({
                 title: title
             });
 
@@ -169,7 +169,7 @@ describe('app.core.menu: ', function() {
         it('should apply default values to the menu properties when none are specified via the menu options', function() {
             var title = 'menu1';
 
-            var menu = new service({
+            var menu = new Service({
                 title: title
             });
 
@@ -200,7 +200,7 @@ describe('app.core.menu: ', function() {
                 roles: ['admin', 'user']
             };
 
-            var menu = new service(options);
+            var menu = new Service(options);
 
             for (var prop in options) {
                 var propVal = options[prop];
@@ -228,7 +228,7 @@ describe('app.core.menu: ', function() {
                 }
             }
 
-            var menu = new service(options);
+            var menu = new Service(options);
             checkItemRecursive(menu, options);
         });
     });
@@ -285,7 +285,7 @@ describe('app.core.menu: ', function() {
                 title: title
             });
 
-            expect(ret).to.be.an.instanceof(service);
+            expect(ret).to.be.an.instanceof(Service);
         });
 
         it('should add the returned item to the items menu of the parent', function() {
