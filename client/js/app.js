@@ -38,9 +38,33 @@ angular.module(moduleName, [
 // Theme configuration
 .config(themes)
 
-.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav', 'app.core.user',
+.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav', '$mdMedia', 'app.core.user',
     function($scope, $mdSidenav, user) {
         $scope.user = user;
+
+        $scope.leftSidebarState = {
+            isPinned: true,
+            isExpanded: false,
+            isOpen: false
+        };
+        $scope.pin_icon = 'radio_button_checked';
+
+        $scope.expandLeftSidebar = function() {
+            $scope.leftSidebarState.isExpanded = true;
+        };
+
+        $scope.collapseLeftSidebar = function() {
+            $scope.leftSidebarState.isExpanded = false;
+        };
+
+        $scope.togglePinLeftSidebar = function() {
+            $scope.leftSidebarState.isPinned = !$scope.leftSidebarState.isPinned;
+            $scope.pin_icon = ($scope.leftSidebarState.isPinned)? 'radio_button_checked': 'radio_button_unchecked';
+        };
+
+        $scope.toggleOpenLeftSidebar = function() {
+            $scope.leftSidebarState.isOpen = !$scope.leftSidebarState.isOpen;
+        };
     }
 ])
 ;

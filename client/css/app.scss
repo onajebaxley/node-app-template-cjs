@@ -5,8 +5,19 @@
 @import 'angular-material';
 @import 'angular-material-icons';
 
+//@import 'print';
+@import 'typography';
+@import 'layout';
+@import 'sidebar-left';
+@import 'topbar';
+
 // Custom styles for the app
-@import 'custom';
+//@import 'custom';
 
 // Debugging styles
 @import 'debug';
+
+// set template font family
+button, select, html, textarea, input {
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+}

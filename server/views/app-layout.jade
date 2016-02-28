@@ -1,0 +1,54 @@
+extends layout
+
+block content
+	div.cs-full-height(flex layout='row' layout-fill)
+		md-sidenav.md-sidenav-left.md-whiteframe-z2.cs-sidebar-left(flex layout='column' md-is-open='leftSidebarState.isOpen' md-is-locked-open='$mdMedia("gt-sm")' ng-mouseover='expandLeftSidebar()' ng-mouseleave='collapseLeftSidebar()' ng-class='{ "cs-sidebar-expanded": leftSidebarState.isPinned || leftSidebarState.isExpanded }')
+			md-toolbar
+				div.md-toolbar-tools(layout='row' layout-align='start center')
+					div.cs-logo
+						md-icon(md-svg-icon='logo' style='width: 32px; height: 32px;')
+					h2.cs-title(flex) #{jv_app_title}
+					md-button.md-icon-button.cs-action(ng-click='togglePinLeftSidebar()' aria-label='pin menu bar open' show-gt-sm hide-sm hide-xs)
+						md-icon(md-font-set='material-icons') {{ (leftSidebarState.isPinned)? "radio_button_checked": "radio_button_unchecked"  }}
+			md-toolbar.md-accent
+				div.md-toolbar-tools.cs-menu-container(layout='column' layout-align='start center')
+					div.cs-menu-item(flex layout='row')
+						md-button(ng-href='#{jv_root_path}')
+							md-icon(flex md-font-set='material-icons') home
+							span home
+					div.cs-menu-item(flex layout='row')
+						md-button(ng-href='#{jv_root_path}app')
+							md-icon(flex md-font-set='material-icons') dashboard
+							span dashboard
+					div.cs-menu-item(flex layout='row')
+						md-button(ng-href='#{jv_root_path}about')
+							md-icon(flex md-font-set='material-icons') help
+							span about
+					div.cs-menu-item(flex layout='row')
+						md-button(ng-href='#{jv_root_path}auth/login')
+							md-icon(flex md-font-set='material-icons') person
+							span login
+		div(flex layout='column')
+			md-toolbar.cs-topbar
+				div.md-toolbar-tools
+					md-button.md-icon-button(ng-click='toggleOpenLeftSidebar()' aria-label='open left sidebar' hide-gt-sm show-sm show-xs)
+						md-icon(md-font-set='material-icons') menu
+					h2(flex hide-xs) foo > bar
+					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode')
+						md-icon(md-font-set='material-icons') {{ (leftSidebarState.isPinned)? "fullscreen": "fullscreen_exit"  }}
+					md-menu
+						md-button(ng-click='$mdOpenMenu' aria-label='open user menu')
+							img.cs-avatar(src='http://triangular.oxygenna.com/assets/images/avatars/avatar-5.png')
+							span John Doe
+						md-menu-content
+							md-menu-item
+								md-button(ng-href='#{jv_root_path}auth/logout')
+			//header
+			//	md-toolbar.cs-main-nav
+			//		md-button(ng-click='toggleOpenLeftSidebar()') Open
+			//	block header
+			//div(style='background-color: blue;') {{leftSidebarState.isOpen}}
+			//	md-button.md-icon-button(aria-label='pin menu bar open' show-gt-sm hide-sm hide-xs)
+			//		md-icon(md-font-set='material-icons' ng-if='leftSidebarState.isPinned') radio_button_checked
+			//		md-icon(md-font-set='material-icons' ng-if='!leftSidebarState.isPinned') radio_button_unchecked
+			block body

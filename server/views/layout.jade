@@ -18,8 +18,10 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.MasterLayoutContr
 			link(rel='stylesheet', href='#{jv_root_path}css/app.min.css?#{jv_app_version}')
 		else
 			link(rel='stylesheet', href='#{jv_root_path}css/app.css?#{jv_app_version}')
+		link(rel='stylesheet' href='//fonts.googleapis.com/css?family=RobotoDraft:100,100italic,300,300italic,400,500,700,900,400italic')
 	body
-		block content
+		div.cs-full-height
+			block content
 
 		if jv_use_minified === true
 			script(type='text/javascript', src='#{jv_root_path}js/app.min.js?#{jv_app_version}')

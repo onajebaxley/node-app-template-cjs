@@ -1,0 +1,14 @@
+// ============================================================================
+//  Core layout styles.
+// ============================================================================
+
+// Hide items while angularjs renders them.
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
+// Sets the height of an element to 100%
+.cs-full-height {
+    height: 100%;
+    box-sizing: border-box;
+}

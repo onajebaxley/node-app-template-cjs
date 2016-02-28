@@ -1,0 +1,18 @@
+// Rules for media Print
+@media print {
+    .md-sidenav, .md-fab {
+        display: none !important;
+    }
+
+    .md-content, #admin-panel {
+        overflow: visible;
+    }
+
+    .app-print-full {
+        page-break-inside: avoid;
+    }
+
+    .app-full-height {
+      height: auto;
+    }
+}

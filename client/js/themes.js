@@ -13,14 +13,13 @@ var console = require('console');
 module.exports = [ '$mdThemingProvider',
     function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('red', {
-                'default': '900'
+          .primaryPalette('blue-grey', {
+        //      'default': '500'
+          })
+            .accentPalette('pink', {
             })
-            .accentPalette('brown', {
-                'default': '500'
-            })
-            .warnPalette('amber')
-            //.backgroundPalette('grey')
+        //    .warnPalette('deep-orange')
+        //    //.backgroundPalette('grey')
             ;
 
         console.debug('Icons configured');

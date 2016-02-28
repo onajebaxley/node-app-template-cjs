@@ -1,0 +1,20 @@
+// ============================================================================
+//  Styles for the top bar of the page
+// ============================================================================
+
+.cs-topbar {
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.14);
+    z-index: 4;
+
+    .md-button {
+        height: 48px;
+    }
+
+    .cs-avatar {
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+}

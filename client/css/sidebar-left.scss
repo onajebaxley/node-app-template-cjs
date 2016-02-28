@@ -1,0 +1,147 @@
+// ============================================================================
+//  Styles for the left side bar of the page
+// ============================================================================
+$lsb_width_expanded: 260px;
+$lsb_width_collapsed: 48px;
+$lsb_menu_item_height: 48px;
+$lsb_default_transition: 0.3s;
+
+// Standard sidebar styles
+.cs-sidebar-left {
+    overflow-x:hidden;
+
+    // Default width of the sidebar - smaller than the default
+    // angular material settings.
+    width: $lsb_width_expanded;
+    min-width: $lsb_width_expanded;
+    max-width: $lsb_width_expanded;
+
+    .cs-toolbar {
+        box-shadow: 0px 1px 0px rgba(0,0,0,0.12);
+        z-index: 10;
+    }
+
+    // App logo default settings. The logo will appear small unless
+    // the menu is in expanded mode
+    .cs-logo {
+        flex-shrink: 0;
+        cursor: pointer;
+        svg, img {
+            transition: $lsb_default_transition;
+            width: 24px;
+            height: 24px;
+            max-height: 64px;
+            vertical-align: top;
+            margin-right: 6px;
+            transform: translateX(-6px);
+        }
+    }
+
+    // Application title text does not wrap.
+    .cs-title {
+        cursor: pointer;
+        padding-left: 5px;
+        white-space: nowrap;
+        transition: $lsb_default_transition;
+    }
+
+    // Action icon that shows to the right side of menu items
+    .cs-action {
+        md-icon {
+            padding: 5px 0px 0px 0px;
+            font-size: 14px;
+        }
+    }
+
+    // These settings override toolbar angular material's toolbar settings,
+    // allowing the toolbar to extend as more items are added to it.
+    .cs-menu-container {
+        padding: 0px;
+        max-height: 100% !important;
+        height: auto !important;
+    }
+
+    // Settings for a single menu item in the toolbar.
+    .cs-menu-item {
+        width: 100%;
+        height: $lsb_menu_item_height;
+        a {
+            width: 100%;
+            margin: 0px;
+            padding: 0px 10px;
+            text-align: left;
+        }
+        md-icon {
+            transition: $lsb_default_transition;
+            padding-left: 3px;
+            padding-bottom: 30px;
+            font-size: 18px;
+        }
+        span {
+            transition: $lsb_default_transition;
+            display: inline-block;
+            margin-left: 14px;
+            text-transform: none;
+            line-height: $lsb_menu_item_height;
+        }
+
+        // When the user hovers over the menu item, push the text
+        // out with some transition
+        &:hover, &:focus {
+            span {
+                transition: $lsb_default_transition;
+                transform: translateX(30px);
+            }
+        }
+    }
+}
+
+.cs-sidebar-left.md-locked-open {
+    // When locked open, default view is icon only. The sidebar has to
+    // be expanded to see both icon and text.
+    width: $lsb_width_collapsed;
+    min-width: $lsb_width_collapsed;
+    max-width: $lsb_width_collapsed;
+
+    transition: $lsb_default_transition;
+    -ms-overflow-style: none; /* ie fix for removing scrollbars */
+
+    // We need this setting here so that text is hidden when the sidebar is
+    // locked open, but is not expanded (i.e., it is in icon only mode), so
+    // that the title text is not visible.
+    .cs-title {
+        opacity: 0;
+    }
+
+    &.cs-sidebar-expanded {
+        // Increase the width of the sidebar from icon only to icon + text.
+        min-width: $lsb_width_expanded;
+        max-width: $lsb_width_expanded;
+
+        // Show the application title when expanded (only icon is visible
+        // when collapsed).
+        .cs-title {
+            opacity: 1;
+        }
+        
+        // Make logo bigger and adjust positioning so that it is aligned
+        // correctly.
+        .cs-logo {
+            svg, img {
+                width: 32px;
+                height: 32px;
+                max-height: 64px;
+                vertical-align: top;
+                margin-right: 8px;
+                transform: translateX(-8px);
+            }
+        }
+
+        // Make menu item icons bigger when expanded.
+        .cs-menu-item {
+            md-icon {
+                font-size: 24px;
+            }
+        }
+    }
+}
