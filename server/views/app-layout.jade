@@ -33,16 +33,21 @@ block content
 				div.md-toolbar-tools
 					md-button.md-icon-button(ng-click='toggleLayoutProperty("leftSidebar.isOpen")' aria-label='open left sidebar' hide-gt-sm show-sm show-xs)
 						md-icon(md-font-set='material-icons') menu
-					h2(flex hide-xs) foo > bar
+					h2(flex hide-xs)
+						span(ng-repeat='crumb in breadCrumbs')
+							span {{crumb}}
+							span(ng-if='!$last') &nbsp;/&nbsp;
 					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode')
 						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
-					md-menu
-						md-button(ng-click='$mdOpenMenu' aria-label='open user menu')
-							img.cs-avatar(src='http://triangular.oxygenna.com/assets/images/avatars/avatar-5.png')
-							span John Doe
+					md-menu(md-offset='0 48')
+						md-button(ng-click='$mdOpenMenu()' aria-label='open user menu')
+							img.cs-avatar(src='{{user.avatar}}')
+							span {{user.firstName}}
 						md-menu-content
 							md-menu-item
 								md-button(ng-href='#{jv_root_path}auth/logout' aria-label='log out')
+									md-icon(md-font-set='material-icons') exit_to_app
+									span Log out
 			//header
 			//	md-toolbar.cs-main-nav
 			//		md-button(ng-click='toggleOpenLeftSidebar()') Open
@@ -51,5 +56,5 @@ block content
 			//	md-button.md-icon-button(aria-label='pin menu bar open' show-gt-sm hide-sm hide-xs)
 			//		md-icon(md-font-set='material-icons' ng-if='_layout.leftSidebar.isPinned') radio_button_checked
 			//		md-icon(md-font-set='material-icons' ng-if='!_layout.leftSidebar.isPinned') radio_button_unchecked
-			div {{_layout.leftSidebar.isExpanded}}
+			div {{user}}
 			block body

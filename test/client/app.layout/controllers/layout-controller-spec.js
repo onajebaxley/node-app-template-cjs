@@ -20,6 +20,7 @@ describe('[app.auth.LayoutController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
+    var userMock = null;
     var DEFAULT_PROPERTIES = [ 'isFullScreen' ];
 
     function _getLocalStorageMock(isSupported, settings) {
@@ -112,11 +113,13 @@ describe('[app.auth.LayoutController]', function() {
             function(_$rootScope, _$controller) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
+                userMock = {};
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
-                    localStorageService: _getLocalStorageMock(false, {})
+                    localStorageService: _getLocalStorageMock(false, {}),
+                    'app.core.user': userMock
                 };
 
                 for (var mockName in mocks) {
@@ -132,6 +135,7 @@ describe('[app.auth.LayoutController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
+        userMock = null;
     });
 
     beforeEach(angular.mock.module(_module));
@@ -140,9 +144,12 @@ describe('[app.auth.LayoutController]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
             expect($scope).to.have.property('_layout').and.to.be.an('object');
+            expect($scope).to.have.property('_user').and.to.be.an('object');
             expect($scope).to.have.property('setLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleFullScreen').and.to.be.a('function');
+
+            expect($scope._user).to.equal(userMock);
         });
 
         it('should use settings sepcified via the config module to populate layout property values', function() {

@@ -10,9 +10,11 @@ var _screenfull = require('screenfull');
  *
  * @module app.auth.LayoutController
  */
-module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
-                    'localStorageService',
-    function($scope, config, utils, localStorage) {
+module.exports = [ '$scope', 'localStorageService', 'app.core.config',
+                    'app.core.user', 'app.core.utils',
+    function($scope, localStorage, config, user, utils ) {
+
+        $scope._user = user;
 
         var layoutConfig = utils.applyDefaultIfNotObject(config.get('layout'), {});
         $scope._layout = _clone(layoutConfig);
