@@ -20,6 +20,7 @@ var themes = require('./themes');
 var templates = require('./templates');
 var coreModule = require('./app.core');
 var authModule = require('./app.auth');
+var layoutModule = require('./app.layout');
 
 angular.module(moduleName, [
     templates,
@@ -38,7 +39,7 @@ angular.module(moduleName, [
 // Theme configuration
 .config(themes)
 
-.controller('app.layout.MasterLayoutController', [ '$scope', '$mdSidenav', '$mdMedia', 'app.core.user',
+.controller('app.layout.MasterLayoutController1', [ '$scope', '$mdSidenav', '$mdMedia', 'app.core.user',
     function($scope, $mdSidenav, user) {
         $scope.user = user;
 
