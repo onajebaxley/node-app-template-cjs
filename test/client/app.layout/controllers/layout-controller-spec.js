@@ -20,6 +20,7 @@ describe('[app.auth.LayoutController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
+    var DEFAULT_PROPERTIES = [ 'isFullScreen' ];
 
     function _getLocalStorageMock(isSupported, settings) {
         isSupported = !!isSupported;
@@ -53,6 +54,9 @@ describe('[app.auth.LayoutController]', function() {
                 yet: 'another'
             }
         };
+
+        layoutConfig.isFullScreen = !!layoutConfig.isFullScreen;
+
         var config = { layout: layoutConfig };
         return {
             get: function(prop) {
@@ -138,6 +142,7 @@ describe('[app.auth.LayoutController]', function() {
             expect($scope).to.have.property('_layout').and.to.be.an('object');
             expect($scope).to.have.property('setLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleLayoutProperty').and.to.be.a('function');
+            expect($scope).to.have.property('toggleFullScreen').and.to.be.a('function');
         });
 
         it('should use settings sepcified via the config module to populate layout property values', function() {
@@ -149,14 +154,14 @@ describe('[app.auth.LayoutController]', function() {
             expect($scope._layout).to.deep.equal(configMock.get('layout'));
         });
 
-        it('should set layout parameters to an empty object if the config module does not specify any defaults', function() {
+        it('should define a layout object with default properties if the config module does not specify any defaults', function() {
             var configMock = _getConfigMock({});
 
             _initController({
                 'app.core.config': configMock
             });
             expect($scope._layout).to.be.an('object');
-            expect($scope._layout).to.be.empty;
+            expect($scope._layout).to.have.property('isFullScreen').and.to.be.a('boolean');
         });
 
         it('should restore settings values from local storage if available', function() {
@@ -490,6 +495,9 @@ describe('[app.auth.LayoutController]', function() {
 
         it('should convert truthy values to a boolean false when toggled', function() {
             function testInvocation(property) {
+                if(DEFAULT_PROPERTIES.indexOf(property) >= 0) {
+                    return;
+                }
                 var oldValue = _getPropertyValue($scope._layout, property);
 
                 $scope.toggleLayoutProperty(property);
@@ -524,6 +532,9 @@ describe('[app.auth.LayoutController]', function() {
 
         it('should convert falsy values to a boolean true when toggled', function() {
             function testInvocation(property) {
+                if(DEFAULT_PROPERTIES.indexOf(property) >= 0) {
+                    return;
+                }
                 var oldValue = _getPropertyValue($scope._layout, property);
 
                 $scope.toggleLayoutProperty(property);
@@ -627,6 +638,7 @@ describe('[app.auth.LayoutController]', function() {
                 var newValue = _getPropertyValue($scope._layout, property);
                 expect(localStorageSpy).to.not.have.been.called;
             }
+
             var configMock = _getConfigMock();
             _initController({
                 'app.core.config': configMock,
@@ -638,6 +650,20 @@ describe('[app.auth.LayoutController]', function() {
                 var item = list[index];
                 testInvocation(item.name);
             }
+        });
+    });
+
+    describe('toggleFullScreen()', function() {
+        it('should toggle the value of the _layout.isFullScreen variable when invoked', function() {
+            _initController({ });
+
+            $scope._layout.isFullScreen = false;
+
+            $scope.toggleFullScreen();
+            expect($scope._layout.isFullScreen).to.be.true;
+
+            $scope.toggleFullScreen();
+            expect($scope._layout.isFullScreen).to.be.false;
         });
     });
 

@@ -35,7 +35,7 @@ block content
 						md-icon(md-font-set='material-icons') menu
 					h2(flex hide-xs) foo > bar
 					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode')
-						md-icon(md-font-set='material-icons') {{ (isFullScreen)? "fullscreen": "fullscreen_exit"  }}
+						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
 					md-menu
 						md-button(ng-click='$mdOpenMenu' aria-label='open user menu')
 							img.cs-avatar(src='http://triangular.oxygenna.com/assets/images/avatars/avatar-5.png')

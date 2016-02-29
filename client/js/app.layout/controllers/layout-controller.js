@@ -1,6 +1,7 @@
 'use strict';
 
 var _clone = require('clone');
+var _screenfull = require('screenfull');
 
 /**
  * Global layout controller for the entire page. Allows child controllers to update
@@ -15,6 +16,9 @@ module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
 
         var layoutConfig = utils.applyDefaultIfNotObject(config.get('layout'), {});
         $scope._layout = _clone(layoutConfig);
+
+        // Default properties required by the controller
+        $scope._layout.isFullScreen = !!$scope._layout.isFullScreen;
 
         _restoreLocalStorageSettings();
 
@@ -76,6 +80,23 @@ module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
                 localStorage.set(storageKey, result.parent[result.propertyName]);
             }
         };
+
+        /**
+         * Toggles fullscreen mode on the page. In addition to toggling
+         * fullscreen mode a scope variable is also updated
+         * (_layout.isFullScreen), and can be used to display appropriate
+         * visual cues for the user.
+         *
+         * @module app.layout.LayoutController
+         * @method toggleFullScreen
+         */
+        $scope.toggleFullScreen = function() {
+            $scope._layout.isFullScreen = !$scope._layout.isFullScreen;
+            //Note: There is no easy way to test this functionality at the moment.
+            if(_screenfull.enabled) {
+                _screenfull.toggle();
+            }
+        }
 
         // --------------------------------------------------------------------
         // Private members
