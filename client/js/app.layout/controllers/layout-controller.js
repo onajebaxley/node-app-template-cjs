@@ -7,7 +7,7 @@ var _clone = require('clone');
  * layout properties as necessary. Also supports the use of local storage to save
  * certain settings.
  *
- * @module app.auth.MasterLayoutController
+ * @module app.auth.LayoutController
  */
 module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
                     'localStorageService',
@@ -27,7 +27,7 @@ module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
          * element or directive, resulting in a DOM change when the property
          * changes value.
          *
-         * @module app.layout.MasterLayoutController
+         * @module app.layout.LayoutController
          * @method setLayoutProperty
          * @param {String} property The property to be set
          * @param {Object} value The value to set to the property
@@ -58,7 +58,7 @@ module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
          * element or directive, resulting in a DOM change when the property
          * changes value.
          *
-         * @module app.layout.MasterLayoutController
+         * @module app.layout.LayoutController
          * @method toggleLayoutProperty
          * @param {String} property The property to be toggled.
          * @param {Boolean} [persist=false] If set to true, persists the current

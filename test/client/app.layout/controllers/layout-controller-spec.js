@@ -14,7 +14,7 @@ var _ngMocks = require('angular-mocks');
 
 var _module = 'app.layout';
 
-describe('[app.auth.MasterLayoutController]', function() {
+describe('[app.auth.LayoutController]', function() {
     'use strict';
 
     var controller = null;
@@ -119,7 +119,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                     options[mockName] = mocks[mockName];
                 }
 
-                controller = _$controller('app.layout.MasterLayoutController', options);
+                controller = _$controller('app.layout.LayoutController', options);
             }
         ]);
     }

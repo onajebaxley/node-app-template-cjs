@@ -13,7 +13,7 @@ var localStorage = require('angular-local-storage');
  */
 var moduleName = 'app.layout';
 angular.module(moduleName, [ 'LocalStorageModule', 'app.core' ])
-    .controller('app.layout.MasterLayoutController', require('./controllers/master-layout-controller'))
+    .controller('app.layout.LayoutController', require('./controllers/layout-controller'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');
