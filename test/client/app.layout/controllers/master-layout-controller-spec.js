@@ -35,24 +35,31 @@ describe('[app.auth.MasterLayoutController]', function() {
         };
     }
 
-    function _getConfigMock() {
-        return {
-            layout: {
-                name: 'test-app',
-                description: 'test application',
-                firstGroup: {
-                    foo: 'bar',
-                    abc: 123,
-                    list: [1, 2, 3],
-                    nestedGroup: {
-                        nested: 'child',
-                        boolProp: true
-                    }
-                },
-                secondGroup: {
-                    bar: 'baz',
-                    yet: 'another'
+    function _getConfigMock(layoutConfig) {
+        layoutConfig = layoutConfig || {
+            name: 'test-app',
+            description: 'test application',
+            firstGroup: {
+                foo: 'bar',
+                abc: 123,
+                list: [1, 2, 3],
+                nestedGroup: {
+                    nested: 'child',
+                    boolProp: true
                 }
+            },
+            secondGroup: {
+                bar: 'baz',
+                yet: 'another'
+            }
+        };
+        var config = { layout: layoutConfig };
+        return {
+            get: function(prop) {
+                return config[prop];
+            },
+            set: function(prop, value) {
+                config[prop] = value;
             }
         };
     }
@@ -139,11 +146,11 @@ describe('[app.auth.MasterLayoutController]', function() {
             _initController({
                 'app.core.config': configMock
             });
-            expect($scope._layout).to.deep.equal(configMock.layout);
+            expect($scope._layout).to.deep.equal(configMock.get('layout'));
         });
 
         it('should set layout parameters to an empty object if the config module does not specify any defaults', function() {
-            var configMock = {};
+            var configMock = _getConfigMock({});
 
             _initController({
                 'app.core.config': configMock
@@ -213,7 +220,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            expect($scope._layout).to.deep.equal(configMock.layout);
+            expect($scope._layout).to.deep.equal(configMock.get('layout'));
         });
     });
 
@@ -269,7 +276,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -283,7 +290,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 var newValue = _getPropertyValue($scope._layout, property);
                 expect(newValue).to.equal(value);
             }
-            var configMock = {
+            var configMock = _getConfigMock({
                 layout: {
                     first: 'abc',
                     second: '123',
@@ -294,12 +301,12 @@ describe('[app.auth.MasterLayoutController]', function() {
                         third: function() {}
                     }
                 }
-            };
+            });
             _initController({
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name, item.name + ':' + item.value.toString());
@@ -327,7 +334,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name, item.name + ':' + item.value.toString());
@@ -354,7 +361,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name, item.name + ':' + item.value.toString());
@@ -382,7 +389,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name, item.name + ':' + item.value.toString());
@@ -442,7 +449,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -458,7 +465,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 var newValue = _getPropertyValue($scope._layout, property);
                 expect(newValue).to.equal(!oldValue);
             }
-            var configMock = {
+            var configMock = _getConfigMock({
                 layout: {
                     first: true,
                     second: false,
@@ -469,12 +476,12 @@ describe('[app.auth.MasterLayoutController]', function() {
                         third: true
                     }
                 }
-            };
+            });
             _initController({
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -493,7 +500,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 expect(oldValue).to.be.truthy;
                 expect(newValue).to.be.false;
             }
-            var configMock = {
+            var configMock = _getConfigMock({
                 layout: {
                     first: 'abc',
                     second: 123,
@@ -503,12 +510,12 @@ describe('[app.auth.MasterLayoutController]', function() {
                         second: function() {}
                     }
                 }
-            };
+            });
             _initController({
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -527,7 +534,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 expect(oldValue).to.be.falsy;
                 expect(newValue).to.be.true;
             }
-            var configMock = {
+            var configMock = _getConfigMock({
                 layout: {
                     first: null,
                     second: undefined,
@@ -537,12 +544,12 @@ describe('[app.auth.MasterLayoutController]', function() {
                         second: undefined
                     }
                 }
-            };
+            });
             _initController({
                 'app.core.config': configMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -571,7 +578,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -598,7 +605,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);
@@ -626,7 +633,7 @@ describe('[app.auth.MasterLayoutController]', function() {
                 localStorageService: localStorageMock
             });
 
-            var list = _flatten(configMock.layout);
+            var list = _flatten(configMock.get('layout'));
             for (var index = 0; index < list.length; index++) {
                 var item = list[index];
                 testInvocation(item.name);

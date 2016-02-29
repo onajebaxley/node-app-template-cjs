@@ -16,6 +16,7 @@ var moduleName = 'app';
 var routes = require('./routes');
 var icons = require('./icons');
 var themes = require('./themes');
+var layout = require('./layout');
 
 var templates = require('./templates');
 var coreModule = require('./app.core');
@@ -27,6 +28,7 @@ angular.module(moduleName, [
     'ngMaterial',
     'ui.router',
     coreModule,
+    layoutModule,
     authModule
 ])
 
@@ -39,16 +41,12 @@ angular.module(moduleName, [
 // Theme configuration
 .config(themes)
 
-.controller('app.layout.MasterLayoutController1', [ '$scope', '$mdSidenav', '$mdMedia', 'app.core.user',
+// Layout configuration
+.config(layout)
+
+.controller('app.layout.LeftSidebarController', [ '$scope', 'app.core.user',
     function($scope, $mdSidenav, user) {
         $scope.user = user;
-
-        $scope.leftSidebarState = {
-            isPinned: true,
-            isExpanded: false,
-            isOpen: false
-        };
-        $scope.pin_icon = 'radio_button_checked';
 
         $scope.expandLeftSidebar = function() {
             $scope.leftSidebarState.isExpanded = true;

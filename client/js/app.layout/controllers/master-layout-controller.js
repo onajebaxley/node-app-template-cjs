@@ -13,7 +13,7 @@ module.exports = [ '$scope', 'app.core.config', 'app.core.utils',
                     'localStorageService',
     function($scope, config, utils, localStorage) {
 
-        var layoutConfig = utils.applyDefaultIfNotObject(config.layout, {});
+        var layoutConfig = utils.applyDefaultIfNotObject(config.get('layout'), {});
         $scope._layout = _clone(layoutConfig);
 
         _restoreLocalStorageSettings();

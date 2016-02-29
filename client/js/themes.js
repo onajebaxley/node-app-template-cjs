@@ -14,14 +14,11 @@ module.exports = [ '$mdThemingProvider',
     function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
           .primaryPalette('blue-grey', {
-        //      'default': '500'
           })
-            .accentPalette('pink', {
-            })
-        //    .warnPalette('deep-orange')
-        //    //.backgroundPalette('grey')
-            ;
+          .accentPalette('pink', {
+          })
+          ;
 
-        console.debug('Icons configured');
+        console.debug('Themes configured');
     }
 ];
