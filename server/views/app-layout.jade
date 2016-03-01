@@ -41,7 +41,7 @@ block content
 						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
 					md-menu(md-offset='0 48')
 						md-button(ng-click='$mdOpenMenu()' aria-label='open user menu')
-							img.cs-avatar(src='{{_user.avatar}}')
+							img.cs-avatar(ng-src='{{_user.avatar}}')
 							span {{_user.firstName}}
 						md-menu-content
 							md-menu-item

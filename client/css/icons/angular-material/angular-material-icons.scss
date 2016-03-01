@@ -5,12 +5,17 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(./fonts/angular-material/MaterialIcons-Regular.eot); /* For IE6-8 */
+  /*
+   *  NOTE: These paths have to be related to the /css directory, because this
+   *        file is included in the app.scss file, which means that this file
+   *        will be loaded from /css
+   */
+  src: url(./icons/angular-material/fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
   src: local('Material Icons'),
        local('MaterialIcons-Regular'),
-       url(./fonts/angular-material/MaterialIcons-Regular.woff) format('woff'),
-       url(./fonts/angular-material/MaterialIcons-Regular.woff2) format('woff2'),
-       url(./fonts/angular-material/MaterialIcons-Regular.ttf) format('truetype');
+       url(./icons/angular-material/fonts/MaterialIcons-Regular.woff) format('woff'),
+       url(./icons/angular-material/fonts/MaterialIcons-Regular.woff2) format('woff2'),
+       url(./icons/angular-material/fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {

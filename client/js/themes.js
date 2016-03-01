@@ -13,11 +13,11 @@ var console = require('console');
 module.exports = [ '$mdThemingProvider',
     function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-          .primaryPalette('blue-grey', {
-          })
-          .accentPalette('pink', {
-          })
-          ;
+            .primaryPalette('blue-grey', {
+            })
+            .accentPalette('pink', {
+            })
+            ;
 
         console.debug('Themes configured');
     }

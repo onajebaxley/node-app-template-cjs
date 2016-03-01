@@ -15,6 +15,7 @@ module.exports = [ '$mdIconProvider', 'app.core.configProvider',
         var rootPath = configProvider.get('root_path', '/');
 
         $mdIconProvider
+            .iconSet('mdi', rootPath + 'css/icons/material-design-icons/mdi.svg')
             .icon('logo', rootPath + 'img/logo.svg')
             .icon('avatar', rootPath + 'img/user.svg');
 
