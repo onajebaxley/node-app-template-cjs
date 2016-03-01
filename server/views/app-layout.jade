@@ -12,22 +12,18 @@ block content
 						md-icon(md-font-set='material-icons') {{ (_layout.leftSidebar.isPinned)? "radio_button_checked": "radio_button_unchecked"  }}
 			md-toolbar.md-accent
 				div.md-toolbar-tools.cs-menu-container(layout='column' layout-align='start center')
-					div.cs-menu-item(flex layout='row')
+					div.cs-menu-item
 						md-button(ng-href='#{jv_root_path}')
 							md-icon(flex md-font-set='material-icons') home
 							span home
-					div.cs-menu-item(flex layout='row')
+					div.cs-menu-item
 						md-button(ng-href='#{jv_root_path}app')
 							md-icon(flex md-font-set='material-icons') dashboard
 							span dashboard
-					div.cs-menu-item(flex layout='row')
+					div.cs-menu-item
 						md-button(ng-href='#{jv_root_path}about')
 							md-icon(flex md-font-set='material-icons') help
 							span about
-					div.cs-menu-item(flex layout='row')
-						md-button(ng-href='#{jv_root_path}auth/login')
-							md-icon(flex md-font-set='material-icons') person
-							span login
 		div(flex layout='column')
 			md-toolbar.cs-topbar
 				div.md-toolbar-tools
