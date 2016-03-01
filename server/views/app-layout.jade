@@ -37,24 +37,15 @@ block content
 						span(ng-repeat='crumb in breadCrumbs')
 							span {{crumb}}
 							span(ng-if='!$last') &nbsp;/&nbsp;
-					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode')
+					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode' hide-xs)
 						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
 					md-menu(md-offset='0 48')
 						md-button(ng-click='$mdOpenMenu()' aria-label='open user menu')
-							img.cs-avatar(src='{{user.avatar}}')
-							span {{user.firstName}}
+							img.cs-avatar(src='{{_user.avatar}}')
+							span {{_user.firstName}}
 						md-menu-content
 							md-menu-item
 								md-button(ng-href='#{jv_root_path}auth/logout' aria-label='log out')
 									md-icon(md-font-set='material-icons') exit_to_app
 									span Log out
-			//header
-			//	md-toolbar.cs-main-nav
-			//		md-button(ng-click='toggleOpenLeftSidebar()') Open
-			//	block header
-			//div(style='background-color: blue;') {{_layout.leftSidebar.isOpen}}
-			//	md-button.md-icon-button(aria-label='pin menu bar open' show-gt-sm hide-sm hide-xs)
-			//		md-icon(md-font-set='material-icons' ng-if='_layout.leftSidebar.isPinned') radio_button_checked
-			//		md-icon(md-font-set='material-icons' ng-if='!_layout.leftSidebar.isPinned') radio_button_unchecked
-			div {{user}}
 			block body

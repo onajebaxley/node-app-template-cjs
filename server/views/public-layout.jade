@@ -1,43 +1,19 @@
 extends layout
 
 block content
-	div(layout='row' layout-fill)
-		md-sidenav.md-sidenav-left.md-whiteframe-z2(flex layout='column' md-is-open='showSidebar')
-			md-toolbar.app-side-nav
-				div.md-toolbar-tools-bottom(layout='column')
-					div.inset
-						md-icon(md-svg-icon='logo')
-						span.inset #{jv_app_title}
-					md-button(ng-href='#{jv_root_path}')
-						md-icon(md-font-set='material-icons') home
-						span.inset Home
-					md-button(ng-href='#{jv_root_path}app')
-						md-icon(md-font-set='material-icons') dashboard
-						span.inset Dashboard
-					md-button(ng-href='#{jv_root_path}about')
-						md-icon(md-font-set='material-icons') help
-						span.inset About
-					md-button(ng-href='#{jv_root_path}auth/login')
-						md-icon(md-font-set='material-icons') person
-						span.inset Login
-		div(flex)
-			header
-				md-toolbar.app-main-nav
-					div.md-toolbar-tools(layout-fill)
-						md-button(hide-gt-sm ng-click='showSidebar = !showSidebar')
-							md-icon(md-font-set='material-icons') menu
-						div.app-nav-header
-							md-button(ng-href='#{jv_root_path}')
-								md-icon(md-svg-icon='logo')
-								span.inset #{jv_app_title}
-						div
-							md-button(ng-href='#{jv_root_path}app' show-gt-sm hide-sm hide-xs) Dashboard
-							md-button(ng-href='#{jv_root_path}about' show-gt-sm hide-sm hide-xs) About
-						span(flex)
-						div
-							if !rv_username
-								md-button(ng-href='#{jv_root_path}auth/login' show-gt-xs hide-xs) Login
-							else
-								md-button(ng-href='#{jv_root_path}auth/logout' show-gt-xs hide-xs) Logout
-				block header
+	div.cs-full-height(flex layout='row' layout-fill)
+		div(flex layout='column')
+			md-toolbar.cs-topbar
+				div.md-toolbar-tools
+					div.cs-logo
+						md-icon(md-svg-icon='logo' style='width: 32px; height: 32px;')
+					h2.cs-title(flex) #{jv_app_title}
+					md-button(ng-href='#{jv_root_path}app' hide-xs)
+						span(hide-xs) Dashboard
+					md-button.md-icon-button(ng-href='#{jv_root_path}app' hide-gt-xs aria-label='go to dashboard')
+						md-icon(md-icon-set='material-icons') dashboard
+					md-button(ng-href='#{jv_root_path}app' hide-xs)
+						span(hide-xs) About
+					md-button.md-icon-button(ng-href='#{jv_root_path}app' hide-gt-xs aria-label='go to about page')
+						md-icon(md-icon-set='material-icons') help
 			block body
