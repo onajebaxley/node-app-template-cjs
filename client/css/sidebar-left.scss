@@ -25,6 +25,10 @@ $lsb_default_transition: 0.3s;
     // the menu is in expanded mode
     .cs-logo {
         flex-shrink: 0;
+        md-icon {
+            width: 32px;
+            height: 32px;
+        }
         svg, img {
             transition: $lsb_default_transition;
             width: 24px;

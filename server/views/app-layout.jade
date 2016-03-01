@@ -6,7 +6,7 @@ block content
 			md-toolbar
 				div.md-toolbar-tools(layout='row' layout-align='start center')
 					div.cs-logo
-						md-icon(md-svg-icon='logo' style='width: 32px; height: 32px;')
+						md-icon(md-svg-icon='logo')
 					h2.cs-title(flex) #{jv_app_title}
 					md-button.md-icon-button.cs-action(ng-click='toggleLayoutProperty("leftSidebar.isPinned", true)' aria-label='pin menu bar open' show-gt-sm hide-sm hide-xs)
 						md-icon(md-font-set='material-icons') {{ (_layout.leftSidebar.isPinned)? "radio_button_checked": "radio_button_unchecked"  }}
