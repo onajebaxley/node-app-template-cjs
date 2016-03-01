@@ -2,15 +2,19 @@ extends layout
 
 block content
 	div(layout='row' layout-fill)
-		section(layout='column' flex layout-align='center center')
-			md-card.app-focus-box.md-whiteframe-10dp
+		div(layout='row' flex layout-align='center center')
+			md-card.md-whiteframe-4dp(flex flex-lg='80' flex-md='80' flex-sm='80' flex-xs='100')
 				md-toolbar
 					div(layout='column' layout-padding layout-align='center center')
 						md-button.md-headline.md-padding(ng-href='#{jv_root_path}')
 							md-icon(md-svg-icon='logo')
 							span.md-padding #{jv_app_title}
 				md-card-content.md-padding(layout-align='center center')
-					div.md-display-1.app-text-center(flex layout-padding) #{code}
-					div.md-body-2.app-text-center(flex) #{primaryMessage}
-					div.md-body-1.app-text-center.app-text-error(flex) #{errorInfo}
-					div.md-body-1.app-text-center(flex style='min-height: 50px') #{secondaryMessage}
+					div.md-display-1(flex layout-padding) #{code}
+					div.md-body-2(flex) #{primaryMessage}
+					div.md-body-1(flex) #{errorInfo}
+					div.md-body-1(flex style='min-height: 50px') #{secondaryMessage}
+					div(flex layout='row' layout-alig='center center')
+						md-button(ng-href='#{jv_root_path}')
+							md-icon(flex md-font-set='material-icons') home
+							span &nbsp; home
