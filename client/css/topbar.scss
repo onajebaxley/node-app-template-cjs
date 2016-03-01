@@ -21,6 +21,17 @@
         margin-right: 8px;
     }
 
+    .cs-logo {
+        md-icon {
+            width: 32px;
+            height: 32px;
+        }
+        svg, img {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
     .cs-title {
         padding-left: 10px;
     }
