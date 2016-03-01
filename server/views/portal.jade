@@ -1,14 +1,22 @@
 extends public-layout
 
-block header
-//	div.app-banner(style='background-image: url("#{jv_root_path}img/banner-red.jpg")')
-//		div(layout='column' layout-fill layout-padding layout-align='center')
-//			div
-//				h1 NodeJS Web Application Template
-//				h2 Express + Browserify + Angular Material
 block body
-//	article(layout-padding layout-margin)
-//		div(layout='column' layout-gt-sm='row')
-//			div(flex='33') Foo
-//			div(flex='33') Bar
-//			div(flex='33') Baz {{user}}
+	div.cs-banner(style='background-image: url("#{jv_root_path}img/banner-pink.jpg")')
+		div(layout='column' layout-fill layout-padding layout-align='center')
+			div
+				h1 NodeJS Web Application Template
+				h2 Express + Browserify + Angular Material
+	article(layout-padding layout-margin)
+		div(layout='column' layout-gt-sm='row')
+			div(flex='33') 
+				h3 NodeJs
+				p
+					| NodeJs Web Application with framework for authentication
+			div(flex='33')
+				h3 AngularJs + Material Design
+				p
+					| NodeJs Web Application with framework for authentication
+			div(flex='33')
+				h3 Browserify
+				p
+					| NodeJs Web Application with framework for authentication

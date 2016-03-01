@@ -12,3 +12,22 @@
     height: 100%;
     box-sizing: border-box;
 }
+
+.cs-banner {
+    width: 100%;
+    height: 375px;
+    background-position: center center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+
+    div {
+        text-align: center;
+        vertical-align: middle;
+
+        md-icon {
+            font-size: 48px !important;
+        }
+    }
+}
