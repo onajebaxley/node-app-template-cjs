@@ -4,11 +4,12 @@ block content
 	div(layout='row' layout-fill ng-controller='app.auth.LoginController')
 		div(layout='column' flex layout-align='center center')
 			md-card.md-whiteframe-4dp.cs-focus-box
-				md-toolbar
-					div(layout='column' layout-padding layout-align='center center')
-						md-button.md-headline.md-padding(ng-href='#{jv_root_path}')
-							md-icon(md-svg-icon='logo')
-							span.md-padding #{jv_app_title}
+				md-toolbar.cs-topbar
+					div.md-toolbar-tools
+						div.cs-title(flex style='text-align: center')
+							md-button(ng-href='#{jv_root_path}')
+								md-icon(md-svg-icon='logo')
+								span.md-title.md-padding #{jv_app_title}
 				md-card-content.md-padding
 					form(name='loginForm' method='post' action='#{jv_root_path}auth/login')
 						md-input-container.md-block

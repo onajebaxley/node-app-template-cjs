@@ -5,9 +5,13 @@ block content
 		div(flex layout='column')
 			md-toolbar.cs-topbar
 				div.md-toolbar-tools
-					div.cs-logo
-						md-icon(md-svg-icon='logo')
-					h2.cs-title(flex) #{jv_app_title}
+					div.cs-title(flex)
+						md-button(ng-href='#{jv_root_path}')
+							md-icon(md-svg-icon='logo')
+							span.md-title.md-padding #{jv_app_title}
+					//div.cs-logo
+					//	md-icon(md-svg-icon='logo')
+					//h2.cs-title(flex) #{jv_app_title}
 					md-button.md-accent(ng-href='#{jv_root_path}' hide-xs)
 						span(hide-xs) Home
 					md-button.md-icon-button(ng-href='#{jv_root_path}' hide-gt-xs aria-label='go to about page')

@@ -21,18 +21,22 @@
         margin-right: 8px;
     }
 
-    .cs-logo {
+    .cs-title {
+        height: 48px;
+        min-height: auto !important;
+
         md-icon {
             width: 32px;
             height: 32px;
-        }
-        svg, img {
-            width: 32px;
-            height: 32px;
-        }
-    }
 
-    .cs-title {
-        padding-left: 10px;
+            svg, img {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        span {
+            text-transform: none;
+        }
     }
 }

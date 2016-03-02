@@ -4,11 +4,12 @@ block content
 	div(layout='row' layout-fill)
 		div(layout='row' flex layout-align='center center')
 			md-card.md-whiteframe-4dp(flex flex-lg='80' flex-md='80' flex-sm='80' flex-xs='100')
-				md-toolbar
-					div(layout='column' layout-padding layout-align='center center')
-						md-button.md-headline.md-padding(ng-href='#{jv_root_path}')
-							md-icon(md-svg-icon='logo')
-							span.md-padding #{jv_app_title}
+				md-toolbar.cs-topbar
+					div.md-toolbar-tools
+						div.cs-title(flex)
+							md-button(ng-href='#{jv_root_path}')
+								md-icon(md-svg-icon='logo')
+								span.md-title.md-padding #{jv_app_title}
 				md-card-content.md-padding(layout-align='center center')
 					div.md-display-1(flex layout-padding) #{code}
 					div.md-body-2(flex) #{primaryMessage}
