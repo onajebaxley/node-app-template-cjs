@@ -32,7 +32,7 @@ module.exports = {
         router.use(_session.getSessionHandler());
         router.use(commanHandler.injectUserResponseLocals());
 
-        router.get('/', routesHandler.portalPageHandler());
+        router.get('/', routesHandler.homePageHandler());
         router.get('/about', routesHandler.aboutPageHandler());
         router.get('/__status', routesHandler.appStatusHandler());
 

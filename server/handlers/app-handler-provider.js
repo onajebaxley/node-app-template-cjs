@@ -26,7 +26,7 @@ function AppHandlerProvider() {
  */
 AppHandlerProvider.prototype.homePageHandler = function() {
     return function(req, res, next) {
-        res.render('home', {});
+        res.render('dashboard', {});
     }.bind(this);
 };
 

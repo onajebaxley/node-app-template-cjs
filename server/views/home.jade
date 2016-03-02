@@ -1,17 +1,22 @@
-extends app-layout
-block header
+extends public-layout
+
 block body
-//block content
-	//md-sidenav.md-sidenav-left.md-whiteframe-z2(layout='column' md-component-id='left-nav' md-is-locked-open='$mdMedia("gt-md")')
-	//	md-toolbar.md-hue-2
-	//		div.md-toolbar-tools-bottom.inset(layout='column')
-	//			div.inset
-	//				md-icon.app-avatar-large(md-svg-icon='avatar')
-	//			div.inset Firstname Lastname
-	//	md-list
-	//		md-item
-	//			a
-	//				md-item-content(md-ink-ripple layout='row' layout-align='start center')
-	//					div.inset
-	//						md-icon(md-font-set='material-icons') dashboard
-	//					div.inset Dashboard
+	div.cs-banner(style='background-image: url("#{jv_root_path}img/banner-pink-2.jpg")')
+		div(layout='column' layout-fill layout-padding layout-align='center')
+			div
+				h1 NodeJS Web Application Template
+				h2 Express + Browserify + Angular Material
+	article(layout-padding layout-margin)
+		div(layout='column' layout-gt-sm='row')
+			div(flex='33') 
+				h3 NodeJs
+				p
+					| NodeJs Web Application with framework for authentication
+			div(flex='33')
+				h3 AngularJs + Material Design
+				p
+					| NodeJs Web Application with framework for authentication
+			div(flex='33')
+				h3 Browserify
+				p
+					| NodeJs Web Application with framework for authentication

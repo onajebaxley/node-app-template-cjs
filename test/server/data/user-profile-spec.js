@@ -20,36 +20,42 @@ describe('server.data.UserProfile', function() {
         firstName: 'Peter',
         lastName: 'Parker',
         title: 'Spiderman',
+        avatar: 'http://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg',
         roles: ['superhero', 'reporter']
     }, {
         username: 'todinson',
         firstName: 'Thor',
         lastName: 'Odinson',
         title: 'Thor',
+        avatar: 'http://x.annihil.us/u/prod/marvel/i/mg/5/a0/537bc7036ab02/standard_xlarge.jpg',
         roles: ['superhero', 'demigod']
     }, {
         username: 'tstark',
         firstName: 'Tony',
         lastName: 'Stark',
         title: 'Iron Man',
+        avatar: 'http://i.annihil.us/u/prod/marvel/i/mg/6/a0/55b6a25e654e6/standard_xlarge.jpg',
         roles: ['superhero', 'engineer']
     }, {
         username: 'nosborne',
         firstName: 'Norman',
         lastName: 'Osborne',
         title: 'Green Goblin',
+        avatar: 'http://i.annihil.us/u/prod/marvel/i/mg/f/40/538cf0c2acdd9/standard_xlarge.jpg',
         roles: ['villain', 'businessman']
     }, {
         username: 'llaufeyson',
         firstName: 'Loki',
         lastName: 'Laufeyson',
         title: 'Loki',
+        avatar: 'http://i.annihil.us/u/prod/marvel/i/mg/9/50/537bb3780cfd2/standard_xlarge.jpg',
         roles: ['villain', 'demigod']
     }, {
         username: 'vvdoom',
         firstName: 'Victor',
         lastName: 'Von Doom',
         title: 'Dr. Doom',
+        avatar: 'http://x.annihil.us/u/prod/marvel/i/mg/3/60/53176bb096d17/standard_xlarge.jpg',
         roles: ['villain', 'engineer']
     }];
     var VALID_USERDATA = USER_LIST[0];

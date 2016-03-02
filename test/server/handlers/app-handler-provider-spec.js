@@ -52,7 +52,7 @@ describe('AppHandlerProvider', function() {
             handler(req, res, next);
 
             expect(res.render).to.have.been.calledOnce;
-            expect(res.render.args[0][0]).to.equal('home');
+            expect(res.render.args[0][0]).to.equal('dashboard');
             expect(res.render.args[0][1]).to.deep.equal({});
         });
     });
