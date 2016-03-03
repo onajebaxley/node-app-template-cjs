@@ -14,6 +14,7 @@ var moduleName = 'app.data';
 angular.module(moduleName, [ ])
     .factory('app.data.RestDataSource', require('./services/rest-data-source'))
     .factory('app.data.TimeSeriesFormatter', require('./services/time-series-formatter'))
+    .factory('app.data.Poller', require('./services/poller'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');
