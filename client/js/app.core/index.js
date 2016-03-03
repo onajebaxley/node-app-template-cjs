@@ -14,7 +14,7 @@ angular.module(moduleName, [ ])
     .provider('app.core.config', require('./services/config'))
     .provider('app.core.user', require('./services/user'))
     .factory('app.core.utils', require('./services/utils'))
-    .factory('app.core.menu', require('./services/menu'))
+    .factory('app.core.MenuItem', require('./services/menu-item'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');

@@ -13,12 +13,8 @@ _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
 
-describe('app.core.menu: ', function() {
+describe('[app.core.MenuItem]', function() {
     'use strict';
-
-    var $stateMock = null;
-    var userMock = null;
-    var Service = null;
 
     function _createDefaultMenu(options) {
         options = options || {
@@ -61,7 +57,6 @@ describe('app.core.menu: ', function() {
             }]
         };
     }
-
     beforeEach(function() {
         $stateMock = {
             __url: '',
@@ -84,12 +79,16 @@ describe('app.core.menu: ', function() {
         };
     });
 
+    var $stateMock = null;
+    var userMock = null;
+    var Service = null;
+
     beforeEach(angular.mock.module(_module));
     beforeEach(angular.mock.module(['$provide', function($provide) {
         $provide.value('$state', $stateMock);
         $provide.value('app.core.user', userMock);
     }]));
-    beforeEach(inject(['app.core.menu', function(injectedService) {
+    beforeEach(inject(['app.core.MenuItem', function(injectedService) {
         Service = injectedService;
     }]));
 

@@ -12,6 +12,7 @@ var angular = require('angular');
  */
 var moduleName = 'app.data';
 angular.module(moduleName, [ ])
+    .factory('app.data.RestDataSource', require('./services/rest-data-source'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');

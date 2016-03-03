@@ -20,14 +20,16 @@ var layout = require('./layout');
 
 var templates = require('./templates');
 var coreModule = require('./app.core');
-var authModule = require('./app.auth');
 var layoutModule = require('./app.layout');
+var dataModule = require('./app.data');
+var authModule = require('./app.auth');
 
 angular.module(moduleName, [
     templates,
     'ngMaterial',
     'ui.router',
     coreModule,
+    dataModule,
     layoutModule,
     authModule
 ])
