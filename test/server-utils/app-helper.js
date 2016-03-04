@@ -6,13 +6,13 @@ var _sinon = require('sinon');
 /**
  * Test helper for the core app
  *
- * @module test.utils.appHelper
+ * @module test.serverUtils.appHelper
  */
 module.exports = {
     /**
      * Returns a mock app object, which is a mock of the express object.
      *
-     * @module test.utils.appHelper
+     * @module test.serverUtils.appHelper
      * @method getMockApp
      * @param {Object} [appKeys={}] An optional hash of keys that the app will
      *          use when responding to app.get() calls.

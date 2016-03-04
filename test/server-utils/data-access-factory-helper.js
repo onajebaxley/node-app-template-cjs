@@ -9,14 +9,14 @@ var _rewire = require('rewire');
 /**
  * Test helper for the data access factory module
  *
- * @module test.utils.dataAccessFactoryHelper
+ * @module test.serverUtils.dataAccessFactoryHelper
  */
 module.exports = {
 
     /**
      * Initializes actual data access factory module with dummy parameters.
      *
-     * @module test.utils.dataAccessFactoryHelper
+     * @module test.serverUtils.dataAccessFactoryHelper
      * @method initDataAccessFactory
      * @param {Boolean} [configure=false] If set to true, automatically
      *          configures the logger with an empty app.

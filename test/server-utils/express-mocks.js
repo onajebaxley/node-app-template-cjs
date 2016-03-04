@@ -9,14 +9,14 @@ var MockRes = require('mock-res');
  * Module that exposes mock request/response objects for testing expressjs
  * handlers.
  *
- * @module test.utils.expressMocks
+ * @module test.serverUtils.expressMocks
  */
 module.exports = {
 
     /**
      * Gets a mock of the express library.
      *
-     * @module test.utils.expressMocks
+     * @module test.serverUtils.expressMocks
      * @return {Object} A mock express object
      */
     getMockExpress: function() {
@@ -37,7 +37,7 @@ module.exports = {
      * Gets a mock request object with additional methods that mock those
      * provided by expressjs.
      *
-     * @module test.utils.expressMocks
+     * @module test.serverUtils.expressMocks
      * @return {Object} A mock response object.
      */
     getMockReq: function() {
@@ -51,7 +51,7 @@ module.exports = {
      * Gets a mock response object with additional methods that mock those
      * provided by expressjs.
      *
-     * @module test.utils.expressMocks
+     * @module test.serverUtils.expressMocks
      * @return {Object} A mock response object.
      */
     getMockRes: function() {

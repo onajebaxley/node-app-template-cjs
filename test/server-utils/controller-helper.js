@@ -6,14 +6,14 @@ var _sinon = require('sinon');
 /**
  * Test helper for testing angularjs controllers
  *
- * @module test.utils.controllerHelper
+ * @module test.serverUtils.controllerHelper
  */
 module.exports = {
     /**
      * Creates a fuction that can be used to inject a controller into the
      * test framework.
      *
-     * @module test.utils.controllerHelper
+     * @module test.serverUtils.controllerHelper
      * @method injectController
      * @param {String} controllerName The name of the controller to inject.
      * @param {Object} [mocks={}] An optional hash of mocks that contain mock

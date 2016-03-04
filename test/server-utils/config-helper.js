@@ -4,15 +4,15 @@
 var _originalConfig = null;
 
 /**
- * Test helper for the config module
+ * Test helper for the server config module
  *
- * @module test.utils.configHelper
+ * @module test.serverUtils.configHelper
  */
 module.exports = {
     /**
      * Injects mock configuration information into the GLOBAL object
      *
-     * @module test.utils.configHelper
+     * @module test.serverUtils.configHelper
      * @method setConfig
      * @param {String} key The configuration parameter key
      * @param {Object} value The value of the configuration parameter
@@ -29,7 +29,7 @@ module.exports = {
      * Deletes a configuration key, or all configuration keys from the
      * GLOBAL object.
      *
-     * @module test.utils.configHelper
+     * @module test.serverUtils.configHelper
      * @method deleteConfig
      * @param {String} [key] An optional key to delete. If omitted, all
      *          keys will be deleted.
@@ -54,7 +54,7 @@ module.exports = {
      * Restores the original config information if it has been previously
      * overridden.
      *
-     * @module test.utils.configHelper
+     * @module test.serverUtils.configHelper
      * @method restoreConfig
      */
     restoreConfig: function() {

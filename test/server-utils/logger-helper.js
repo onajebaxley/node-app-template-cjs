@@ -9,14 +9,14 @@ var _rewire = require('rewire');
 /**
  * Test helper for the logger module
  *
- * @module test.utils.loggerHelper
+ * @module test.serverUtils.loggerHelper
  */
 module.exports = {
 
     /**
      * Initializes the actual logger module with dummy parameters.
      *
-     * @module test.utils.loggerHelper
+     * @module test.serverUtils.loggerHelper
      * @method initLogger
      * @param {Boolean} [configure=false] If set to true, automatically
      *          configures the logger with an empty app.
@@ -39,7 +39,7 @@ module.exports = {
     /**
      * Initializes a mock winston logger module.
      *
-     * @module test.utils.loggerHelper
+     * @module test.serverUtils.loggerHelper
      * @method getWinstonMock
      * @return {Object} A mock logger module that can be injected into other
      *          modules.
