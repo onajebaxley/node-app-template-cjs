@@ -342,7 +342,7 @@ module.exports = function(grunt) {
                     removeScriptTypeAttributes: true,
                     removeStyleLinkTypeAttributes: true
                 },
-                // Wrap the compiled templates in an AMD wrapper.
+                // Wrap the compiled templates in a common JS wrapper
                 bootstrap: function(module, script) {
                     return '\'use strict\';\n' +
                             'var angular = require(\'angular\');\n' +
