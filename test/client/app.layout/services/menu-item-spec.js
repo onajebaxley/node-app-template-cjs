@@ -7,13 +7,13 @@ var _chai = require('chai');
 var _sinon = require('sinon');
 var _sinonChai = require('sinon-chai');
 var _chaiAsPromised = require('chai-as-promised');
-var _module = 'app.core';
+var _module = 'app.layout';
 
 _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
 
-describe('[app.core.MenuItem]', function() {
+describe('[app.layout.MenuItem]', function() {
     'use strict';
 
     var $stateMock = null;
@@ -88,7 +88,7 @@ describe('[app.core.MenuItem]', function() {
         $provide.value('$state', $stateMock);
         $provide.value('app.core.user', userMock);
     }]));
-    beforeEach(inject(['app.core.MenuItem', function(injectedService) {
+    beforeEach(inject(['app.layout.MenuItem', function(injectedService) {
         Service = injectedService;
     }]));
 

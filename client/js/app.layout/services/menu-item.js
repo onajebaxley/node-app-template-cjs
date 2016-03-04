@@ -24,7 +24,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
       *  - iconName: The name of the svg icon to use
       *  - roles: An array of roles for which the menu will be displayed. Defaults to ['*']
       *
-      * @module app.core.MenuItem
+      * @module app.layout.MenuItem
       * @class MenuItem
       * @constructor
       * @constructor 
@@ -61,7 +61,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
     /**
      * Adds a child item to the current menu item.
      *
-     * @module app.core.MenuItem
+     * @module app.layout.MenuItem
      * @class MenuItem
      * @method addChildItem
      * @param {Object} item A hash that defines the menu item, or a previously
@@ -80,7 +80,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
     /**
      * Clears all child items from the current menu item.
      *
-     * @module app.core.MenuItem
+     * @module app.layout.MenuItem
      * @class MenuItem
      * @method clearChildItems
      */
@@ -92,7 +92,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
      * Determines whether or not the menu item can be rendered for the current
      * user.
      * 
-     * @module app.core.MenuItem
+     * @module app.layout.MenuItem
      * @class MenuItem
      * @method canRender
      * @return {Boolean} True if the item can be shown to the user, false
@@ -120,7 +120,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
      * leverages ui route information if specified, and if not, defaults to the
      * link value of the item.
      *
-     * @module app.core.MenuItem
+     * @module app.layout.MenuItem
      * @class MenuItem
      * @method getLink
      * @return {String} A string hyperlink that can be used when rendering the

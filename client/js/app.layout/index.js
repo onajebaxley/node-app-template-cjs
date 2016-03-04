@@ -13,6 +13,7 @@ var localStorage = require('angular-local-storage');
  */
 var moduleName = 'app.layout';
 angular.module(moduleName, [ 'LocalStorageModule', 'app.core' ])
+    .factory('app.layout.MenuItem', require('./services/menu-item'))
     .controller('app.layout.LayoutController', require('./controllers/layout-controller'))
     ;
 

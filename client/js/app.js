@@ -46,26 +46,9 @@ angular.module(moduleName, [
 // Layout configuration
 .config(layout)
 
-.controller('app.layout.LeftSidebarController', [ '$scope', 'app.core.user',
-    function($scope, $mdSidenav, user) {
-        $scope.user = user;
+.controller('app.layout.LeftSidebarController', [ '$scope',
+    function($scope) {
 
-        $scope.expandLeftSidebar = function() {
-            $scope.leftSidebarState.isExpanded = true;
-        };
-
-        $scope.collapseLeftSidebar = function() {
-            $scope.leftSidebarState.isExpanded = false;
-        };
-
-        $scope.togglePinLeftSidebar = function() {
-            $scope.leftSidebarState.isPinned = !$scope.leftSidebarState.isPinned;
-            $scope.pin_icon = ($scope.leftSidebarState.isPinned)? 'radio_button_checked': 'radio_button_unchecked';
-        };
-
-        $scope.toggleOpenLeftSidebar = function() {
-            $scope.leftSidebarState.isOpen = !$scope.leftSidebarState.isOpen;
-        };
     }
 ])
 ;
