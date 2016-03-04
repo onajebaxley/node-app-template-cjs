@@ -21,7 +21,7 @@ describe('[app.auth.LayoutController]', function() {
     var $rootScope = null;
     var $scope = null;
     var userMock = null;
-    var DEFAULT_PROPERTIES = [ 'isFullScreen' ];
+    var DEFAULT_PROPERTIES = ['isFullScreen'];
 
     function _getLocalStorageMock(isSupported, settings) {
         isSupported = !!isSupported;
@@ -58,7 +58,9 @@ describe('[app.auth.LayoutController]', function() {
 
         layoutConfig.isFullScreen = !!layoutConfig.isFullScreen;
 
-        var config = { layout: layoutConfig };
+        var config = {
+            layout: layoutConfig
+        };
         return {
             get: function(prop) {
                 return config[prop];
@@ -502,7 +504,7 @@ describe('[app.auth.LayoutController]', function() {
 
         it('should convert truthy values to a boolean false when toggled', function() {
             function testInvocation(property) {
-                if(DEFAULT_PROPERTIES.indexOf(property) >= 0) {
+                if (DEFAULT_PROPERTIES.indexOf(property) >= 0) {
                     return;
                 }
                 var oldValue = _getPropertyValue($scope._layout, property);
@@ -539,7 +541,7 @@ describe('[app.auth.LayoutController]', function() {
 
         it('should convert falsy values to a boolean true when toggled', function() {
             function testInvocation(property) {
-                if(DEFAULT_PROPERTIES.indexOf(property) >= 0) {
+                if (DEFAULT_PROPERTIES.indexOf(property) >= 0) {
                     return;
                 }
                 var oldValue = _getPropertyValue($scope._layout, property);
@@ -662,7 +664,7 @@ describe('[app.auth.LayoutController]', function() {
 
     describe('toggleFullScreen()', function() {
         it('should toggle the value of the _layout.isFullScreen variable when invoked', function() {
-            _initController({ });
+            _initController({});
 
             $scope._layout.isFullScreen = false;
 

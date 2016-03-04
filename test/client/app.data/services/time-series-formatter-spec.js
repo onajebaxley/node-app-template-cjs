@@ -30,8 +30,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
     }
 
     beforeEach(angular.mock.module(_module));
-    beforeEach(angular.mock.module(['$provide', function($provide) {
-    }]));
+    beforeEach(angular.mock.module(['$provide', function($provide) {}]));
     beforeEach(inject(['app.data.TimeSeriesFormatter', function(injectedService) {
         Service = injectedService;
     }]));
