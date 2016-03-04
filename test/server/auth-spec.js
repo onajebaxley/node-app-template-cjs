@@ -14,11 +14,11 @@ var User = require('../../server/lib/user');
 var InvalidSessionError = require('../../server/lib/invalid-session-error');
 var _assertionHelper = require('wysknd-test').assertionHelper;
 
-var _appHelper = require('../utils/app-helper');
-var _configHelper = require('../utils/config-helper');
-var _loggerHelper = require('../utils/logger-helper');
-var _dataAccessFactoryHelper = require('../utils/data-access-factory-helper');
-var _expressMocks = require('../utils/express-mocks');
+var _appHelper = require('../server-utils/app-helper');
+var _configHelper = require('../server-utils/config-helper');
+var _loggerHelper = require('../server-utils/logger-helper');
+var _dataAccessFactoryHelper = require('../server-utils/data-access-factory-helper');
+var _expressMocks = require('../server-utils/express-mocks');
 var _auth = null;
 
 describe('[server.auth]', function() {

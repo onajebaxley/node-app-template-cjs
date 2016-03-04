@@ -10,7 +10,7 @@ _chai.use(require('chai-as-promised'));
 
 var expect = require('chai').expect;
 
-var HttpHelper = require('../utils/http-helper');
+var HttpHelper = require('../server-utils/http-helper');
 var _packageJson = require('../../package.json');
 var _config = require('../config');
 

@@ -9,9 +9,9 @@ _chai.use(require('chai-as-promised'));
 var expect = require('chai').expect;
 var _rewire = require('rewire');
 
-var _appHelper = require('../utils/app-helper');
-var _configHelper = require('../utils/config-helper');
-var _loggerHelper = require('../utils/logger-helper');
+var _appHelper = require('../server-utils/app-helper');
+var _configHelper = require('../server-utils/config-helper');
+var _loggerHelper = require('../server-utils/logger-helper');
 var _session = null;
 
 describe('[server.session]', function() {
