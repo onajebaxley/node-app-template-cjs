@@ -20,7 +20,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
       *  - routeState: The state value of the link (if ui router is being used). Defaults to ''
       *  - routeParams: Parameters used to generate the ui route. Defaults to {}
       *  - link: A hyperlink to a resource (non ui router). Defaults to '#'
-      *  - fontSet: The font set to use when rendering a font based svg icon. Defaults to 'angular-material'
+      *  - fontSet: The font set to use when rendering a font based svg icon. Defaults to 'material-icons'
       *  - iconName: The name of the svg icon to use
       *  - roles: An array of roles for which the menu will be displayed. Defaults to ['*']
       *
@@ -45,7 +45,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
         this.routeState = utils.applyDefaultIfNotString(options.routeState, '', true);
         this.routeParams = utils.applyDefaultIfNotObject(options.routeParams, {});
         this.link = utils.applyDefaultIfNotString(options.link, '#');
-        this.fontSet = utils.applyDefaultIfNotString(options.fontSet, 'angular-material');
+        this.fontSet = utils.applyDefaultIfNotString(options.fontSet, 'material-icons');
         this.iconName = utils.applyDefaultIfNotString(options.iconName, '');
         this.roles = utils.applyDefaultIfNotArray(options.roles, [ '*' ]);
         this.childItems = [];

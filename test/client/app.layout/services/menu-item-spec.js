@@ -179,7 +179,7 @@ describe('[app.layout.MenuItem]', function() {
             expect(menu.routeParams).to.deep.equal({});
             expect(menu.link).to.equal('#');
 
-            expect(menu.fontSet).to.equal('angular-material');
+            expect(menu.fontSet).to.equal('material-icons');
             expect(menu.iconName).to.equal('');
 
             expect(menu.roles).to.deep.equal(['*']);
