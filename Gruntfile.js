@@ -64,7 +64,8 @@ var HELP_TEXT =
 '                       cannot be combined with any other task, and will run     \n' +
 '                       individually.                                            \n' +
 '                                                                                \n' +
-'   jshint:dev        : Executes jshint against all source files.                \n' +
+'   lint              : Executes jshint against all source files.                \n' +
+'   pretty            : Beautifies all javascript files in the project.          \n' +
 '                                                                                \n' +
 '   build:[debugMode] : Builds all of the source files and deploys the results   \n' +
 '                       to the build folder. If the "debugMode" sub target is    \n' +
@@ -875,4 +876,14 @@ module.exports = function(grunt) {
             grunt.log.writeln(HELP_TEXT);
         }
     );
+
+    /**
+     * Alias for the jsbeautifier task.
+     */
+    grunt.registerTask('pretty', [ 'jsbeautifier:dev' ]);
+
+    /**
+     * Alias for the jshint task.
+     */
+    grunt.registerTask('lint', [ 'jshint:dev' ]);
 };
