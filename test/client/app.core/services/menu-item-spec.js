@@ -16,6 +16,10 @@ var expect = _chai.expect;
 describe('[app.core.MenuItem]', function() {
     'use strict';
 
+    var $stateMock = null;
+    var userMock = null;
+    var Service = null;
+
     function _createDefaultMenu(options) {
         options = options || {
             title: 'menu1'
@@ -78,10 +82,6 @@ describe('[app.core.MenuItem]', function() {
             }
         };
     });
-
-    var $stateMock = null;
-    var userMock = null;
-    var Service = null;
 
     beforeEach(angular.mock.module(_module));
     beforeEach(angular.mock.module(['$provide', function($provide) {

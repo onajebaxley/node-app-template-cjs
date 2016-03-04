@@ -21,14 +21,6 @@ describe('[app.data.pollerManager]', function() {
     var service = null;
     var $interval = null;
 
-    function _createPoller(mocks) {
-        mocks = mocks || {};
-        mocks.id = mocks.id || DEFAULT_ID;
-        mocks.dataSource = mocks.dataSource || _getDataSourceMock();
-
-        return service.initPoller(mocks.id, mocks.dataSource);
-    }
-
     function _getDataSourceMock(errorMessage) {
         var dataSource = {
             serverFetch: function() {},
@@ -50,6 +42,14 @@ describe('[app.data.pollerManager]', function() {
             return promise;
         });
         return dataSource;
+    }
+
+    function _createPoller(mocks) {
+        mocks = mocks || {};
+        mocks.id = mocks.id || DEFAULT_ID;
+        mocks.dataSource = mocks.dataSource || _getDataSourceMock();
+
+        return service.initPoller(mocks.id, mocks.dataSource);
     }
 
     beforeEach(angular.mock.module(_module));

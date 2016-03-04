@@ -17,6 +17,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
     'use strict';
 
     var BASE_TIMESTAMP = 1436796000000;
+    var Service = null;
 
     function _createFormatter(options) {
         options = options || {};
@@ -27,8 +28,6 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
         return new Service(options);
     }
-
-    var Service = null;
 
     beforeEach(angular.mock.module(_module));
     beforeEach(angular.mock.module(['$provide', function($provide) {

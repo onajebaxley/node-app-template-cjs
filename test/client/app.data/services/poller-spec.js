@@ -17,6 +17,8 @@ describe('[app.data.Poller]', function() {
     'use strict';
 
     var DEFAULT_ID = 'poller_1';
+    var Service = null;
+    var $intervalMock = null;
 
     function _initIntervalMock() {
         var cancelHandle = {};
@@ -57,9 +59,6 @@ describe('[app.data.Poller]', function() {
 
         return new Service(mocks.id, mocks.dataSource);
     }
-
-    var Service = null;
-    var $intervalMock = null;
 
     beforeEach(function() {
         $intervalMock = _initIntervalMock();
