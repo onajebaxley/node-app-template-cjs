@@ -5,18 +5,38 @@ block body
 		div(layout='column' layout-fill layout-padding layout-align='center')
 			div
 				h1 NodeJS Web Application Template
-				h2 Express + Browserify + Angular Material
+				h2 Express + Angular Material + Browserify
 	article(layout-padding layout-margin)
 		div(layout='column' layout-gt-sm='row')
 			div(flex='33') 
-				h3 NodeJs
+				h3 Express (Jade Templates) + Passport
 				p
-					| NodeJs Web Application with framework for authentication
+					| Server infrastructure leverages ExpressJs as the web server
+					| with the Jade templating engine. Authentication is provided using
+					| Passport.
+				p
+					| Project template structure provides all the basic scaffolding
+					| that enables rapid production grade application development.
+				p
+					| Server side tests have been developed using mocha and chai,
+					| and all server modules have been tested with both unit tests 
+					| and http tests (to test API and authentication behavior).
 			div(flex='33')
-				h3 AngularJs + Material Design
+				h3 Angular Material + Browserify + SCSS
 				p
-					| NodeJs Web Application with framework for authentication
+					| Client side code has been developed using AngularJs and Angular Material.
+					| Project structure allows for development of modular javascript code
+					| for the client that is compiled into a single javascript payload using
+					| browserify.
+				p
+					| Stylesheets are developed as .scss files that are dynamically compiled into
+					| .css files when running in development mode, or can be pre compiled into
+					| minified .css files when packaging for deployment.
 			div(flex='33')
-				h3 Browserify
+				h3 Grunt
 				p
-					| NodeJs Web Application with framework for authentication
+					| An extensively documented Gruntfile provides core project tasks including:
+					ul
+						li Testing - client, server, e2e
+						li Linting and beautifying
+						li Packaging for deployment
