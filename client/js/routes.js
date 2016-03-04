@@ -19,7 +19,7 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
         // Application routes
         stateProvider.state('home', {
             url: '/',
-            templateUrl: '/views/portal-view.html'
+            templateUrl: '/views/dashboard-home-view.html'
         });
 
         console.debug('Routes configured');

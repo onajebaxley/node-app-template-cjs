@@ -65,7 +65,7 @@ describe('[app.routes]', function() {
 
             _checkRouteSetup(module, stateProvider, 1, 'home', {
                 url: '/',
-                templateUrl: '/views/portal-view.html'
+                templateUrl: '/views/dashboard-home-view.html'
             });
         });
     });
