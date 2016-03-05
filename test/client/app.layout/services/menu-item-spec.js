@@ -12,6 +12,7 @@ var _module = 'app.layout';
 _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
+var _mockHelper = require('../../../client-utils/mock-helper');
 
 describe('[app.layout.MenuItem]', function() {
     'use strict';
@@ -61,26 +62,11 @@ describe('[app.layout.MenuItem]', function() {
             }]
         };
     }
+
     beforeEach(function() {
-        $stateMock = {
-            __url: '',
-            href: function() {}
-        };
+        $stateMock = _mockHelper.createUiRouterStateMock();
 
-        _sinon.stub($stateMock, 'href', function(state, params) {
-            return $stateMock.__url;
-        });
-
-        userMock = {
-            _isLoggedIn: false,
-            _roles: [],
-            hasRole: function(role) {
-                return userMock._roles.indexOf(role.toLowerCase()) >= 0;
-            },
-            isLoggedIn: function() {
-                return userMock._isLoggedIn;
-            }
-        };
+        userMock = _mockHelper.createUserMock();
     });
 
     beforeEach(angular.mock.module(_module));

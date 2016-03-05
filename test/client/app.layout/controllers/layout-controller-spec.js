@@ -11,6 +11,7 @@ var expect = _chai.expect;
 
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
+var _mockHelper = require('../../../client-utils/mock-helper');
 
 var _module = 'app.layout';
 
@@ -22,20 +23,6 @@ describe('[app.auth.LayoutController]', function() {
     var $scope = null;
     var userMock = null;
     var DEFAULT_PROPERTIES = ['isFullScreen'];
-
-    function _getLocalStorageMock(isSupported, settings) {
-        isSupported = !!isSupported;
-        settings = settings || {};
-        return {
-            isSupported: isSupported,
-            get: function(key) {
-                return settings[key];
-            },
-            set: function(key, value) {
-                settings[key] = value;
-            }
-        };
-    }
 
     function _getConfigMock(layoutConfig) {
         layoutConfig = layoutConfig || {
@@ -58,17 +45,9 @@ describe('[app.auth.LayoutController]', function() {
 
         layoutConfig.isFullScreen = !!layoutConfig.isFullScreen;
 
-        var config = {
+        return _mockHelper.createConfigMock({
             layout: layoutConfig
-        };
-        return {
-            get: function(prop) {
-                return config[prop];
-            },
-            set: function(prop, value) {
-                config[prop] = value;
-            }
-        };
+        });
     }
 
     function _flatten(map, prefix) {
@@ -115,12 +94,12 @@ describe('[app.auth.LayoutController]', function() {
             function(_$rootScope, _$controller) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
-                userMock = {};
+                userMock = _mockHelper.createUserMock();
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
-                    localStorageService: _getLocalStorageMock(false, {}),
+                    localStorageService: _mockHelper.createLocalStorageMock(false, {}),
                     'app.core.user': userMock
                 };
 
@@ -190,7 +169,7 @@ describe('[app.auth.LayoutController]', function() {
 
                 '_layout.doesNotExist': 'does not exist'
             };
-            var localStorageMock = _getLocalStorageMock(true, expectedSettings);
+            var localStorageMock = _mockHelper.createLocalStorageMock(true, expectedSettings);
 
             _initController({
                 'app.core.config': configMock,
@@ -228,7 +207,7 @@ describe('[app.auth.LayoutController]', function() {
                 '_layout.doesNotExist': 'does not exist'
             };
 
-            var localStorageMock = _getLocalStorageMock(false, expectedSettings);
+            var localStorageMock = _mockHelper.createLocalStorageMock(false, expectedSettings);
             _initController({
                 'app.core.config': configMock,
                 localStorageService: localStorageMock
@@ -328,7 +307,7 @@ describe('[app.auth.LayoutController]', function() {
         });
 
         it('should persist values to local storage if the persist flag is set to true', function() {
-            var localStorageMock = _getLocalStorageMock(true);
+            var localStorageMock = _mockHelper.createLocalStorageMock(true);
             var localStorageSpy = _sinon.stub(localStorageMock, 'set');
 
             function testInvocation(property, value) {
@@ -356,7 +335,7 @@ describe('[app.auth.LayoutController]', function() {
         });
 
         it('should not persist values to a local storage if the persist flag is omitted or set to false', function() {
-            var localStorageMock = _getLocalStorageMock(true);
+            var localStorageMock = _mockHelper.createLocalStorageMock(true);
             var localStorageSpy = _sinon.spy(localStorageMock, 'set');
 
             function testInvocation(property, value, flag) {
@@ -384,7 +363,7 @@ describe('[app.auth.LayoutController]', function() {
         });
 
         it('should not persist values to local storage if the persist flag is set to true, but local storage is not supported', function() {
-            var localStorageMock = _getLocalStorageMock(false);
+            var localStorageMock = _mockHelper.createLocalStorageMock(false);
             var localStorageSpy = _sinon.stub(localStorageMock, 'set');
 
             function testInvocation(property, value) {
@@ -578,7 +557,7 @@ describe('[app.auth.LayoutController]', function() {
 
 
         it('should persist values to local storage if the persist flag is set to true', function() {
-            var localStorageMock = _getLocalStorageMock(true);
+            var localStorageMock = _mockHelper.createLocalStorageMock(true);
             var localStorageSpy = _sinon.stub(localStorageMock, 'set');
 
             function testInvocation(property) {
@@ -606,7 +585,7 @@ describe('[app.auth.LayoutController]', function() {
         });
 
         it('should not persist values to a local storage if the persist flag is omitted or set to false', function() {
-            var localStorageMock = _getLocalStorageMock(true);
+            var localStorageMock = _mockHelper.createLocalStorageMock(true);
             var localStorageSpy = _sinon.spy(localStorageMock, 'set');
 
             function testInvocation(property, flag) {
@@ -634,7 +613,7 @@ describe('[app.auth.LayoutController]', function() {
         });
 
         it('should not persist values to local storage if the persist flag is set to true, but local storage is not supported', function() {
-            var localStorageMock = _getLocalStorageMock(false);
+            var localStorageMock = _mockHelper.createLocalStorageMock(false);
             var localStorageSpy = _sinon.stub(localStorageMock, 'set');
 
             function testInvocation(property) {

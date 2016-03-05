@@ -12,7 +12,7 @@ var expect = _chai.expect;
 var _layout = require('../../client/js/layout');
 
 
-describe('[app.themes]', function() {
+describe('[app.layout]', function() {
     'use strict';
 
     describe('[init]', function() {
