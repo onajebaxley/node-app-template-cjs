@@ -11,6 +11,7 @@ var expect = _chai.expect;
 
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
+var _mockHelper = require('../../../client-utils/mock-helper');
 
 var _module = 'app.layout';
 
@@ -20,69 +21,20 @@ describe('[app.auth.LeftSidebarController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
-    var userMock = null;
-    var DEFAULT_PROPERTIES = ['isFullScreen'];
-
-    function _getLocalStorageMock(isSupported, settings) {
-        isSupported = !!isSupported;
-        settings = settings || {};
-        return {
-            isSupported: isSupported,
-            get: function(key) {
-                return settings[key];
-            },
-            set: function(key, value) {
-                settings[key] = value;
-            }
-        };
-    }
-
-    function _getConfigMock(layoutConfig) {
-        layoutConfig = layoutConfig || {
-            name: 'test-app',
-            description: 'test application',
-            firstGroup: {
-                foo: 'bar',
-                abc: 123,
-                list: [1, 2, 3],
-                nestedGroup: {
-                    nested: 'child',
-                    boolProp: true
-                }
-            },
-            secondGroup: {
-                bar: 'baz',
-                yet: 'another'
-            }
-        };
-
-        layoutConfig.isFullScreen = !!layoutConfig.isFullScreen;
-
-        var config = {
-            layout: layoutConfig
-        };
-        return {
-            get: function(prop) {
-                return config[prop];
-            },
-            set: function(prop, value) {
-                config[prop] = value;
-            }
-        };
-    }
 
     function _initController(mocks) {
         mocks = mocks || {};
 
-        inject(['$rootScope', '$controller',
-            function(_$rootScope, _$controller) {
+        inject(['$rootScope', '$controller', 'app.layout.MenuItem',
+            function(_$rootScope, _$controller, MenuItem) {
+                console.log(MenuItem);
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
-                userMock = {};
 
                 var options = {
                     $rootScope: _$rootScope,
-                    $scope: $scope
+                    $scope: $scope,
+                    'app.layout.MenuItem': MenuItem
                 };
 
                 for (var mockName in mocks) {
@@ -102,99 +54,14 @@ describe('[app.auth.LeftSidebarController]', function() {
 
     beforeEach(angular.mock.module(_module));
 
-    xdescribe('[init]', function() {
+    beforeEach(angular.mock.module(['$provide', function($provide) {
+        $provide.value('app.core.user', _mockHelper.createUserMock());
+    }]));
+
+    describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
-            expect($scope).to.have.property('_layout').and.to.be.an('object');
-            expect($scope).to.have.property('_user').and.to.be.an('object');
-            expect($scope).to.have.property('setLayoutProperty').and.to.be.a('function');
-            expect($scope).to.have.property('toggleLayoutProperty').and.to.be.a('function');
-            expect($scope).to.have.property('toggleFullScreen').and.to.be.a('function');
-
-            expect($scope._user).to.equal(userMock);
-        });
-
-        it('should use settings sepcified via the config module to populate layout property values', function() {
-            var configMock = _getConfigMock();
-
-            _initController({
-                'app.core.config': configMock
-            });
-            expect($scope._layout).to.deep.equal(configMock.get('layout'));
-        });
-
-        it('should define a layout object with default properties if the config module does not specify any defaults', function() {
-            var configMock = _getConfigMock({});
-
-            _initController({
-                'app.core.config': configMock
-            });
-            expect($scope._layout).to.be.an('object');
-            expect($scope._layout).to.have.property('isFullScreen').and.to.be.a('boolean');
-        });
-
-        it('should restore settings values from local storage if available', function() {
-            var configMock = _getConfigMock();
-            var expectedSettings = {
-                '_layout.name': 'new name',
-                '_layout.description': 'new description',
-
-                '_layout.firstGroup.foo': 'not bar',
-                '_layout.firstGroup.abc': 456,
-                '_layout.firstGroup.list': [4, 5, 6],
-                '_layout.firstGroup.nestedGroup.nested': 'different child',
-                '_layout.firstGroup.nestedGroup.boolProp': false,
-
-                '_layout.secondGroup.bar': 'not baz',
-                '_layout.secondGroup.yet': 'something else',
-
-                '_layout.doesNotExist': 'does not exist'
-            };
-            var localStorageMock = _getLocalStorageMock(true, expectedSettings);
-
-            _initController({
-                'app.core.config': configMock,
-                localStorageService: localStorageMock
-            });
-
-            expect($scope._layout.firstGroup.foo).to.equal(expectedSettings['_layout.firstGroup.foo']);
-            expect($scope._layout.firstGroup.abc).to.equal(expectedSettings['_layout.firstGroup.abc']);
-            expect($scope._layout.firstGroup.list).to.deep.equal(expectedSettings['_layout.firstGroup.list']);
-            expect($scope._layout.firstGroup.nestedGroup.nested).to.equal(expectedSettings['_layout.firstGroup.nestedGroup.nested']);
-            expect($scope._layout.firstGroup.nestedGroup.boolProp).to.equal(expectedSettings['_layout.firstGroup.nestedGroup.boolProp']);
-
-            expect($scope._layout.secondGroup.bar).to.equal(expectedSettings['_layout.secondGroup.bar']);
-            expect($scope._layout.secondGroup.yet).to.equal(expectedSettings['_layout.secondGroup.yet']);
-
-            // Make sure that additional local stroage properties are not added to the scope.
-            expect($scope._layout).to.not.have.property('_layout.doesNotExist');
-        });
-
-        it('should not attempt to restore values from local storage if local storage is not supported', function() {
-            var configMock = _getConfigMock();
-            var expectedSettings = {
-                '_layout.name': 'new name',
-                '_layout.description': 'new description',
-
-                '_layout.firstGroup.foo': 'not bar',
-                '_layout.firstGroup.abc': 456,
-                '_layout.firstGroup.list': [4, 5, 6],
-                '_layout.firstGroup.nestedGroup.nested': 'different child',
-                '_layout.firstGroup.nestedGroup.boolProp': false,
-
-                '_layout.secondGroup.bar': 'not baz',
-                '_layout.secondGroup.yet': 'something else',
-
-                '_layout.doesNotExist': 'does not exist'
-            };
-
-            var localStorageMock = _getLocalStorageMock(false, expectedSettings);
-            _initController({
-                'app.core.config': configMock,
-                localStorageService: localStorageMock
-            });
-
-            expect($scope._layout).to.deep.equal(configMock.get('layout'));
+            expect($scope).to.have.property('menu').and.to.be.an('object');
         });
     });
 

@@ -65,15 +65,16 @@ describe('[app.layout.MenuItem]', function() {
 
     beforeEach(function() {
         $stateMock = _mockHelper.createUiRouterStateMock();
-
         userMock = _mockHelper.createUserMock();
     });
 
     beforeEach(angular.mock.module(_module));
+
     beforeEach(angular.mock.module(['$provide', function($provide) {
         $provide.value('$state', $stateMock);
         $provide.value('app.core.user', userMock);
     }]));
+
     beforeEach(inject(['app.layout.MenuItem', function(injectedService) {
         Service = injectedService;
     }]));
