@@ -46,14 +46,14 @@ angular.module(moduleName, [
 // Layout configuration
 .config(layout)
 
-.controller('app.layout.LeftSidebarController', [ '$scope', 'app.layout.MenuItem',
-    function($scope, MenuItem) {
-        $scope.menu = new MenuItem({
-            title: '__sidebarMenu',
-            childItems: [ ]
-        });
-    }
-])
+//.controller('app.layout.LeftSidebarController', [ '$scope', 'app.layout.MenuItem',
+//    function($scope, MenuItem) {
+//        $scope.menu = new MenuItem({
+//            title: '__sidebarMenu',
+//            childItems: [ ]
+//        });
+//    }
+//])
 ;
 
 //angular.bootstrap(document, [moduleName]);
