@@ -124,5 +124,108 @@ module.exports = {
         };
 
         return mock;
+    },
+
+    /**
+     * Creates a mock for angular js' $q service.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createQMock
+     * @return {Object} A mock object for the $q service
+     */
+    createQMock: function() {
+        var mock = function() {};
+        mock.__promise = {
+            then: _sinon.spy()
+        };
+        mock.__reject = _sinon.spy();
+        mock.__resolve = _sinon.spy();
+
+        mock.defer = function() {
+            return {
+                promise: mock.__promise,
+                reject: mock.__reject,
+                resolve: mock.__resolve
+            };
+        };
+        return mock;
+    },
+
+    /**
+     * Creates a mock for angular js' $resource service.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createResourceMock
+     * @return {Object} A mock object for the $resource service
+     */
+    createResourceMock: function() {
+        var resourceObject = {
+            _ret: {
+                $promise: {
+                    then: _sinon.spy()
+                }
+            }
+        };
+
+        var mock = _sinon.stub().returns(resourceObject);
+        mock.__resourceObject = resourceObject;
+        mock.__setGetResult = function(error) {
+            if (error) {
+                resourceObject.get = _sinon.stub().throws(new Error(error));
+            } else {
+                resourceObject.get = _sinon.stub().returns(resourceObject._ret);
+            }
+        };
+        return mock;
+    },
+
+    /**
+     * Creates a mock for angular js' $interval service.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createIntervalMock
+     * @return {Object} A mock object for the $interval service
+     */
+    createIntervalMock: function() {
+        var cancelHandle = {};
+        var mock = _sinon.stub().returns(cancelHandle);
+        mock.cancel = _sinon.spy();
+
+        mock.__cancelHandle = cancelHandle;
+        return mock;
+    },
+
+    /**
+     * Creates a mock for a generic data source object from the app.data module.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createDataSourceMock
+     * @param {String} [errorMessage=undefined] An optional error message if 
+     *                  the mock is expected to throw an error when
+     *                  serverFetch() is invoked.
+     * @return {Object} A mock object for a data source object
+     */
+    createDataSourceMock: function(errorMessage) {
+        var mock = {
+            serverFetch: function() {},
+            _successHandler: null,
+            _failureHandler: null
+        };
+
+        _sinon.stub(mock, 'serverFetch', function() {
+            if (errorMessage) {
+                throw new Error(errorMessage);
+            }
+            var promise = {
+                then: function(successHandler, failureHandler) {
+                    mock.__successHandler = successHandler;
+                    mock.__failureHandler = failureHandler;
+                    return promise;
+                }
+            };
+            return promise;
+        });
+        return mock;
     }
+
 };

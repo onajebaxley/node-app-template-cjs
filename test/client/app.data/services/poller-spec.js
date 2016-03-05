@@ -1,17 +1,19 @@
 /* jshint expr:true */
-/* global alert:true */
 
-var _angular = require('angular');
-var _ngMocks = require('angular-mocks');
 var _chai = require('chai');
 var _sinon = require('sinon');
 var _sinonChai = require('sinon-chai');
 var _chaiAsPromised = require('chai-as-promised');
-var _module = 'app.data';
 
 _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
+
+var _angular = require('angular');
+var _ngMocks = require('angular-mocks');
+var _mockHelper = require('../../../client-utils/mock-helper');
+
+var _module = 'app.data';
 
 describe('[app.data.Poller]', function() {
     'use strict';
@@ -20,48 +22,16 @@ describe('[app.data.Poller]', function() {
     var Service = null;
     var $intervalMock = null;
 
-    function _initIntervalMock() {
-        var cancelHandle = {};
-        var interval = _sinon.stub().returns(cancelHandle);
-        interval.cancel = _sinon.spy();
-
-        interval.__cancelHandle = cancelHandle;
-        return interval;
-    }
-
-    function _getDataSourceMock(errorMessage) {
-        var dataSource = {
-            serverFetch: function() {},
-            _successHandler: null,
-            _failureHandler: null
-        };
-
-        _sinon.stub(dataSource, 'serverFetch', function() {
-            if (errorMessage) {
-                throw new Error(errorMessage);
-            }
-            var promise = {
-                then: function(successHandler, failureHandler) {
-                    dataSource.__successHandler = successHandler;
-                    dataSource.__failureHandler = failureHandler;
-                    return promise;
-                }
-            };
-            return promise;
-        });
-        return dataSource;
-    }
-
     function _createPoller(mocks) {
         mocks = mocks || {};
         mocks.id = mocks.id || DEFAULT_ID;
-        mocks.dataSource = mocks.dataSource || _getDataSourceMock();
+        mocks.dataSource = mocks.dataSource || _mockHelper.createDataSourceMock();
 
         return new Service(mocks.id, mocks.dataSource);
     }
 
     beforeEach(function() {
-        $intervalMock = _initIntervalMock();
+        $intervalMock = _mockHelper.createIntervalMock();
     });
     beforeEach(angular.mock.module(_module));
     beforeEach(angular.mock.module(['$provide', function($provide) {
@@ -411,7 +381,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should request data from the data source when invoked', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var poller = _createPoller({
                 dataSource: dataSourceMock
@@ -427,7 +397,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should register success and failure callback handlers with the data source when invoked', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var poller = _createPoller({
                 dataSource: dataSourceMock
@@ -445,7 +415,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should emit a "data" event if the server fetch completes successfully', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var id = 'test_poller';
             var expectedData = {
@@ -469,7 +439,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should emit an "error" event if the server fetch fails', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var id = 'test_poller';
             var expectedError = 'something went wrong';
@@ -492,7 +462,7 @@ describe('[app.data.Poller]', function() {
 
         it('should emit an "error" event if the server fetch throws an exception', function() {
             var expectedError = 'fetch exception';
-            var dataSourceMock = _getDataSourceMock(expectedError);
+            var dataSourceMock = _mockHelper.createDataSourceMock(expectedError);
 
             var id = 'test_poller';
             var poller = _createPoller({
@@ -573,7 +543,7 @@ describe('[app.data.Poller]', function() {
 
     describe('[Polling Behavior]', function() {
         it('should invoke the data source\'s serverFetch() method every time the interval completes', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var poller = _createPoller({
                 dataSource: dataSourceMock
@@ -593,7 +563,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should register success and failure callback handlers with the data source when the interval triggers', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var poller = _createPoller({
                 dataSource: dataSourceMock
@@ -612,7 +582,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should emit a "data" event if the server fetch completes successfully', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
             var id = 'test_poller';
             var expectedData = {
                 foo: 'bar'
@@ -637,7 +607,7 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should emit an "error" event if the server fetch fails', function() {
-            var dataSourceMock = _getDataSourceMock();
+            var dataSourceMock = _mockHelper.createDataSourceMock();
             var id = 'test_poller';
             var expectedError = 'something went wrong';
             var poller = _createPoller({
@@ -661,7 +631,7 @@ describe('[app.data.Poller]', function() {
 
         it('should emit an "error" event if the server fetch throws an exception', function() {
             var expectedError = 'fetch exception';
-            var dataSourceMock = _getDataSourceMock(expectedError);
+            var dataSourceMock = _mockHelper.createDataSourceMock(expectedError);
             var id = 'test_poller';
             var poller = _createPoller({
                 id: id,
