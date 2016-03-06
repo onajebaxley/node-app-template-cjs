@@ -1,13 +1,28 @@
 <div layout='column'>
 	<style>
-		.orange-background {
-			background-color: rgb(255, 87, 34);
-		}
+        .large-button {
+            text-align: left;
+            line-height: 80px;
+            min-height: 80px;
+            border-radius: 3px;
+        }
+
+        .large-button > md-icon{
+            padding: 0px;
+        }
 	</style>
-	<div layout='row'>
-		<h3>I want to ... <h3>
-	</div>
-	<div layout='row'>
-		<div flex='33' class='orange-background'> Create a gateway </div>
+	<div layout='row' layout-wrap layout-margin>
+        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+            <md-icon md-font-set='material-icons'>device_hub</md-icon>
+            <span>Explore Sensor Data</span>
+        </md-button>
+        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+            <md-icon md-font-set='material-icons'>router</md-icon>
+            <span>Create a New Gateway</span>
+        </md-button>
+        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+            <md-icon md-font-set='material-icons'>memory</md-icon>
+            <span>Create a New Node</span>
+        </md-button>
 	</div>
 </div>
