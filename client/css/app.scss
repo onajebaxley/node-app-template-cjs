@@ -7,16 +7,14 @@
 @import 'icons/material-design-icons/material-design-icons';
 
 //@import 'print';
-@import 'typography';
-@import 'layout';
-@import 'sidebar-left';
-@import 'topbar';
-
-// Custom styles for the app
-//@import 'custom';
+@import 'components/typography';
+@import 'components/layout';
+@import 'components/sidebar-left';
+@import 'components/topbar';
+@import 'components/breadcrumb';
 
 // Debugging styles
-@import 'debug';
+@import 'components/debug';
 
 // set template font family
 //button, select, html, textarea, input {
