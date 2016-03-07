@@ -105,9 +105,7 @@ module.exports = [ '$state', 'app.core.user', 'app.core.utils', function($state,
         if(!user.isLoggedIn()) {
             return false;
         }
-        console.log(user._roles);
         for(var index=0; index<this.roles.length; index++) {
-            console.log(this.roles[index]);
             if(user.hasRole(this.roles[index])) {
                 return true;
             }

@@ -1,17 +1,19 @@
 /* jshint expr:true */
 /* global alert:true */
 
-var _angular = require('angular');
-var _ngMocks = require('angular-mocks');
 var _chai = require('chai');
 var _sinon = require('sinon');
 var _sinonChai = require('sinon-chai');
 var _chaiAsPromised = require('chai-as-promised');
-var _module = 'app.layout';
 
 _chai.use(_sinonChai);
 _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
+
+var _angular = require('angular');
+var _ngMocks = require('angular-mocks');
+
+var _module = 'app.layout';
 var _mockHelper = require('../../../client-utils/mock-helper');
 
 describe('[app.layout.MenuItem]', function() {

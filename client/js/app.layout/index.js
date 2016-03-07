@@ -14,6 +14,7 @@ var localStorage = require('angular-local-storage');
 var moduleName = 'app.layout';
 angular.module(moduleName, [ 'ui.router', 'LocalStorageModule', 'app.core' ])
     .factory('app.layout.MenuItem', require('./services/menu-item'))
+    .factory('app.layout.breadCrumb', require('./services/bread-crumb'))
     .controller('app.layout.LayoutController', require('./controllers/layout-controller'))
     .controller('app.layout.LeftSidebarController', require('./controllers/left-sidebar-controller'))
     ;

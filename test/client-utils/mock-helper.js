@@ -226,6 +226,32 @@ module.exports = {
             return promise;
         });
         return mock;
+    },
+
+    /**
+     * Creates a mock for a menu item mock from the app.layout module.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createMenuItemMock
+     * @return {Object} A mock object that represents a single menu item
+     */
+    createMenuItemMock: function() {
+        function MenuItem(options) {
+            options = options || {};
+            this.__canRender = true;
+            this.__link = '';
+
+            for(var prop in options) {
+                this[prop] = options[prop];
+            }
+
+            this.addChildItem = _sinon.spy();
+            this.clearChildItems = _sinon.stub();
+            this.canRender = _sinon.stub().returns(this.__canRender);
+            this.getLink = _sinon.stub().returns(this.__link);
+        }
+
+        return MenuItem;
     }
 
 };
