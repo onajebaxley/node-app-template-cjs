@@ -22,9 +22,11 @@ block content
 					md-button.md-icon-button(ng-click='toggleLayoutProperty("leftSidebar.isOpen")' aria-label='open left sidebar' hide-gt-sm show-sm show-xs)
 						md-icon(md-font-set='material-icons') menu
 					h2(flex hide-xs)
-						span(ng-repeat='crumb in _breadCrumb.getCrumbs()')
-							span {{crumb.title}}
-							span(ng-if='!$last') &nbsp;/&nbsp;
+						span.cs-breadcrumb(ng-repeat='crumb in _breadCrumb.getCrumbs()')
+							a(ng-href='{{crumb.getLink()}}' ng-if='crumb.getLink() !== "#"')
+								span {{crumb.title}}
+							span(ng-if='crumb.getLink() === "#"') {{crumb.title}}
+							md-icon(md-font-set='material-icons' ng-if='!$last') chevron_right
 					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode' hide-xs)
 						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
 					md-menu(md-offset='0 48')

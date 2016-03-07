@@ -14,12 +14,71 @@ var console = require('console');
 module.exports = [ '$stateProvider', '$urlRouterProvider', 
     function(stateProvider, urlRouterProvider) {
         // Default route
-        urlRouterProvider.otherwise('/');
+        urlRouterProvider.otherwise('/explore');
 
         // Application routes
-        stateProvider.state('home', {
-            url: '/',
-            templateUrl: '/views/dashboard-home-view.html'
+        stateProvider.state('explore', {
+            url: '/explore',
+            templateUrl: '/views/dashboard-home-view.html',
+            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
+                breadCrumb.setCrumbs(['Dashboard', 'Explore']);
+            } ]
+        });
+
+        stateProvider.state('nodes', {
+            url: '/nodes',
+            templateUrl: '/views/dashboard-home-view.html',
+            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'Nodes',
+                    routeState: 'nodes'
+                }]);
+            } ]
+        });
+
+        stateProvider.state('create_node', {
+            url: '/create-node',
+            templateUrl: '/views/dashboard-home-view.html',
+            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'Nodes',
+                    routeState: 'nodes'
+                }, 'Create']);
+            } ]
+        });
+
+        stateProvider.state('gateways', {
+            url: '/gateways',
+            templateUrl: '/views/dashboard-home-view.html',
+            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'Gateways',
+                    routeState: 'gateways'
+                }]);
+            } ]
+        });
+
+        stateProvider.state('create_gateway', {
+            url: '/create-gateway',
+            templateUrl: '/views/dashboard-home-view.html',
+            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'Gateways',
+                    routeState: 'gateways'
+                }, 'Create']);
+            } ]
         });
 
         console.debug('Routes configured');

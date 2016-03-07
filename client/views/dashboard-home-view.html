@@ -12,17 +12,24 @@
         }
 	</style>
 	<div layout='row' layout-wrap layout-margin>
-        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+        <md-button ui-sref='nodes' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
             <md-icon md-font-set='material-icons'>device_hub</md-icon>
             <span>Explore Sensor Data</span>
         </md-button>
-        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+        <md-button ui-sref='gateways' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+            <md-icon md-font-set='material-icons'>grid_on</md-icon>
+            <span>Explore Gateways</span>
+        </md-button>
+        <md-button ui-sref='create_gateway' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
             <md-icon md-font-set='material-icons'>router</md-icon>
             <span>Create a New Gateway</span>
         </md-button>
-        <md-button ui-sref='home' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
+        <md-button ui-sref='create_node' flex='30' flex-sm='45' flex-xs='80' layout-padding class='large-button md-raised md-primary md-hue-2' >
             <md-icon md-font-set='material-icons'>memory</md-icon>
             <span>Create a New Node</span>
         </md-button>
 	</div>
+    <div layout='row'>
+        <ui-view></ui-view>
+    </div>
 </div>
