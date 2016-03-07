@@ -22,9 +22,9 @@ var HELP_TEXT =
 '                       the test:all:dev task as well to ensure that the         \n' +
 '                       development workflow is not broken.                      \n' +
 '                                                                                \n' +
-'   env               : Provides information regarding the current environment.  \n' +
-'                       This an information only task that does not alter any    \n' +
-'                       file/folder in the environment.                          \n' +
+'   fs                : Provides information regarding the current project       \n' +
+'                       structure This an information only task that does not    \n' +
+'                       alter any file/folder in the project.                    \n' +
 '                                                                                \n' +
 '   help              : Shows this help message.                                 \n' +
 '                                                                                \n' +
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
      * ---------------------------------------------------------------------- */
     var packageConfig = grunt.file.readJSON('package.json') || {};
 
-    var ENV = {
+    var PRJ_FS = {
         appName: packageConfig.name || '__UNKNOWN__',
         appVersion: packageConfig.version || '__UNKNOWN__',
         tree: {                             /* ------------------------------ */
@@ -168,17 +168,17 @@ module.exports = function(grunt) {
         }                                   /* ------------------------------ */
     };
 
-    ENV.ROOT = _folder.createFolderTree('./', ENV.tree);
-    ENV.bannerText = '/*! [' + ENV.appName + ' v' + ENV.appVersion +
+    PRJ_FS.ROOT = _folder.createFolderTree('./', PRJ_FS.tree);
+    PRJ_FS.bannerText = '/*! [' + PRJ_FS.appName + ' v' + PRJ_FS.appVersion +
                    '] Built: <%= grunt.template.today("yyyy-mm-dd HH:MM a") %> */\n';
-    ENV.publishArchive = ENV.appName + '_' + ENV.appVersion + '.zip';
+    PRJ_FS.publishArchive = PRJ_FS.appName + '_' + PRJ_FS.appVersion + '.zip';
 
     // This is the root url prefix for the app, and represents the path
     // (relative to root), where the app will be available.
     // This value should remain unchanged if the app does not sit behind a
     // proxy. If a proxy is present (that routes to the app based on URL
     // values), this value should be tweaked to include the proxy path.
-    ENV.proxyPrefix = ''; //+ ENV.appName;
+    PRJ_FS.proxyPrefix = ''; //+ PRJ_FS.appName;
 
     (function _createTreeRefs(parent, subTree) {
         for(var folder in subTree) {
@@ -190,15 +190,15 @@ module.exports = function(grunt) {
                 _createTreeRefs(parent[folder], children);
             }
         }
-    })(ENV.ROOT, ENV.tree);
+    })(PRJ_FS.ROOT, PRJ_FS.tree);
 
     // Shorthand references to key folders.
-    var SERVER = ENV.ROOT.server;
-    var CLIENT = ENV.ROOT.client;
-    var TEST = ENV.ROOT.test;
-    var LOGS = ENV.ROOT.logs;
-    var DIST = ENV.ROOT.dist;
-    var WORKING = ENV.ROOT.working;
+    var SERVER = PRJ_FS.ROOT.server;
+    var CLIENT = PRJ_FS.ROOT.client;
+    var TEST = PRJ_FS.ROOT.test;
+    var LOGS = PRJ_FS.ROOT.logs;
+    var DIST = PRJ_FS.ROOT.dist;
+    var WORKING = PRJ_FS.ROOT.working;
     var SERVER_BUILD = WORKING.server;
     var CLIENT_BUILD = WORKING.client;
 
@@ -219,8 +219,8 @@ module.exports = function(grunt) {
         clean: {
             dist: [ DIST.getPath() ],
             working: [ WORKING.getPath() ],
-            sassCache: [ ENV.ROOT['_sass-cache'].getPath() ],
-            coverage: [ ENV.ROOT.coverage.getPath() ],
+            sassCache: [ PRJ_FS.ROOT['_sass-cache'].getPath() ],
+            coverage: [ PRJ_FS.ROOT.coverage.getPath() ],
             logs: [ LOGS.getChildPath('*') ],
             workingJs: {
                 src: [ CLIENT_BUILD.js.allFilesPattern() ],
@@ -268,22 +268,22 @@ module.exports = function(grunt) {
                     dest: CLIENT_BUILD.getPath()
                 }, {
                     expand: true,
-                    cwd: ENV.ROOT.getPath(),
+                    cwd: PRJ_FS.ROOT.getPath(),
                     src: [ LOGS.getChildPath('.keep') ],
                     dest: WORKING.getPath()
                 }, {
                     expand: true,
-                    cwd: ENV.ROOT.getPath(),
+                    cwd: PRJ_FS.ROOT.getPath(),
                     src: ['.ebextensions/**'],
                     dest: WORKING.getPath()
                 }, {
                     expand: false,
-                    cwd: ENV.ROOT.getPath(),
+                    cwd: PRJ_FS.ROOT.getPath(),
                     src: ['package.json'],
                     dest: WORKING.getPath()
                 }, {
                     expand: false,
-                    cwd: ENV.ROOT.getPath(),
+                    cwd: PRJ_FS.ROOT.getPath(),
                     src: ['server.js'],
                     dest: WORKING.getPath()
                 } ]
@@ -311,7 +311,7 @@ module.exports = function(grunt) {
             default: {
                 options: {
                     mode: 'zip',
-                    archive: DIST.getChildPath(ENV.publishArchive)
+                    archive: DIST.getChildPath(PRJ_FS.publishArchive)
                 },
                 files: [ {
                     cwd: WORKING.getPath(),
@@ -354,7 +354,7 @@ module.exports = function(grunt) {
                             '  }]);\n' +
                             'module.exports = moduleName;\n';
                 },
-                prefix: ENV.proxyPrefix + '/'
+                prefix: PRJ_FS.proxyPrefix + '/'
             },
             compile: {
                 cwd: CLIENT.getPath(),
@@ -404,7 +404,7 @@ module.exports = function(grunt) {
                 },
                 ngHtml2JsPreprocessor: {
                     stripPrefix: 'client',
-                    prependPrefix: ENV.proxyPrefix,
+                    prependPrefix: PRJ_FS.proxyPrefix,
                     moduleName: 'karma_templates'
                 },
                 coverageReporter: {
@@ -544,7 +544,7 @@ module.exports = function(grunt) {
          */
         cssmin: {
             options: {
-                banner: ENV.bannerText
+                banner: PRJ_FS.bannerText
             },
             compile: {
                 src: CLIENT_BUILD.css.getChildPath('app.min.css'),
@@ -636,7 +636,21 @@ module.exports = function(grunt) {
             options: {
                 push: false
              }
+        },
+
+        /**
+         * Configuration for grunt-env, which is used to:
+         *  - Set or unset environment variables
+         */
+        env: {
+            dev: {
+                TEST_MODE: 'dev'
+            },
+            build: {
+                TEST_MODE: 'build'
+            }
         }
+
     });
 
     /* ------------------------------------------------------------------------
@@ -704,6 +718,7 @@ module.exports = function(grunt) {
                 startServer = true;
             }
             startServer = startServer && !grunt.option('no-server');
+            grunt.task.run('env:' + target);
             if(testAction) {
                 if(startServer) {
                     grunt.task.run('express:' + target);
@@ -828,10 +843,10 @@ module.exports = function(grunt) {
     );
 
     /**
-     * Shows the environment setup.
+     * Shows the current file structure setup.
      */
-    grunt.registerTask('env',
-        'Shows the current environment setup',
+    grunt.registerTask('fs',
+        'Shows the current project file structure',
         function() {
             var separator = new Array(80).join('-');
             function _showRecursive(root, indent) {
@@ -862,7 +877,7 @@ module.exports = function(grunt) {
             }
 
             grunt.log.writeln('\n' + separator);
-            _showRecursive(ENV.ROOT, 0);
+            _showRecursive(PRJ_FS.ROOT, 0);
             grunt.log.writeln(separator + '\n');
         }
     );

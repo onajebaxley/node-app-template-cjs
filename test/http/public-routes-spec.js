@@ -17,20 +17,34 @@ var _config = require('../config');
 describe('[public routes]', function() {
     var httpHelper;
 
+    function getStaticFilename(path) {
+        var tokens = path.split('.');
+        var extension = tokens.pop();
+
+        if(process.env.TEST_MODE === 'build') {
+            tokens.push('min');
+        } else {
+        }
+        tokens.push(extension);
+        var path = tokens.join('.');
+        console.log(path);
+        return path;
+    }
+
     beforeEach(function() {
         httpHelper = new HttpHelper(_config.baseUrl, '/');
     });
 
-    describe('[GET /css/app.css]', function() {
-        var path = '/css/app.css';
+    describe('[GET /css/app(.min).css]', function() {
+        var path = getStaticFilename('/css/app.css');
 
         it('should return a css file', function(done) {
             httpHelper.testCss(path, done);
         });
     });
 
-    describe('[GET /js/app.js]', function() {
-        var path = '/js/app.js';
+    describe('[GET /js/app.(.min).js]', function() {
+        var path = getStaticFilename('/js/app.js');
 
         it('should return a javascript file', function(done) {
             httpHelper.testJs(path, done);

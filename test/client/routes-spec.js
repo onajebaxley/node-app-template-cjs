@@ -101,7 +101,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 2, 'gateways', {
+            _checkRouteSetup(module, stateProvider, 4, 'gateways', {
                 url: '/gateways'
             });
         });
@@ -111,7 +111,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 3, 'create_gateway', {
+            _checkRouteSetup(module, stateProvider, 5, 'create_gateway', {
                 url: '/create-gateway'
             });
         });
