@@ -46,26 +46,73 @@ describe('[app.routes]', function() {
             var args = stateProvider.state.args[callIndex];
 
             expect(args[0]).to.equal(state);
-            expect(args[1]).to.deep.equal(params);
+
+            // Testing too much here makes the code less flexible, requiring
+            // test changes for every small change in routes. There may be
+            // advantages to making the test code more specific, but it is
+            // probably better left to a stage when the project routes are
+            // very stable.
+            var routeConfig = args[1];
+            expect(routeConfig).to.be.an('object');
+            expect(routeConfig.url).to.equal(params.url);
         }
 
-        it('should setup a default route of "/" when invoked', function() {
+        it('should setup a default route of "/explore" when invoked', function() {
             expect(urlRouterProvider.otherwise).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
             expect(urlRouterProvider.otherwise).to.have.been.calledOnce;
-            expect(urlRouterProvider.otherwise).to.have.been.calledWith('/');
+            expect(urlRouterProvider.otherwise).to.have.been.calledWith('/explore');
         });
 
-        it('should setup an application route for the home state when invoked', function() {
+        it('should setup an application route for the explore state when invoked', function() {
             expect(stateProvider.state).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 1, 'home', {
-                url: '/',
-                templateUrl: '/views/dashboard-home-view.html'
+            _checkRouteSetup(module, stateProvider, 1, 'explore', {
+                url: '/explore'
+            });
+        });
+
+        it('should setup an application route for the nodes state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 2, 'nodes', {
+                url: '/nodes'
+            });
+        });
+
+        it('should setup an application route for the create node state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 3, 'create_node', {
+                url: '/create-node'
+            });
+        });
+
+        it('should setup an application route for the gateways state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 2, 'gateways', {
+                url: '/gateways'
+            });
+        });
+
+        it('should setup an application route for the create gateway state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 3, 'create_gateway', {
+                url: '/create-gateway'
             });
         });
     });
