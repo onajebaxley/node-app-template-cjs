@@ -224,22 +224,6 @@ describe('[server.config]', function() {
             _configHelper.deleteConfig();
             _config.configure(app);
 
-            expect(app.locals.gv_config).to.be.an('object');
-            expect(app.locals.gv_config.app_name).to.equal(GLOBAL.config.cfg_app_name);
-            expect(app.locals.gv_config.app_title).to.equal(GLOBAL.config.cfg_app_title);
-            expect(app.locals.gv_config.app_version).to.equal(GLOBAL.config.cfg_app_version);
-            expect(app.locals.gv_config.root_path).to.equal(GLOBAL.config.cfg_root_path);
-        });
-
-        it('should initialize config elements that can be injected into the client', function() {
-            var appKeys = {
-                env: 'development'
-            };
-            var app = _appHelper.getMockApp(appKeys);
-
-            _configHelper.deleteConfig();
-            _config.configure(app);
-
             expect(GLOBAL.config).to.be.an('object');
 
             expect(GLOBAL.config.views).to.equal(_path.join(__dirname, '../../server/views'));
@@ -272,6 +256,21 @@ describe('[server.config]', function() {
             expect(GLOBAL.config.cfg_session_timeout).to.equal(900 * 1000);
         });
 
+        it('should initialize config elements that can be injected into the client', function() {
+            var appKeys = {
+                env: 'development'
+            };
+            var app = _appHelper.getMockApp(appKeys);
+
+            _configHelper.deleteConfig();
+            _config.configure(app);
+
+            expect(app.locals.gv_config).to.be.an('object');
+            expect(app.locals.gv_config.app_name).to.equal(GLOBAL.config.cfg_app_name);
+            expect(app.locals.gv_config.app_title).to.equal(GLOBAL.config.cfg_app_title);
+            expect(app.locals.gv_config.app_version).to.equal(GLOBAL.config.cfg_app_version);
+            expect(app.locals.gv_config.root_path).to.equal(GLOBAL.config.cfg_root_path);
+        });
 
         it('should use the rootPath parameter as the mount path if no proxy is present', function() {
             _configHelper.deleteConfig();
