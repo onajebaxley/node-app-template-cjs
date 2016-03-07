@@ -121,11 +121,16 @@ describe('[app.auth.LayoutController]', function() {
 
     beforeEach(angular.mock.module(_module));
 
+    beforeEach(angular.mock.module(['$provide', function($provide) {
+        $provide.value('app.core.user', _mockHelper.createUserMock());
+    }]));
+
     describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
             expect($scope).to.have.property('_layout').and.to.be.an('object');
             expect($scope).to.have.property('_user').and.to.be.an('object');
+            expect($scope).to.have.property('_breadCrumb').and.to.be.an('object');
             expect($scope).to.have.property('setLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleFullScreen').and.to.be.a('function');

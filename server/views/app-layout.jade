@@ -22,8 +22,8 @@ block content
 					md-button.md-icon-button(ng-click='toggleLayoutProperty("leftSidebar.isOpen")' aria-label='open left sidebar' hide-gt-sm show-sm show-xs)
 						md-icon(md-font-set='material-icons') menu
 					h2(flex hide-xs)
-						span(ng-repeat='crumb in breadCrumbs')
-							span {{crumb}}
+						span(ng-repeat='crumb in _breadCrumb.getCrumbs()')
+							span {{crumb.title}}
 							span(ng-if='!$last') &nbsp;/&nbsp;
 					md-button.md-icon-button(ng-click='toggleFullScreen()' aria-label='toggle fullscreen mode' hide-xs)
 						md-icon(md-font-set='material-icons') {{ (_layout.isFullScreen)? "fullscreen_exit": "fullscreen"  }}
