@@ -59,7 +59,7 @@ describe('AuthHandlerProvider', function() {
             expect(provider).to.be.an('object');
             expect(provider).to.have.property('loginPageHandler').and.to.be.a('function');
             expect(provider).to.have.property('logoutHandler').and.to.be.a('function');
-            expect(provider).to.have.property('authUsernamePasswordHandler').and.to.be.a('function');
+            expect(provider).to.have.property('authHandler').and.to.be.a('function');
         });
     });
 
@@ -227,7 +227,9 @@ describe('AuthHandlerProvider', function() {
         });
     });
 
-    describe('authUsernamePasswordHandler()', function() {
+    describe('authHandler()', function() {
+        var DEFAULT_STRATEGY_NAME = 'username-password';
+
         function _getMockReq() {
             var req = _expressMocks.getMockReq();
             req.user = {
@@ -238,16 +240,36 @@ describe('AuthHandlerProvider', function() {
             return req;
         }
 
+        it('should throw an error if invoked without a valid strategy', function() {
+            var error = 'Invalid strategy specified (arg #1)';
+            function invoke(strategy) {
+                return function() {
+                    var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
+                    var handler = provider.authHandler(strategy);
+                };
+            }
+
+            expect(invoke(undefined)).to.throw(error);
+            expect(invoke(null)).to.throw(error);
+            expect(invoke(123)).to.throw(error);
+            expect(invoke('')).to.throw(error);
+            expect(invoke(true)).to.throw(error);
+            expect(invoke([])).to.throw(error);
+            expect(invoke({})).to.throw(error);
+            expect(invoke(function() {})).to.throw(error);
+        });
+
         it('should return a function when invoked', function() {
             var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-            var handler = provider.authUsernamePasswordHandler();
+            var handler = provider.authHandler(DEFAULT_STRATEGY_NAME);
 
             expect(handler).to.be.a('function');
         });
 
         it('should invoke passport to generate a handler using the username/password strategy', function() {
+            var strategyName = 'some-strategy';
             var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-            var handler = provider.authUsernamePasswordHandler();
+            var handler = provider.authHandler(strategyName);
 
             var req = _getMockReq();
             var res = _expressMocks.getMockRes();
@@ -258,7 +280,7 @@ describe('AuthHandlerProvider', function() {
             handler(req, res, next);
 
             expect(_passportMock.authenticate).to.have.been.calledOnce;
-            expect(_passportMock.authenticate.args[0][0]).to.equal('username-password');
+            expect(_passportMock.authenticate.args[0][0]).to.equal(strategyName);
             expect(_passportMock.authenticate.args[0][1]).to.be.a('function');
 
             handler = _passportMock.authenticate();
@@ -269,7 +291,7 @@ describe('AuthHandlerProvider', function() {
         describe('[authentication callback]', function() {
             it('should invoke next() with an error if the passport strategy reports an error authenticating the user', function() {
                 var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-                var handler = provider.authUsernamePasswordHandler();
+                var handler = provider.authHandler(DEFAULT_STRATEGY_NAME);
 
                 var req = _getMockReq();
                 var res = _expressMocks.getMockRes();
@@ -289,7 +311,7 @@ describe('AuthHandlerProvider', function() {
 
             it('should redirect the user to the login page if the passport strategy reports failed authentication', function() {
                 var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-                var handler = provider.authUsernamePasswordHandler();
+                var handler = provider.authHandler(DEFAULT_STRATEGY_NAME);
 
                 var req = _getMockReq();
                 var res = _expressMocks.getMockRes();
@@ -319,7 +341,7 @@ describe('AuthHandlerProvider', function() {
 
             it('should log the user if the passport strategy reports successful authentication', function() {
                 var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-                var handler = provider.authUsernamePasswordHandler();
+                var handler = provider.authHandler(DEFAULT_STRATEGY_NAME);
 
                 var req = _getMockReq();
                 var res = _expressMocks.getMockRes();
@@ -350,7 +372,7 @@ describe('AuthHandlerProvider', function() {
                 beforeEach(function() {
                     username = 'jdoe';
                     var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
-                    var handler = provider.authUsernamePasswordHandler();
+                    var handler = provider.authHandler(DEFAULT_STRATEGY_NAME);
                     var user = new User(username);
 
                     req = _getMockReq();

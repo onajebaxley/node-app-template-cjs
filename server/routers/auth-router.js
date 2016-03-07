@@ -40,7 +40,7 @@ module.exports = {
             _bodyParser.urlencoded({
                 extended: false
             }),
-            routesHandler.authUsernamePasswordHandler());
+            routesHandler.authHandler('username-password'));
 
         return router;
     }

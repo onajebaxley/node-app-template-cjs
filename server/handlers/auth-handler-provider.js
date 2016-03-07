@@ -81,20 +81,25 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
 };
 
 /**
- * Handles an authentication request from the user, by using
- * username/password strategy
+ * Handles an authentication request from the user, by using the specified
+ * passportjs strategy.
  *
  * @class AuthHandlerProvider
- * @method authUsernamePasswordHandler
+ * @method authHandler
+ * @param {String} strategy The name of the strategy to use when
+ *          authenticating.
  * @return {Function} A handler that conforms to expressjs' handler
  *                    signature.
  */
-AuthHandlerProvider.prototype.authUsernamePasswordHandler = function() {
+AuthHandlerProvider.prototype.authHandler = function(strategy) {
+    if(typeof strategy !== 'string' || strategy.length <= 0) {
+        throw new Error('Invalid strategy specified (arg #1)');
+    }
     return function(req, res, next) {
         //NOTE: We need this function inside the handler so that the passport's
         //authentication callback handler gets access to the req, res and next
         //objects.
-        var handler = _passport.authenticate('username-password', function(err, user, info) {
+        var handler = _passport.authenticate(strategy, function(err, user, info) {
             if (err) {
                 this._logger.error('Error authenticating user', err);
                 next(err);

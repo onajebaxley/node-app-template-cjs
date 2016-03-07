@@ -37,7 +37,7 @@ describe('[server.routers.authRouter]', function() {
         _authHandlerProviderMock = _sinon.stub().returns({
             loginPageHandler: _sinon.stub().returns(function() {}),
             logoutHandler: _sinon.stub().returns(function() {}),
-            authUsernamePasswordHandler: _sinon.stub().returns(function() {})
+            authHandler: _sinon.stub().returns(function() {})
         });
 
         _commonHandlerProviderMock = _sinon.stub().returns({
@@ -216,12 +216,13 @@ describe('[server.routers.authRouter]', function() {
                     var provider = _authHandlerProviderMock();
 
                     expect(mockExpress._router.post).to.not.have.been.called;
-                    expect(provider.authUsernamePasswordHandler).to.not.have.been.called;
+                    expect(provider.authHandler).to.not.have.been.called;
 
                     _authRouter.createRouter();
 
-                    expect(provider.authUsernamePasswordHandler).to.have.been.calledOnce;
-                    var handler = provider.authUsernamePasswordHandler();
+                    expect(provider.authHandler).to.have.been.calledOnce;
+                    expect(provider.authHandler).to.have.been.calledWith('username-password');
+                    var handler = provider.authHandler();
                     expect(mockExpress._router.post.callCount).to.be.at.least(1);
                     expect(mockExpress._router.post.args[0][0]).to.equal(path);
                     //expect(mockExpress._router.post.args[0][1]).to.equal(handler);
