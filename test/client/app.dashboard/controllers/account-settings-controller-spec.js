@@ -12,6 +12,7 @@ var expect = _chai.expect;
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
 var _mockHelper = require('../../../client-utils/mock-helper');
+var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
 var _module = 'app.dashboard';
 
@@ -21,8 +22,8 @@ describe('[app.auth.AccountSettingsController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
+    var $resourceMock = null;
     var breadCrumbMock = null;
-    var menuItemMock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
@@ -32,10 +33,12 @@ describe('[app.auth.AccountSettingsController]', function() {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
                 breadCrumbMock = _mockHelper.createBreadCrumbMock();
+                $resourceMock = _mockHelper.createResourceMock();
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
+                    $resource: $resourceMock,
                     'app.layout.breadCrumb': breadCrumbMock
                 };
 
@@ -53,35 +56,29 @@ describe('[app.auth.AccountSettingsController]', function() {
         $rootScope = null;
         $scope = null;
         breadCrumbMock = null;
-
-        menuItemMock = null;
     });
 
     beforeEach(angular.mock.module(_module));
 
     beforeEach(angular.mock.module(['$provide', function($provide) {
         $provide.value('app.core.user', _mockHelper.createUserMock());
-
-        var menuItemMock = _mockHelper.createMenuItemMock();
-        $provide.value('app.layout.MenuItem', menuItemMock);
     }]));
 
     describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
+
+            expect($scope).to.have.property('settings').and.to.be.a('string');
+            expect($scope).to.have.property('asyncInProgress').and.to.be.a('boolean');
+            expect($scope).to.have.property('files').and.to.be.an('Array');
+
+            expect($scope).to.have.property('errorMessage').and.to.be.a('string');
+            expect($scope).to.have.property('verifySettings').and.to.be.a('function');
+            expect($scope).to.have.property('saveSettings').and.to.be.a('function');
+            expect($scope).to.have.property('fetchSettings').and.to.be.a('function');
         });
 
         describe('[bread crumbs]', function() {
-            function _verifyCrumb(crumb, title, routeState, link) {
-                expect(crumb.title).to.equal(title);
-                if(typeof routeState !== 'undefined') {
-                    expect(crumb.routeState).to.equal(routeState);
-                }
-                if(typeof link !== 'undefined') {
-                    expect(crumb.link).to.equal(link);
-                }
-            }
-
             beforeEach(function() {
                 _initController();
             });
@@ -95,8 +92,8 @@ describe('[app.auth.AccountSettingsController]', function() {
                 var crumbs = breadCrumbMock.setCrumbs.args[0][0];
                 
                 expect(crumbs).to.have.length(2);
-                _verifyCrumb(crumbs[0], 'Dashboard', 'explore');
-                _verifyCrumb(crumbs[1], 'Explore');
+                _breadCrumbHelper.verifyCrumb(crumbs[0], { title: 'Dashboard', routeState: 'explore' });
+                _breadCrumbHelper.verifyCrumb(crumbs[1], { title: 'Account Settings' });
             });
         });
     });

@@ -10,6 +10,7 @@ var console = require('console');
 var angular = require('angular');
 var angularMaterial = require('angular-material');
 var uiRouter = require('angular-ui-router');
+var ngResource = require('angular-resource');
 
 var moduleName = 'app';
 
@@ -29,6 +30,7 @@ angular.module(moduleName, [
     templates,
     'ngMaterial',
     'ui.router',
+    'ngResource',
     coreModule,
     dataModule,
     layoutModule,

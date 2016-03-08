@@ -2,6 +2,7 @@
 
 var console = require('console');
 var angular = require('angular');
+var ngResource = require('angular-resource');
 
 /**
  * Module that provides data access components for the application. This
@@ -11,7 +12,7 @@ var angular = require('angular');
  * as necessary.
  */
 var moduleName = 'app.data';
-angular.module(moduleName, [ ])
+angular.module(moduleName, [ 'ngResource' ])
     .factory('app.data.RestDataSource', require('./services/rest-data-source'))
     .factory('app.data.TimeSeriesFormatter', require('./services/time-series-formatter'))
     .factory('app.data.Poller', require('./services/poller'))

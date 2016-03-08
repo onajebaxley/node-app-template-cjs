@@ -45,8 +45,8 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
 
         stateProvider.state('account', {
             url: '/account',
-            templateUrl: '/views/dashboard-account.html'
-            //controller: 'app.dashboard.ExploreController'
+            templateUrl: '/views/dashboard-account-settings.html',
+            controller: 'app.dashboard.AccountSettingsController'
         });
 
 

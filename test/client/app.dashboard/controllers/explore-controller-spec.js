@@ -12,6 +12,7 @@ var expect = _chai.expect;
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
 var _mockHelper = require('../../../client-utils/mock-helper');
+var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
 var _module = 'app.dashboard';
 
@@ -72,16 +73,6 @@ describe('[app.auth.ExploreController]', function() {
         });
 
         describe('[bread crumbs]', function() {
-            function _verifyCrumb(crumb, title, routeState, link) {
-                expect(crumb.title).to.equal(title);
-                if(typeof routeState !== 'undefined') {
-                    expect(crumb.routeState).to.equal(routeState);
-                }
-                if(typeof link !== 'undefined') {
-                    expect(crumb.link).to.equal(link);
-                }
-            }
-
             beforeEach(function() {
                 _initController();
             });
@@ -95,8 +86,8 @@ describe('[app.auth.ExploreController]', function() {
                 var crumbs = breadCrumbMock.setCrumbs.args[0][0];
                 
                 expect(crumbs).to.have.length(2);
-                _verifyCrumb(crumbs[0], 'Dashboard', 'explore');
-                _verifyCrumb(crumbs[1], 'Explore');
+                _breadCrumbHelper.verifyCrumb(crumbs[0], { title: 'Dashboard', routeState: 'explore' });
+                _breadCrumbHelper.verifyCrumb(crumbs[1], { title: 'Explore' });
             });
         });
     });

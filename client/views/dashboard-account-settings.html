@@ -1,0 +1,49 @@
+<div layout='column'>
+	<style>
+		.cs-code-editor {
+			width: 100%;
+			height: 100%;
+			min-height: 400px;
+			background-color: #263238;
+			color: #ECEFF1;
+			font-family: "courier";
+			font-weight: bold;
+			font-size: 12px;
+		}
+	</style>
+	<h1>Account Settings</h1>
+	<span style='font-size: 8px'> bearer {{_user.getServiceToken('wc-api') }}</span>
+	<md-content>
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab label='settings'>
+				<div>
+					<textarea class='cs-code-editor' ng-model="settings">
+					</textarea>
+				</div>
+				<div ng-if='errorMessage !== ""'>
+					{{errorMessage}}
+				</div>
+				<div ng-if='asyncInProgress'>
+					<md-progress-linear md-mode="indeterminate"></md-progress-linear>
+					<div class='md-body-2'>Working on it ...</div>
+				</div>
+				<div ng-if='!asyncInProgress'>
+					<md-button class='md-raised md-primary'>
+						<md-icon md-font-set='material-icons'>save</md-icon>
+						<span>Save</span>
+					</md-button>
+					<md-button class='md-raised md-primary md-hue-2'>
+						<md-icon md-font-set='material-icons'>refresh</md-icon>
+						<span>Reload</span>
+					</md-button>
+					<md-button class='md-raised md-primary md-hue-2'>
+						<md-icon md-font-set='material-icons'>cancel</md-icon>
+						<span>Cancel</span>
+					</md-button>
+				</div>
+			</md-tab>
+			<md-tab label='files'>
+			</md-tab>
+		</md-tabs>
+	</md-content>
+</div>
