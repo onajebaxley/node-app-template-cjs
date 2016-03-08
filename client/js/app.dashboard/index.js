@@ -11,10 +11,10 @@ var angular = require('angular');
  * as necessary.
  */
 var moduleName = 'app.dashboard';
-angular.module(moduleName, [ 'ui.router', 'app.core' ])
+angular.module(moduleName, [ 'ui.router', 'app.core', 'app.layout' ])
+    .controller('app.dashboard.ExploreController', require('./controllers/explore-controller'))
     //.factory('app.layout.MenuItem', require('./services/menu-item'))
     //.factory('app.layout.breadCrumb', require('./services/bread-crumb'))
-    //.controller('app.layout.LayoutController', require('./controllers/layout-controller'))
     //.controller('app.layout.LeftSidebarController', require('./controllers/left-sidebar-controller'))
     ;
 

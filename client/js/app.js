@@ -32,7 +32,8 @@ angular.module(moduleName, [
     coreModule,
     dataModule,
     layoutModule,
-    authModule
+    authModule,
+    dashboardModule
 ])
 
 // UI Route configuration
