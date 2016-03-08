@@ -115,5 +115,15 @@ describe('[app.routes]', function() {
                 url: '/create-gateway'
             });
         });
+
+        it('should setup an application route for the manage account settings state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 6, 'account', {
+                url: '/account'
+            });
+        });
     });
 });

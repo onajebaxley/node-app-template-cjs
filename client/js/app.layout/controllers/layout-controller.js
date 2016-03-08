@@ -8,7 +8,7 @@ var _screenfull = require('screenfull');
  * layout properties as necessary. Also supports the use of local storage to save
  * certain settings.
  *
- * @module app.auth.LayoutController
+ * @module app.layout.LayoutController
  */
 module.exports = [ '$scope', 'localStorageService', 'app.core.config',
                     'app.core.user', 'app.core.utils', 'app.layout.breadCrumb',

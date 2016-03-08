@@ -15,7 +15,7 @@ var _mockHelper = require('../../../client-utils/mock-helper');
 
 var _module = 'app.dashboard';
 
-describe('[app.auth.ExploreController]', function() {
+describe('[app.auth.AccountSettingsController]', function() {
     'use strict';
 
     var controller = null;
@@ -43,7 +43,7 @@ describe('[app.auth.ExploreController]', function() {
                     options[mockName] = mocks[mockName];
                 }
 
-                controller = _$controller('app.dashboard.ExploreController', options);
+                controller = _$controller('app.dashboard.AccountSettingsController', options);
             }
         ]);
     }

@@ -13,6 +13,7 @@ var angular = require('angular');
 var moduleName = 'app.dashboard';
 angular.module(moduleName, [ 'ui.router', 'app.core', 'app.layout' ])
     .controller('app.dashboard.ExploreController', require('./controllers/explore-controller'))
+    .controller('app.dashboard.AccountSettingsController', require('./controllers/account-settings-controller'))
     //.factory('app.layout.MenuItem', require('./services/menu-item'))
     //.factory('app.layout.breadCrumb', require('./services/bread-crumb'))
     //.controller('app.layout.LeftSidebarController', require('./controllers/left-sidebar-controller'))

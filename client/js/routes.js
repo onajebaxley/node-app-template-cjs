@@ -25,59 +25,30 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
 
         stateProvider.state('nodes', {
             url: '/nodes',
-            templateUrl: '/views/dashboard-explore.html',
-            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
-                breadCrumb.setCrumbs([ {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                }, {
-                    title: 'Nodes',
-                    routeState: 'nodes'
-                }]);
-            } ]
+            templateUrl: '/views/dashboard-explore.html'
         });
 
         stateProvider.state('create_node', {
             url: '/create-node',
-            templateUrl: '/views/dashboard-explore.html',
-            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
-                breadCrumb.setCrumbs([ {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                }, {
-                    title: 'Nodes',
-                    routeState: 'nodes'
-                }, 'Create']);
-            } ]
+            templateUrl: '/views/dashboard-explore.html'
         });
 
         stateProvider.state('gateways', {
             url: '/gateways',
-            templateUrl: '/views/dashboard-explore.html',
-            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
-                breadCrumb.setCrumbs([ {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                }, {
-                    title: 'Gateways',
-                    routeState: 'gateways'
-                }]);
-            } ]
+            templateUrl: '/views/dashboard-explore.html'
         });
 
         stateProvider.state('create_gateway', {
             url: '/create-gateway',
-            templateUrl: '/views/dashboard-explore.html',
-            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
-                breadCrumb.setCrumbs([ {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                }, {
-                    title: 'Gateways',
-                    routeState: 'gateways'
-                }, 'Create']);
-            } ]
+            templateUrl: '/views/dashboard-explore.html'
         });
+
+        stateProvider.state('account', {
+            url: '/account',
+            templateUrl: '/views/dashboard-account.html'
+            //controller: 'app.dashboard.ExploreController'
+        });
+
 
         console.debug('Routes configured');
     }
