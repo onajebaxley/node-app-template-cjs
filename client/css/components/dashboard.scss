@@ -1,0 +1,16 @@
+// ============================================================================
+//  General styles for the dashboard
+// ============================================================================
+$db_button_height: 120px;
+
+.cs-large-button {
+    width: 95%;
+    text-align: left;
+    line-height: $db_button_height;
+    min-height: $db_button_height;
+    border-radius: 3px;
+}
+
+.cs-large-button > md-icon{
+    padding: 0px;
+}
