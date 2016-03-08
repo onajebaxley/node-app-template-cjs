@@ -6,8 +6,8 @@ var angular = require('angular');
 /**
  * Dashboard module for the application. Provides components that help
  * implement the core functionality of the application.
- * 
- * The components defined by this module may be extended and/or augmented 
+ *
+ * The components defined by this module may be extended and/or augmented
  * as necessary.
  */
 var moduleName = 'app.dashboard';
