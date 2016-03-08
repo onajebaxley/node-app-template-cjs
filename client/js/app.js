@@ -23,6 +23,7 @@ var coreModule = require('./app.core');
 var layoutModule = require('./app.layout');
 var dataModule = require('./app.data');
 var authModule = require('./app.auth');
+var dashboardModule = require('./app.dashboard');
 
 angular.module(moduleName, [
     templates,
