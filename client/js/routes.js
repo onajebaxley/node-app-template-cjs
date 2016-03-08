@@ -20,9 +20,7 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
         stateProvider.state('explore', {
             url: '/explore',
             templateUrl: '/views/dashboard-home-view.html',
-            controller: [ '$scope', 'app.layout.breadCrumb', function($scope, breadCrumb) {
-                breadCrumb.setCrumbs(['Dashboard', 'Explore']);
-            } ]
+            controller: 'app.dashboard.ExploreController'
         });
 
         stateProvider.state('nodes', {

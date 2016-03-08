@@ -10,8 +10,14 @@ var _screenfull = require('screenfull');
  *
  * @module app.auth.LayoutController
  */
-module.exports = [ '$scope', 'app.layout.breadCrumb',
-    function($scope, breadCrumb) {
+module.exports = [ '$scope', 'app.layout.MenuItem', 'app.layout.breadCrumb', 
+    function($scope, MenuItem, breadCrumb) {
 
+        breadCrumb.setCrumbs([ {
+            title: 'Dashboard',
+            routeState: 'explore'
+        }, {
+            title: 'Explore',
+        } ]);
     }
 ];

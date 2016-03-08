@@ -252,6 +252,29 @@ module.exports = {
         }
 
         return MenuItem;
+    },
+
+    /**
+     * Creates a mock for the bread crumb service from the app.layout module.
+     *
+     * @module test.clientUtils.mockHelper
+     * @method createBreadCrumbMock
+     * @return {Object} A mock object that represents the breadcrumb service
+     */
+    createBreadCrumbMock: function() {
+        var mock = {
+            __crumbs: [],
+            setCrumbs: _sinon.spy(),
+            push: _sinon.spy(),
+            pop: function() {}
+        };
+        mock.getCrumbs = _sinon.stub().returns(mock.__crumbs);
+
+        mock.pop = _sinon.stub(mock, 'pop', function() {
+            return mock.__crumbs.pop();
+        });
+
+        return mock;
     }
 
 };

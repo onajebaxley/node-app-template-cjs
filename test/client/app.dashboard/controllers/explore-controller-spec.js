@@ -21,6 +21,8 @@ describe('[app.auth.ExploreController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
+    var breadCrumbMock = null;
+    var menuItemMock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
@@ -29,10 +31,12 @@ describe('[app.auth.ExploreController]', function() {
             function(_$rootScope, _$controller) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
+                breadCrumbMock = _mockHelper.createBreadCrumbMock();
 
                 var options = {
                     $rootScope: _$rootScope,
-                    $scope: $scope
+                    $scope: $scope,
+                    'app.layout.breadCrumb': breadCrumbMock
                 };
 
                 for (var mockName in mocks) {
@@ -48,17 +52,52 @@ describe('[app.auth.ExploreController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
+        breadCrumbMock = null;
+
+        menuItemMock = null;
     });
 
     beforeEach(angular.mock.module(_module));
 
     beforeEach(angular.mock.module(['$provide', function($provide) {
         $provide.value('app.core.user', _mockHelper.createUserMock());
+
+        var menuItemMock = _mockHelper.createMenuItemMock();
+        $provide.value('app.layout.MenuItem', menuItemMock);
     }]));
 
     describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
+        });
+
+        describe('[bread crumbs]', function() {
+            function _verifyCrumb(crumb, title, routeState, link) {
+                expect(crumb.title).to.equal(title);
+                if(typeof routeState !== 'undefined') {
+                    expect(crumb.routeState).to.equal(routeState);
+                }
+                if(typeof link !== 'undefined') {
+                    expect(crumb.link).to.equal(link);
+                }
+            }
+
+            beforeEach(function() {
+                _initController();
+            });
+
+            it('should initialize the bread crumb service when loaded', function() {
+                expect(breadCrumbMock.setCrumbs).to.have.been.calledOnce;
+                expect(breadCrumbMock.setCrumbs.args[0][0]).to.be.an('Array')
+            });
+
+            it('should set the expected breadcrumb values', function() {
+                var crumbs = breadCrumbMock.setCrumbs.args[0][0];
+                
+                expect(crumbs).to.have.length(1);
+                _verifyCrumb(crumbs[0], 'Dashboard', 'explore');
+                _verifyCrumb(crumbs[1], 'Explore');
+            });
         });
     });
 
