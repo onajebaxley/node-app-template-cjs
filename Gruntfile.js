@@ -718,7 +718,12 @@ module.exports = function(grunt) {
                 startServer = true;
             }
             startServer = startServer && !grunt.option('no-server');
-            grunt.task.run('env:' + target);
+            if(target !== 'monitor') {
+                grunt.task.run('env:' + target);
+            } else {
+                grunt.task.run('env:dev');
+            }
+
             if(testAction) {
                 if(startServer) {
                     grunt.task.run('express:' + target);
