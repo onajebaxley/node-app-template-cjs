@@ -75,7 +75,7 @@ describe('[app.auth.LeftSidebarController]', function() {
             var expectedItems = [{
                 title: 'explore',
                 iconName: 'explore',
-                routeState: 'home',
+                routeState: 'explore',
                 position: 0
             }, {
                 title: 'home',

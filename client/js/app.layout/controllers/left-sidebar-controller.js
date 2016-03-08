@@ -17,7 +17,7 @@ module.exports = [ '$scope', 'app.core.config', 'app.layout.MenuItem',
             childItems: [{
                 title: 'explore',
                 iconName: 'explore',
-                routeState: 'home',
+                routeState: 'explore',
                 position: 0
             }, {
                 title: 'home',
