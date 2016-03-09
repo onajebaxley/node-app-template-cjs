@@ -87,7 +87,7 @@ describe('[app.layout.MenuItem]', function() {
         });
     });
 
-    describe('[ctor]', function() {
+    describe('ctor()', function() {
         it('should throw an error if invoked without a valid menu options object', function() {
             var error = 'Invalid menu options specified (arg #1)';
 

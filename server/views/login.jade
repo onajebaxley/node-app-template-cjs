@@ -21,7 +21,7 @@ block content
 						if redirect
 							input#redirect(type='hidden', name='redirect', value='#{redirect}')
 						div(flex layout='row' layout-align='center center')
-							label.md-body-1.cs-text-error(flex) #{errorMessage}
+							label.md-body-1.cs-text-error(flex) #{loginError.message}
 						md-input-container.md-block
 							div(layout='row' layout-align='center center')
 								md-button.md-raised.md-accent(type='submit') Login

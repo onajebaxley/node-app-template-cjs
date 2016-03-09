@@ -20,18 +20,21 @@ describe('[app.auth.LoginController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
+    var MessageBlock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
 
-        inject(['$rootScope', '$controller',
-            function(_$rootScope, _$controller) {
+        inject(['$rootScope', '$controller', 'app.layout.MessageBlock',
+            function(_$rootScope, _$controller, _messageBlock) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
+                MessageBlock = _messageBlock;
 
                 var options = {
                     $rootScope: _$rootScope,
-                    $scope: $scope
+                    $scope: $scope,
+                    'app.layout.MessageBlock': MessageBlock
                 };
 
                 for (var mockName in mocks) {
@@ -47,6 +50,7 @@ describe('[app.auth.LoginController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
+        MessageBlock = null;
     });
 
     beforeEach(angular.mock.module(_module));
@@ -56,7 +60,7 @@ describe('[app.auth.LoginController]', function() {
             _initController();
             expect($scope).to.have.property('username').and.to.equal('');
             expect($scope).to.have.property('password').and.to.equal('');
-            expect($scope).to.have.property('errorMessage').and.to.equal('');
+            expect($scope).to.have.property('loginError').and.to.be.an.instanceof(MessageBlock);
         });
 
         it('should initialize the username field based on the value specified in the config service', function() {
@@ -75,7 +79,7 @@ describe('[app.auth.LoginController]', function() {
             expect($scope.username).to.equal(map.username);
         });
 
-        it('should initialize the username field based on the value specified in the config service', function() {
+        it('should initialize the loginError field based on the value specified in the config service', function() {
             var map = {
                 error_message: 'error message'
             };
@@ -88,7 +92,8 @@ describe('[app.auth.LoginController]', function() {
             };
 
             _initController(mocks);
-            expect($scope.errorMessage).to.equal(map.error_message);
+            expect($scope.loginError.message).to.equal(map.error_message);
+            expect($scope.loginError.severity).to.equal('error');
         });
     });
 });

@@ -41,7 +41,7 @@ describe('[app.data.RestDataSource]', function() {
         });
     });
 
-    describe('[ctor]', function() {
+    describe('ctor()', function() {
         it('should return an object that exposes the required methods and properties', function() {
             var dataSource = new Service();
 

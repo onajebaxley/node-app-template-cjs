@@ -6,11 +6,12 @@
  *
  * @module app.auth.LoginController
  */
-module.exports = [ '$scope', 'app.core.config',
-    function($scope, config) {
+module.exports = [ '$scope', 'app.core.config', 'app.layout.MessageBlock',
+    function($scope, config, MessageBlock) {
 
         $scope.username = config.get('username', '');
-        $scope.errorMessage = config.get('error_message', '');
+        $scope.loginError = new MessageBlock();
+        $scope.loginError.error(config.get('error_message', ''));
         $scope.password = '';
     }
 ];

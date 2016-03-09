@@ -138,7 +138,7 @@ module.exports = [ '$scope', 'localStorageService', 'app.core.config',
 
         function _lookupProperty(map, property) {
             var tokens = property.split('.');
-            
+
             var result = {
                 parent: map,
                 propertyName: null,
