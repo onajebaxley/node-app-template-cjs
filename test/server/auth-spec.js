@@ -491,6 +491,7 @@ describe('[server.auth]', function() {
                     expect(authComplete.spy.args[0][0]).to.be.null;
                     var user = authComplete.spy.args[0][1];
                     expect(user).to.be.an.instanceof(User);
+                    expect(user.getServiceToken('api')).to.be.a('string').and.to.not.be.empty;
                 }
 
                 _authenticator(VALID_USERNAME, VALID_USERNAME, authComplete.spy);

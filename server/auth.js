@@ -65,6 +65,8 @@ function _usernamePasswordStrategy(username, password, authComplete) {
         logger.info('User successfully authenticated. Initializing user object: [%s]', username);
         return _initUser(username).then(function(user) {
             logger.info('User successfully initialized: [%s]', username);
+            // A real world implementation should use something more meaningful here.
+            user.setServiceToken('api', 'dummy-api-key');
             authComplete(null, user);
         }, function(error) {
             logger.error('Error initializing user: [%s]', username, error);
