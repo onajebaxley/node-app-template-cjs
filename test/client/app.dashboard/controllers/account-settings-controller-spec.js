@@ -20,27 +20,28 @@ describe('[app.auth.AccountSettingsController]', function() {
     'use strict';
 
     var controller = null;
+    var $httpBackend = null;
     var $rootScope = null;
     var $scope = null;
-    var $resourceMock = null;
     var breadCrumbMock = null;
     var MessageBlock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
 
-        inject(['$rootScope', '$controller', 'app.layout.MessageBlock',
-            function(_$rootScope, _$controller, _messageBlock) {
+        inject(['$rootScope', '$controller', '$resource', 'app.layout.MessageBlock',
+            function(_$rootScope, _$controller, _$resource, _messageBlock) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
                 breadCrumbMock = _mockHelper.createBreadCrumbMock();
-                $resourceMock = _mockHelper.createResourceMock();
                 MessageBlock = _messageBlock;
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
-                    $resource: $resourceMock,
+                    $resource: _$resource,
+                    'app.core.user': _mockHelper.createUserMock(),
+                    'app.core.config': _mockHelper.createConfigMock(),
                     'app.layout.breadCrumb': breadCrumbMock,
                     'app.layout.MessageBlock': MessageBlock
                 };
@@ -64,8 +65,8 @@ describe('[app.auth.AccountSettingsController]', function() {
 
     beforeEach(angular.mock.module(_module));
 
-    beforeEach(angular.mock.module(['$provide', function($provide) {
-        $provide.value('app.core.user', _mockHelper.createUserMock());
+    beforeEach(inject(['$injector', function($injector) {
+        $httpBackend = $injector.get('$httpBackend');
     }]));
 
     describe('[init]', function() {
@@ -102,11 +103,37 @@ describe('[app.auth.AccountSettingsController]', function() {
         });
 
         describe('[server fetch]', function() {
+            var API_URL = 'http://api-server/api';
+            var API_KEY = 'some-jwt-key';
+            var userMock = null;
+            var configMock
+
             beforeEach(function() {
-                _initController();
+                userMock = _mockHelper.createUserMock('jdoe', [], {
+                    'wc-api': API_KEY
+                });
+                configMock = _mockHelper.createConfigMock({
+                    wc_api_url: API_URL
+                });
+            });
+
+            afterEach(function() {
+                $httpBackend.verifyNoOutstandingRequest();
             });
 
             it('should automatically fetch settings data from the server on initialization', function() {
+                var expectedUrl = API_URL + '/account/metadata'
+                $httpBackend.expectGET(expectedUrl, {
+                    Authorization: 'bearer ' + API_KEY,
+                    Accept: 'application/json'
+                }).respond(200, {});
+
+                _initController({
+                    'app.core.config': configMock,
+                    'app.core.user': userMock
+                });
+
+                $httpBackend.flush();
             });
 
         });

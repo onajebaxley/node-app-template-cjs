@@ -1,2 +1,2 @@
-1. Send API url to client via client config
+1. Evaluate the use of $httpbackend for rest-data-source
 

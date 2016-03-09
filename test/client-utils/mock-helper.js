@@ -101,25 +101,34 @@ module.exports = {
      * @method createUserMock
      * @param {String} [username='jdoe'] The username of the user represented by the mock
      * @param {Array} [roles=[]] An array of roles that the user belongs to
+     * @param {Array} [serviceTokens={}] An optional hash of service tokens to associate
+     *          with the user object.
      * @return {Object} A mock object for the user
      */
-    createUserMock: function(username, roles) {
+    createUserMock: function(username, roles, serviceTokens) {
         if(!typeof username !== 'string') {
             username = 'jdoe';
         }
         if(!(roles instanceof Array)) {
             roles = [];
         }
+        if(!serviceTokens || typeof serviceTokens !== 'object') {
+            serviceTokens = {};
+        }
 
         var mock = {
             _isLoggedIn: false,
             _roles: _clone(roles),
+            _serviceTokens: _clone(serviceTokens),
             username: _clone(username),
             hasRole: function(role) {
                 return mock._roles.indexOf(role.toLowerCase()) >= 0;
             },
             isLoggedIn: function() {
                 return mock._isLoggedIn;
+            },
+            getServiceToken: function(key) {
+                return mock._serviceTokens[key];
             }
         };
 

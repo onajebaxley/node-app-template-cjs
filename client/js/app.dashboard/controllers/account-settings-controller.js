@@ -10,11 +10,14 @@ var _screenfull = require('screenfull');
  *
  * @module app.dashboard.AccountSettingsController
  */
-module.exports = [ '$scope', '$resource', 'app.layout.breadCrumb',
-                    'app.layout.MessageBlock',
-    function($scope, $resource, breadCrumb, MessageBlock) {
-
+module.exports = [ '$scope', '$resource', 'app.core.config', 'app.core.user',
+                    'app.layout.breadCrumb', 'app.layout.MessageBlock',
+    function($scope, $resource, config, user, breadCrumb, MessageBlock) {
+        console.log(user);
+        var BASE_URL = config.get('wc_api_url');
         var _settings = null;
+
+        var _settingsDao = _initDao('/account/metadata');
 
         breadCrumb.setCrumbs([ {
             title: 'Dashboard',
@@ -32,6 +35,9 @@ module.exports = [ '$scope', '$resource', 'app.layout.breadCrumb',
             $scope.asyncInProgress = false;
             $scope.$digest();
         }, 1000);
+
+        // Init code.
+        _settingsDao.fetch();
 
 
         /**
@@ -83,6 +89,25 @@ module.exports = [ '$scope', '$resource', 'app.layout.breadCrumb',
         function _updateSettings(settings) {
             _settings = settings;
             $scope.settings = JSON.stringify(_settings, null, 2);
+        }
+
+        function _initDao(url) {
+            return $resource(BASE_URL + url, null, {
+                fetch: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'bearer ' + user.getServiceToken('wc-api'),
+                        'Accept': 'application/json'
+                    }
+                },
+                save: {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'bearer ' + user.getServiceToken('wc-api'),
+                        'Accept': 'application/json'
+                    }
+                }
+            });
         }
     }
 ];

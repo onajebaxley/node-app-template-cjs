@@ -5,6 +5,7 @@ var angular = require('angular');
 var uiRouter = require('angular-ui-router');
 var coreModule = require('../app.core');
 var layoutModule = require('../app.layout');
+var ngResource = require('angular-resource');
 
 /**
  * Dashboard module for the application. Provides components that help
@@ -14,7 +15,7 @@ var layoutModule = require('../app.layout');
  * as necessary.
  */
 var moduleName = 'app.dashboard';
-angular.module(moduleName, [ 'ui.router', 'app.core', 'app.layout' ])
+angular.module(moduleName, [ 'ui.router', 'ngResource', 'app.core', 'app.layout' ])
     .controller('app.dashboard.ExploreController', require('./controllers/explore-controller'))
     .controller('app.dashboard.AccountSettingsController', require('./controllers/account-settings-controller'))
     //.factory('app.layout.MenuItem', require('./services/menu-item'))
