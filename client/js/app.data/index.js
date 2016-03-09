@@ -13,7 +13,7 @@ var ngResource = require('angular-resource');
  */
 var moduleName = 'app.data';
 angular.module(moduleName, [ 'ngResource' ])
-    .factory('app.data.RestDataSource', require('./services/rest-data-source'))
+    .factory('app.data.daoFactory', require('./services/dao-factory'))
     .factory('app.data.TimeSeriesFormatter', require('./services/time-series-formatter'))
     .factory('app.data.Poller', require('./services/poller'))
     .factory('app.data.pollerManager', require('./services/poller-manager'))

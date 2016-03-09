@@ -211,17 +211,17 @@ module.exports = {
      * @method createDataSourceMock
      * @param {String} [errorMessage=undefined] An optional error message if 
      *                  the mock is expected to throw an error when
-     *                  serverFetch() is invoked.
+     *                  fetch() is invoked.
      * @return {Object} A mock object for a data source object
      */
     createDataSourceMock: function(errorMessage) {
         var mock = {
-            serverFetch: function() {},
+            fetch: function() {},
             _successHandler: null,
             _failureHandler: null
         };
 
-        _sinon.stub(mock, 'serverFetch', function() {
+        _sinon.stub(mock, 'fetch', function() {
             if (errorMessage) {
                 throw new Error(errorMessage);
             }

@@ -27,8 +27,8 @@ module.exports = [ '$interval', function($interval) {
         if(!dataSource || typeof dataSource !== 'object') {
             throw new Error('Invalid data source object specified (arg #3)');
         }
-        if(typeof dataSource.serverFetch !== 'function') {
-            throw new Error('Data source object does not define the serverFetch() method (dataSource.serverFetch())');
+        if(typeof dataSource.fetch !== 'function') {
+            throw new Error('Data source object does not define the fetch() method (dataSource.fetch())');
         }
 
         this._id = id;
@@ -52,7 +52,7 @@ module.exports = [ '$interval', function($interval) {
         var self = this;
         return function() {
             try {
-                self._dataSource.serverFetch().then(function(data) {
+                self._dataSource.fetch().then(function(data) {
                     self.emit('data', self._id, data);
                 }, function(err) {
                     self.emit('error', self._id, err);

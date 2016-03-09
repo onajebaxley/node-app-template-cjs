@@ -80,12 +80,12 @@ describe('[app.data.Poller]', function() {
         });
 
         it('should throw an error if the data source object does not define required methods', function() {
-            var error = 'Data source object does not define the serverFetch() method (dataSource.serverFetch())';
+            var error = 'Data source object does not define the fetch() method (dataSource.fetch())';
 
-            function createObject(serverFetch) {
+            function createObject(fetch) {
                 return function() {
                     var ds = {
-                        serverFetch: serverFetch
+                        fetch: fetch
                     };
                     return new Service(DEFAULT_ID, ds);
                 };
@@ -390,10 +390,10 @@ describe('[app.data.Poller]', function() {
                 pollFrequency: 100
             });
 
-            expect(dataSourceMock.serverFetch).to.not.have.been.called;
+            expect(dataSourceMock.fetch).to.not.have.been.called;
 
             poller.fetchNow();
-            expect(dataSourceMock.serverFetch).to.have.been.calledOnce;
+            expect(dataSourceMock.fetch).to.have.been.calledOnce;
         });
 
         it('should register success and failure callback handlers with the data source when invoked', function() {
@@ -542,7 +542,7 @@ describe('[app.data.Poller]', function() {
     });
 
     describe('[Polling Behavior]', function() {
-        it('should invoke the data source\'s serverFetch() method every time the interval completes', function() {
+        it('should invoke the data source\'s fetch() method every time the interval completes', function() {
             var dataSourceMock = _mockHelper.createDataSourceMock();
 
             var poller = _createPoller({
@@ -555,11 +555,11 @@ describe('[app.data.Poller]', function() {
             poller.start();
 
             // Data source should not be called until the interval timer triggers.
-            expect(dataSourceMock.serverFetch).to.not.have.been.called;
+            expect(dataSourceMock.fetch).to.not.have.been.called;
 
             $intervalMock.args[0][0]();
             $intervalMock.args[0][0]();
-            expect(dataSourceMock.serverFetch).to.have.been.calledTwice;
+            expect(dataSourceMock.fetch).to.have.been.calledTwice;
         });
 
         it('should register success and failure callback handlers with the data source when the interval triggers', function() {
