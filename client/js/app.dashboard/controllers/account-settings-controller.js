@@ -10,14 +10,12 @@ var _screenfull = require('screenfull');
  *
  * @module app.dashboard.AccountSettingsController
  */
-module.exports = [ '$scope', '$resource', 'app.core.config', 'app.core.user',
-                    'app.layout.breadCrumb', 'app.layout.MessageBlock',
-    function($scope, $resource, config, user, breadCrumb, MessageBlock) {
-        console.log(user);
-        var BASE_URL = config.get('wc_api_url');
+module.exports = [ '$scope', 'app.data.daoFactory', 'app.layout.breadCrumb',
+                    'app.layout.MessageBlock',
+    function($scope, daoFactory, breadCrumb, MessageBlock) {
         var _settings = null;
 
-        var _settingsDao = _initDao('/account/metadata');
+        var _settingsDao = daoFactory.buildApiDao('/account/metadata');
 
         breadCrumb.setCrumbs([ {
             title: 'Dashboard',
@@ -37,7 +35,7 @@ module.exports = [ '$scope', '$resource', 'app.core.config', 'app.core.user',
         }, 1000);
 
         // Init code.
-        _settingsDao.fetch();
+        _settingsDao.fetchOne();
 
 
         /**
@@ -61,7 +59,7 @@ module.exports = [ '$scope', '$resource', 'app.core.config', 'app.core.user',
         };
 
         /**
-         * Attempts to parse and save user settings to the cloud. No action
+         * Attempts to parse and save account settings to the cloud. No action
          * will be taken if the parse operation fails.
          *
          * @module app.layout.LayoutController

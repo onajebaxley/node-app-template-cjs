@@ -19,29 +19,36 @@ var _module = 'app.dashboard';
 describe('[app.auth.AccountSettingsController]', function() {
     'use strict';
 
+    var API_KEY = 'jwt-token';
+    var API_URL = 'http://api-server/api';
+
     var controller = null;
     var $httpBackend = null;
     var $rootScope = null;
     var $scope = null;
     var breadCrumbMock = null;
     var MessageBlock = null;
+    var daoFactory = null;
+    var configMock = null;
+    var userMock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
 
-        inject(['$rootScope', '$controller', '$resource', 'app.layout.MessageBlock',
-            function(_$rootScope, _$controller, _$resource, _messageBlock) {
+        inject(['$rootScope', '$controller', '$resource', 'app.data.daoFactory',
+                'app.layout.MessageBlock',
+            function(_$rootScope, _$controller, _$resource, _daoFactory, _messageBlock) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
                 breadCrumbMock = _mockHelper.createBreadCrumbMock();
+                daoFactory = _daoFactory;
                 MessageBlock = _messageBlock;
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
                     $resource: _$resource,
-                    'app.core.user': _mockHelper.createUserMock(),
-                    'app.core.config': _mockHelper.createConfigMock(),
+                    'app.data.daoFactory': daoFactory,
                     'app.layout.breadCrumb': breadCrumbMock,
                     'app.layout.MessageBlock': MessageBlock
                 };
@@ -61,9 +68,20 @@ describe('[app.auth.AccountSettingsController]', function() {
         $scope = null;
         breadCrumbMock = null;
         MessageBlock = null;
+        userMock = _mockHelper.createUserMock('jdoe', [], {
+            'api': API_KEY
+        });
+        configMock = _mockHelper.createConfigMock({
+            api_url: API_URL
+        });
     });
 
     beforeEach(angular.mock.module(_module));
+
+    beforeEach(angular.mock.module(['$provide', function($provide) {
+        $provide.value('app.core.user', userMock);
+        $provide.value('app.core.config', configMock);
+    }]));
 
     beforeEach(inject(['$injector', function($injector) {
         $httpBackend = $injector.get('$httpBackend');
@@ -103,20 +121,6 @@ describe('[app.auth.AccountSettingsController]', function() {
         });
 
         describe('[server fetch]', function() {
-            var API_URL = 'http://api-server/api';
-            var API_KEY = 'some-jwt-key';
-            var userMock = null;
-            var configMock
-
-            beforeEach(function() {
-                userMock = _mockHelper.createUserMock('jdoe', [], {
-                    'wc-api': API_KEY
-                });
-                configMock = _mockHelper.createConfigMock({
-                    wc_api_url: API_URL
-                });
-            });
-
             afterEach(function() {
                 $httpBackend.verifyNoOutstandingRequest();
             });
@@ -128,10 +132,7 @@ describe('[app.auth.AccountSettingsController]', function() {
                     Accept: 'application/json'
                 }).respond(200, {});
 
-                _initController({
-                    'app.core.config': configMock,
-                    'app.core.user': userMock
-                });
+                _initController();
 
                 $httpBackend.flush();
             });
