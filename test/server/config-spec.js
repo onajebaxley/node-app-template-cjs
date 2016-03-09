@@ -32,6 +32,7 @@ describe('[server.config]', function() {
         options.sessionTokenVersion = options.sessionTokenVersion || 1;
         options.logsDir = options.logsDir || 'log';
         options.staticFileCacheDuration = options.staticFileCacheDuration || 31558464000;
+        options.apiUrl = options.apiUrl || 'http://api-server/api';
 
         var rcSpy = _sinon.spy();
 
