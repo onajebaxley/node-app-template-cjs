@@ -172,6 +172,7 @@ describe('[server.config]', function() {
             expect(GLOBAL.config.cfg_enable_minified_files).to.be.true;
             expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(_rcOptions.sessionSecureProxy);
             expect(GLOBAL.config.cfg_session_timeout).to.equal(_rcOptions.sessionTimeout);
+            expect(GLOBAL.config.cfg_api_url).to.be.a('string').and.to.not.be.empty;
         });
 
         it('should initialize required configuration parameters when invoked (ENV=test)', function() {
@@ -213,6 +214,7 @@ describe('[server.config]', function() {
             expect(GLOBAL.config.cfg_enable_minified_files).to.be.true;
             expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(_rcOptions.sessionSecureProxy);
             expect(GLOBAL.config.cfg_session_timeout).to.equal(_rcOptions.sessionTimeout);
+            expect(GLOBAL.config.cfg_api_url).to.be.a('string').and.to.not.be.empty;
         });
 
         it('should initialize required configuration parameters when invoked (ENV=development)', function() {
@@ -254,6 +256,7 @@ describe('[server.config]', function() {
             expect(GLOBAL.config.cfg_enable_minified_files).to.be.false;
             expect(GLOBAL.config.cfg_session_secure_proxy).to.equal(false);
             expect(GLOBAL.config.cfg_session_timeout).to.equal(900 * 1000);
+            expect(GLOBAL.config.cfg_api_url).to.be.a('string').and.to.not.be.empty;
         });
 
         it('should initialize config elements that can be injected into the client', function() {
@@ -270,6 +273,7 @@ describe('[server.config]', function() {
             expect(app.locals.gv_config.app_title).to.equal(GLOBAL.config.cfg_app_title);
             expect(app.locals.gv_config.app_version).to.equal(GLOBAL.config.cfg_app_version);
             expect(app.locals.gv_config.root_path).to.equal(GLOBAL.config.cfg_root_path);
+            expect(app.locals.gv_config.api_url).to.equal(GLOBAL.config.cfg_api_url);
         });
 
         it('should use the rootPath parameter as the mount path if no proxy is present', function() {

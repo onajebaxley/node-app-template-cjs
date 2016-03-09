@@ -81,7 +81,8 @@ function _getApplicationConfig(appName) {
         sessionTimeout: 10800000, // 3 hours
         sessionTokenVersion: 1,
         logsDir: 'log',
-        staticFileCacheDuration: 31558464000 // One year
+        staticFileCacheDuration: 31558464000, // One year
+        apiUrl: 'http://api-url' // An api url that can be used by for client side REST calls
     });
 }
 
@@ -146,6 +147,8 @@ module.exports = {
         _setConfig('cfg_enable_dyamic_css_compile', false);
         _setConfig('cfg_enable_minified_files', true);
 
+        _setConfig('cfg_api_url', appConfig.apiUrl);
+
         // Apply configuration overrides if any have been defined for the
         // environment.
         var applyConfigOverrides = _configOverrides[env];
@@ -166,7 +169,8 @@ module.exports = {
             app_name: GLOBAL.config.cfg_app_name,
             app_title: GLOBAL.config.cfg_app_title,
             app_version: GLOBAL.config.cfg_app_version,
-            root_path: GLOBAL.config.cfg_root_path
+            root_path: GLOBAL.config.cfg_root_path,
+            api_url: GLOBAL.config.cfg_api_url
                 // Additional configuration can go here:
         };
 
