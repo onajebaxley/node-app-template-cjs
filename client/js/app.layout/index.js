@@ -2,7 +2,9 @@
 
 var console = require('console');
 var angular = require('angular');
+var uiRouter = require('angular-ui-router');
 var localStorage = require('angular-local-storage');
+var coreModule = require('../app.core');
 
 /**
  * Layout module for the application. Provides layout related functionality

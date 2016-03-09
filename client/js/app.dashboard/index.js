@@ -2,6 +2,9 @@
 
 var console = require('console');
 var angular = require('angular');
+var uiRouter = require('angular-ui-router');
+var coreModule = require('../app.core');
+var layoutModule = require('../app.layout');
 
 /**
  * Dashboard module for the application. Provides components that help
