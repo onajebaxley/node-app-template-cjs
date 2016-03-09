@@ -8,14 +8,8 @@
 		</div>
 		<div flex='30' flex-sm='45' flex-xs='80'>
 			<md-button ui-sref='gateways' layout-padding class='cs-large-button md-raised md-primary md-hue-2' >
-				<md-icon md-font-set='material-icons'>grid_on</md-icon>
+				<md-icon md-font-set='material-icons'>widgets</md-icon>
 				<span>View / Manage Gateways</span>
-			</md-button>
-		</div>
-		<div flex='30' flex-sm='45' flex-xs='80'>
-			<md-button ui-sref='create_gateway' layout-padding class='cs-large-button md-raised md-primary md-hue-2' >
-				<md-icon md-font-set='material-icons'>router</md-icon>
-				<span>Create a New Gateway</span>
 			</md-button>
 		</div>
 		<div flex='30' flex-sm='45' flex-xs='80'>
@@ -24,6 +18,12 @@
 				<span>Create a New Node</span>
 			</md-button>
 		</div>
+        <div flex='30' flex-sm='45' flex-xs='80'>
+            <md-button ui-sref='create_gateway' layout-padding class='cs-large-button md-raised md-primary md-hue-2' >
+                <md-icon md-font-set='material-icons'>router</md-icon>
+                <span>Create a New Gateway</span>
+            </md-button>
+        </div>
 		<div flex='30' flex-sm='45' flex-xs='80' ng-if='_user.hasRole("admin")'>
 			<md-button ui-sref='account' layout-padding class='cs-large-button md-raised md-primary md-hue-2' >
 				<md-icon md-font-set='material-icons'>settings</md-icon>
