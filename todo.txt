@@ -1,3 +1,2 @@
 1. Send API url to client via client config
-2. Add navigation icons to sidebar
 
