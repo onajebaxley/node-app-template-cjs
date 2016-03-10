@@ -103,9 +103,11 @@ module.exports = {
      * @param {Array} [roles=[]] An array of roles that the user belongs to
      * @param {Array} [serviceTokens={}] An optional hash of service tokens to associate
      *          with the user object.
+     * @param {Object} [properties={}] An optional hash that contains additional properties
+     *          for the user object.
      * @return {Object} A mock object for the user
      */
-    createUserMock: function(username, roles, serviceTokens) {
+    createUserMock: function(username, roles, serviceTokens, properties) {
         if(!typeof username !== 'string') {
             username = 'jdoe';
         }
@@ -114,6 +116,9 @@ module.exports = {
         }
         if(!serviceTokens || typeof serviceTokens !== 'object') {
             serviceTokens = {};
+        }
+        if(!properties || typeof properties !== 'object') {
+            properties = {};
         }
 
         var mock = {
@@ -131,6 +136,10 @@ module.exports = {
                 return mock._serviceTokens[key];
             }
         };
+
+        for(var prop in properties) {
+            mock[prop] = properties[prop];
+        }
 
         return mock;
     },

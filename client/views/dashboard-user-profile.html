@@ -1,0 +1,46 @@
+<div layout='column'>
+	<md-content layout-padding>
+		<div flex='100' flex-gt-sm='50' class='md-whiteframe-z2'>
+			<div>
+				<md-toolbar class='md-hue-2'>
+					<div class='md-toolbar-tools'>
+						<img class='cs-avatar-large' ng-src='{{_user.picture}}'></img>
+						<span class='md-headline' ng-disabled='!isEditEnabled'>{{username}}</span>
+					</div>
+				</md-toolbar>
+			</div>
+
+			<md-tabs md-dynamic-height md-border-bottom>
+				<md-tab label='Basic'>
+					<md-input-container class='md-icon-float md-block'>
+						<label>First Name</label>
+						<input ng-model='firstName' type='text' ng-disabled='!isEditEnabled'>
+					</md-input-container>
+					<md-input-container class='md-icon-float md-block'>
+						<label>Last Name</label>
+						<input ng-model='lastName' type='text' ng-disabled='!isEditEnabled'>
+					</md-input-container>
+					<md-input-container class='md-icon-float md-block'>
+						<label>Nickname</label>
+						<input ng-model='nickname' type='text' ng-disabled='!isEditEnabled'>
+					</md-input-container>
+
+					<div>
+						<h4>Roles</h4>
+						<md-chips ng-model='roles' name='role' readonly='!isEditEnabled'>
+							<md-chip-template>
+								<strong>{{$chip}}</strong>
+							</md-chip-template>
+						</md-chips>
+					</div>
+				</md-tab>
+				<md-tab label='Service Tokens'>
+					<md-input-container class='md-icon-float md-block' ng-repeat='(key, value) in serviceTokens'>
+						<label>{{key}}</label>
+						<input ng-model='value' type='text' ng-disabled='!isEditEnabled'>
+					</md-input-container>
+				</md-tab>
+			</md-tabs>
+		</div>
+	</md-content>
+</div>

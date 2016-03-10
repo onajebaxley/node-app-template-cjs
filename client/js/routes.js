@@ -49,6 +49,12 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
             controller: 'app.dashboard.AccountSettingsController'
         });
 
+        stateProvider.state('user', {
+            url: '/user',
+            templateUrl: '/views/dashboard-user-profile.html',
+            controller: 'app.dashboard.UserProfileController'
+        });
+
 
         console.debug('Routes configured');
     }

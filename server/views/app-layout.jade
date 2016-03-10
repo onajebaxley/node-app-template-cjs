@@ -36,6 +36,10 @@ block content
 							span {{_user.nickname}}
 						md-menu-content
 							md-menu-item
+								md-button(ui-sref='user' aria-label='user profile')
+									md-icon(md-font-set='material-icons') person
+									span profile
+							md-menu-item
 								md-button(ng-href='#{jv_root_path}auth/logout?redirect=#{jv_root_path}' aria-label='log out')
 									md-icon(md-font-set='material-icons') exit_to_app
 									span Log out
