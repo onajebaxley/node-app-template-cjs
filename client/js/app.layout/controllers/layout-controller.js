@@ -10,9 +10,9 @@ var _screenfull = require('screenfull');
  *
  * @module app.layout.LayoutController
  */
-module.exports = [ '$scope', 'localStorageService', 'app.core.config',
+module.exports = [ '$scope', '$rootScope', 'localStorageService', 'app.core.config',
                     'app.core.user', 'app.core.utils', 'app.layout.breadCrumb',
-    function($scope, localStorage, config, user, utils, breadCrumb) {
+    function($scope, $rootScope, localStorage, config, user, utils, breadCrumb) {
 
         $scope._user = user;
         $scope._breadCrumb = breadCrumb;
@@ -22,6 +22,7 @@ module.exports = [ '$scope', 'localStorageService', 'app.core.config',
 
         // Default properties required by the controller
         $scope._layout.isFullScreen = !!$scope._layout.isFullScreen;
+        $scope._layout.stateTransitionInProgress = false;
 
         _restoreLocalStorageSettings();
 
@@ -101,6 +102,21 @@ module.exports = [ '$scope', 'localStorageService', 'app.core.config',
             }
         }
 
+        // --------------------------------------------------------------------
+        // Event handlers
+        // --------------------------------------------------------------------
+        $rootScope.$on('$stateChangeStart', function() {
+            $scope._layout.stateTransitionInProgress = true;
+        });
+
+        $rootScope.$on('$stateChangeSuccess', function() {
+            $scope._layout.stateTransitionInProgress = false;
+        });
+        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+            //TODO: Do something more meaningful here.
+            console.error('Error changing state: ', error);
+            $scope._layout.stateTransitionInProgress = false;
+        });
         // --------------------------------------------------------------------
         // Private members
         // --------------------------------------------------------------------

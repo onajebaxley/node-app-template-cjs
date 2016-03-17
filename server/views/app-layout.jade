@@ -43,4 +43,5 @@ block content
 								md-button(ng-href='#{jv_root_path}auth/logout?redirect=#{jv_root_path}' aria-label='log out')
 									md-icon(md-font-set='material-icons') exit_to_app
 									span Log out
+			<md-progress-linear md-mode="indeterminate" ng-if='_layout.stateTransitionInProgress'></md-progress-linear>
 			block body
