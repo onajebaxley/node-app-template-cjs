@@ -15,14 +15,14 @@ var _mockHelper = require('../../../client-utils/mock-helper');
 
 var _module = 'app.layout';
 
-describe('[app.auth.LayoutController]', function() {
+describe('[app.layout.LayoutController]', function() {
     'use strict';
 
     var controller = null;
     var $rootScope = null;
     var $scope = null;
     var userMock = null;
-    var DEFAULT_PROPERTIES = ['isFullScreen'];
+    var DEFAULT_PROPERTIES = ['isFullScreen', 'stateTransitionInProgress'];
 
     function _getConfigMock(layoutConfig) {
         layoutConfig = layoutConfig || {
@@ -44,6 +44,7 @@ describe('[app.auth.LayoutController]', function() {
         };
 
         layoutConfig.isFullScreen = !!layoutConfig.isFullScreen;
+        layoutConfig.stateTransitionInProgress = !!layoutConfig.stateTransitionInProgress;
 
         return _mockHelper.createConfigMock({
             layout: layoutConfig
@@ -138,7 +139,7 @@ describe('[app.auth.LayoutController]', function() {
             expect($scope._user).to.equal(userMock);
         });
 
-        it('should use settings sepcified via the config module to populate layout property values', function() {
+        it('should use settings specified via the config module to populate layout property values', function() {
             var configMock = _getConfigMock();
 
             _initController({
@@ -657,6 +658,32 @@ describe('[app.auth.LayoutController]', function() {
 
             $scope.toggleFullScreen();
             expect($scope._layout.isFullScreen).to.be.false;
+        });
+    });
+
+    describe('[state transition logic]', function() {
+        it('should set the stateTransitionInProgress flag to true when a state transition starts', function() {
+            _initController({});
+
+            $scope._layout.stateTransitionInProgress = false;
+            $rootScope.$broadcast('$stateChangeStart');
+            expect($scope._layout.stateTransitionInProgress).to.be.true;
+        });
+
+        it('should set the stateTransitionInProgress flag to false when a state transition completes successfully', function() {
+            _initController({});
+
+            $scope._layout.stateTransitionInProgress = true;
+            $rootScope.$broadcast('$stateChangeSuccess');
+            expect($scope._layout.stateTransitionInProgress).to.be.false;
+        });
+
+        it('should set the stateTransitionInProgress flag to false when a state transition completes with errors', function() {
+            _initController({});
+
+            $scope._layout.stateTransitionInProgress = true;
+            $rootScope.$broadcast('$stateChangeError');
+            expect($scope._layout.stateTransitionInProgress).to.be.false;
         });
     });
 

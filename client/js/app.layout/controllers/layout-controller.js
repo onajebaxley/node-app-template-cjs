@@ -22,7 +22,7 @@ module.exports = [ '$scope', '$rootScope', 'localStorageService', 'app.core.conf
 
         // Default properties required by the controller
         $scope._layout.isFullScreen = !!$scope._layout.isFullScreen;
-        $scope._layout.stateTransitionInProgress = false;
+        $scope._layout.stateTransitionInProgress = !!$scope._layout.stateTransitionInProgress;
 
         _restoreLocalStorageSettings();
 
