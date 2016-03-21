@@ -25,28 +25,28 @@ module.exports = [ function() {
         if(typeof options.groupingFunction !== 'function') {
             throw new Error('Invalid grouping function specified (options.groupingFunction)');
         }
-        if(options.resolution &&
-           (typeof options.resolution !== 'number' || options.resolution <= 0)) {
-            throw new Error('Invalid resolution specified. Must be a positive number (options.resolution)');
+        if(options.interval &&
+           (typeof options.interval !== 'number' || options.interval <= 0)) {
+            throw new Error('Invalid interval specified. Must be a positive number (options.interval)');
         }
 
-        this._resolution = options.resolution || TimeSeriesDataFormatter.DEFAULT_RESOLUTION;
+        this._interval = options.interval || TimeSeriesDataFormatter.DEFAULT_INTERVAL;
         this._groupingFunction = options.groupingFunction;
 
         this._dataSets = { };
     }
 
     /**
-     * The default resolution for the formatter (in seconds).
+     * The default interval for the formatter (in seconds).
      *
      * @module app.data.TimeSeriesDataFormatter
      * @class TimeSeriesDataFormatter
-     * @property DEFAULT_RESOLUTION
+     * @property DEFAULT_INTERVAL
      * @type Number
      * @static
      * @readOnly
      */
-    TimeSeriesDataFormatter.DEFAULT_RESOLUTION = 15;
+    TimeSeriesDataFormatter.DEFAULT_INTERVAL = 15;
 
     /**
      * @module app.data.TimeSeriesDataFormatter
@@ -57,7 +57,7 @@ module.exports = [ function() {
     TimeSeriesDataFormatter.prototype._getNextInterval = function(date) {
         date = new Date(date);
         var seconds = parseInt(date.getTime()/1000);
-        var delta = (this._resolution - (seconds % this._resolution));
+        var delta = (this._interval - (seconds % this._interval));
 
         return new Date((seconds + delta) * 1000);
     };
@@ -147,19 +147,19 @@ module.exports = [ function() {
     };
 
     /**
-     * Updates the resolution used to generate the chart data. This method
+     * Updates the interval used to generate the chart data. This method
      * will regroup all existing data sets when invoked.
      *
      * @module app.data.TimeSeriesDataFormatter
      * @class TimeSeriesDataFormatter
-     * @method setGroupingFunction
-     * @param {Number} resolution The new resolution to set
+     * @method setInterval
+     * @param {Number} interval The new interval to set
      */
-    TimeSeriesDataFormatter.prototype.setResolution = function(resolution) {
-        if(typeof resolution !== 'number' || resolution <= 0) {
-            throw new Error('Invalid resolution specified. Must be a positive number (arg #1)');
+    TimeSeriesDataFormatter.prototype.setInterval = function(interval) {
+        if(typeof interval !== 'number' || interval <= 0) {
+            throw new Error('Invalid interval specified. Must be a positive number (arg #1)');
         }
-        this._resolution = resolution;
+        this._interval = interval;
 
         // Update all data sets.
         for(var id in this._dataSets) {
@@ -255,7 +255,7 @@ module.exports = [ function() {
                 payload.data[index].push(dataPoint);
             }
 
-            label = new Date(label + (this._resolution * 1000));
+            label = new Date(label + (this._interval * 1000));
             label = label.getTime();
         }
         while(label <= endTime);

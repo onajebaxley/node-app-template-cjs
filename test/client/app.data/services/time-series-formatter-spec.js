@@ -26,7 +26,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
         options.groupingFunction = options.groupingFunction || function() {
             return 0;
         };
-        options.resolution = options.resolution || Service.DEFAULT_RESOLUTION;
+        options.interval = options.interval || Service.DEFAULT_INTERVAL;
 
         return new Service(options);
     }
@@ -75,16 +75,16 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             expect(createObject({})).to.throw(error);
         });
 
-        it('should throw an error if an invalid resolution is specified', function() {
-            var error = 'Invalid resolution specified. Must be a positive number (options.resolution)';
+        it('should throw an error if an invalid interval is specified', function() {
+            var error = 'Invalid interval specified. Must be a positive number (options.interval)';
 
-            function createObject(resolution) {
+            function createObject(interval) {
                 return function() {
                     var options = {
                         groupingFunction: function() {
                             return 0;
                         },
-                        resolution: resolution
+                        interval: interval
                     };
                     return new Service(options);
                 };
@@ -98,14 +98,14 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             expect(createObject(function() {})).to.throw(error);
         });
 
-        it('should not throw an error if a resolution is omitted, or is a valid positive number', function() {
-            function createObject(resolution) {
+        it('should not throw an error if a interval is omitted, or is a valid positive number', function() {
+            function createObject(interval) {
                 return function() {
                     var options = {
                         groupingFunction: function() {
                             return 0;
                         },
-                        resolution: resolution
+                        interval: interval
                     };
                     return new Service(options);
                 };
@@ -123,11 +123,11 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                 }
             });
 
-            expect(Service).to.have.property('DEFAULT_RESOLUTION').and.to.be.a('number');
+            expect(Service).to.have.property('DEFAULT_INTERVAL').and.to.be.a('number');
             expect(formatter).to.have.property('setDataSet').and.to.be.a('function');
             expect(formatter).to.have.property('removeDataSet').and.to.be.a('function');
             expect(formatter).to.have.property('setGroupingFunction').and.to.be.a('function');
-            expect(formatter).to.have.property('setResolution').and.to.be.a('function');
+            expect(formatter).to.have.property('setInterval').and.to.be.a('function');
             expect(formatter).to.have.property('generateChartData').and.to.be.a('function');
         });
     });
@@ -214,16 +214,16 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
         it('should group the data set by the specified interval and store the groups is the generated chart data', function() {
             var dataSetId = 'test_set';
-            var resolution = 15;
+            var interval = 15;
 
             var formatter = _createFormatter({
-                resolution: resolution
+                interval: interval
             });
 
             var baseTimestamp = 1436796000000;
             var data = [
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 1000)
+                // base + (interval * 1000)
                 {
                     timestamp: baseTimestamp + (1 * 1000),
                     value: 90
@@ -233,7 +233,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                 },
 
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 2 * 1000)
+                // base + (interval * 2 * 1000)
                 {
                     timestamp: baseTimestamp + (16 * 1000),
                     value: 100
@@ -244,7 +244,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             ];
 
             var intervals = [
-                (baseTimestamp + (resolution * 1000)).toString(), (baseTimestamp + (resolution * 2 * 1000)).toString()
+                (baseTimestamp + (interval * 1000)).toString(), (baseTimestamp + (interval * 2 * 1000)).toString()
             ];
 
             //NOTE: Querying private variable. No other way to test.
@@ -257,11 +257,11 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             var dataSetId = 'test_set';
             var groupingFunctionResponse = 'group_response';
             var groupingFunctionSpy = _sinon.stub().returns(groupingFunctionResponse);
-            var resolution = 15;
+            var interval = 15;
 
             var formatter = _createFormatter({
                 groupingFunction: groupingFunctionSpy,
-                resolution: resolution
+                interval: interval
             });
 
             var baseTimestamp = 1436796000000;
@@ -271,7 +271,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             ];
             var data = [
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 1000)
+                // base + (interval * 1000)
                 {
                     timestamp: baseTimestamp + (1 * 1000),
                     value: expectedValues[0][0]
@@ -281,7 +281,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                 },
 
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 2 * 1000)
+                // base + (interval * 2 * 1000)
                 {
                     timestamp: baseTimestamp + (16 * 1000),
                     value: expectedValues[1][0]
@@ -383,13 +383,13 @@ describe('[app.data.TimeSeriesFormatter]', function() {
         it('should re run data set preparation for all data sets when invoked', function() {
             var dataSetIds = ['test_set_1', 'test_set_2']
             var groupingFunctionSpy = _sinon.spy();
-            var resolution = 15;
+            var interval = 15;
 
             var formatter = _createFormatter({
                 groupingFunction: function() {
                     return 0;
                 },
-                resolution: resolution
+                interval: interval
             });
 
             var baseTimestamp = 1436796000000;
@@ -399,7 +399,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             ];
             var data = [
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 1000)
+                // base + (interval * 1000)
                 {
                     timestamp: baseTimestamp + (1 * 1000),
                     value: expectedValues[0][0]
@@ -409,7 +409,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                 },
 
                 // These two rows should be grouped into an interval at
-                // base + (resolution * 2 * 1000)
+                // base + (interval * 2 * 1000)
                 {
                     timestamp: baseTimestamp + (16 * 1000),
                     value: expectedValues[1][0]
@@ -436,14 +436,14 @@ describe('[app.data.TimeSeriesFormatter]', function() {
         });
     });
 
-    describe('setResolution()', function() {
-        it('should throw an error if an invalid resolution is specified', function() {
-            var error = 'Invalid resolution specified. Must be a positive number (arg #1)';
+    describe('setInterval()', function() {
+        it('should throw an error if an invalid interval is specified', function() {
+            var error = 'Invalid interval specified. Must be a positive number (arg #1)';
 
-            function invokeMethod(resolution) {
+            function invokeMethod(interval) {
                 return function() {
                     var formatter = _createFormatter();
-                    return formatter.setResolution(resolution);
+                    return formatter.setInterval(interval);
                 };
             }
 
@@ -460,10 +460,10 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
         it('should re run data set preparation for all data sets when invoked', function() {
             var dataSetIds = ['test_set_1', 'test_set_2']
-            var resolution = 15;
+            var interval = 15;
 
             var formatter = _createFormatter({
-                resolution: resolution
+                interval: interval
             });
 
             var baseTimestamp = 1436796000000;
@@ -482,7 +482,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             }];
 
             var initialIntervals = [
-                (baseTimestamp + (resolution * 1000)).toString(), (baseTimestamp + (resolution * 2 * 1000)).toString()
+                (baseTimestamp + (interval * 1000)).toString(), (baseTimestamp + (interval * 2 * 1000)).toString()
             ];
 
             //NOTE: Querying private variable. No other way to test.
@@ -492,11 +492,11 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             expect(formatter._dataSets[dataSetIds[0]].chartData).to.have.all.keys(initialIntervals);
             expect(formatter._dataSets[dataSetIds[1]].chartData).to.have.all.keys(initialIntervals);
 
-            resolution = 10;
+            interval = 10;
             var finalIntervals = [
-                (baseTimestamp + (resolution * 1000)).toString(), (baseTimestamp + (resolution * 2 * 1000)).toString(), (baseTimestamp + (resolution * 3 * 1000)).toString()
+                (baseTimestamp + (interval * 1000)).toString(), (baseTimestamp + (interval * 2 * 1000)).toString(), (baseTimestamp + (interval * 3 * 1000)).toString()
             ];
-            formatter.setResolution(resolution);
+            formatter.setInterval(interval);
 
             expect(formatter._dataSets[dataSetIds[0]].chartData).to.have.all.keys(finalIntervals);
             expect(formatter._dataSets[dataSetIds[1]].chartData).to.have.all.keys(finalIntervals);
@@ -602,14 +602,14 @@ describe('[app.data.TimeSeriesFormatter]', function() {
         describe('[Label Generation]', function() {
 
             it('should populate labels with timestamps ranging from start time to end time', function() {
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -622,15 +622,15 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                 expect(data.labels).to.have.length(sampleCount);
             });
 
-            it('should create labels at intervals defined by the resolution', function() {
-                var resolution = 15;
+            it('should create labels at intervals defined by the interval', function() {
+                var interval = 15;
                 var sampleCount = 10;
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -644,19 +644,19 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                     var firstLabel = data.labels[index - 1];
                     var nextLabel = data.labels[index];
 
-                    expect(nextLabel - firstLabel).to.equal(resolution * 1000);
+                    expect(nextLabel - firstLabel).to.equal(interval * 1000);
                 }
             });
 
             it('should populate labels starting with the next interval slot greater than the start time', function() {
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP - 2000;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -668,14 +668,14 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             });
 
             it('should create labels that are not greater than the end time', function() {
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP - 2000;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -687,14 +687,14 @@ describe('[app.data.TimeSeriesFormatter]', function() {
             });
 
             it('should use the lable formatter to format the label if one is specified', function() {
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var formatLabelResponse = 'label 1234';
                 var formatLabelSpy = _sinon.stub().returns(formatLabelResponse);
                 var options = _generateOptions({
@@ -777,15 +777,15 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
             it('should populate each child data array with as many elements as the labels', function() {
                 var index = 0;
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var dataSetIds = ['test_set_1', 'test_set_2', 'test_set_3', 'test_set_4'];
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -803,15 +803,15 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
             it('should populate null data points for intervals where the data set has no data', function() {
                 var index = 0;
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var dataSetIds = ['test_set_1', 'test_set_2', 'test_set_3', 'test_set_4'];
                 var formatter = _createFormatter({
-                    resolution: resolution
+                    interval: interval
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -831,18 +831,18 @@ describe('[app.data.TimeSeriesFormatter]', function() {
 
             it('should populate the actual data point for intervals where the data set has data', function() {
                 var index = 0;
-                var resolution = 15;
+                var interval = 15;
                 var sampleCount = 10;
                 var dataSetIds = ['test_set_1', 'test_set_2', 'test_set_3', 'test_set_4'];
                 var formatter = _createFormatter({
-                    resolution: resolution,
+                    interval: interval,
                     groupingFunction: function(values) {
                         return (values instanceof Array) ? values[0] : null;
                     }
                 });
 
                 var startTime = BASE_TIMESTAMP;
-                var endTime = startTime + (resolution * sampleCount * 1000);
+                var endTime = startTime + (interval * sampleCount * 1000);
                 var options = _generateOptions({
                     startTime: startTime,
                     endTime: endTime
@@ -857,7 +857,7 @@ describe('[app.data.TimeSeriesFormatter]', function() {
                         timestamp: time,
                         value: index
                     });
-                    time = time + (resolution * 1000);
+                    time = time + (interval * 1000);
                 }
 
                 for (index = 0; index < dataSetIds.length; index++) {
