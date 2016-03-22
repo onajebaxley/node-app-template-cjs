@@ -112,8 +112,13 @@ describe('[app.dashboard.UserProfileController]', function() {
                 var crumbs = breadCrumbMock.setCrumbs.args[0][0];
 
                 expect(crumbs).to.have.length(2);
-                _breadCrumbHelper.verifyCrumb(crumbs[0], { title: 'Dashboard', routeState: 'explore' });
-                _breadCrumbHelper.verifyCrumb(crumbs[1], { title: 'User Profile' });
+                _breadCrumbHelper.verifyCrumb(crumbs[0], {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                });
+                _breadCrumbHelper.verifyCrumb(crumbs[1], {
+                    title: 'User Profile'
+                });
             });
         });
     });

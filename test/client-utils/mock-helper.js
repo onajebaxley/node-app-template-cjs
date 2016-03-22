@@ -21,7 +21,7 @@ module.exports = {
      */
     createConfigMock: function(config) {
         config = _clone(config);
-        if(!config || typeof config !== 'object') {
+        if (!config || typeof config !== 'object') {
             config = {};
         };
 
@@ -52,7 +52,7 @@ module.exports = {
     createLocalStorageMock: function(isSupported, settings) {
         isSupported = !!isSupported;
         settings = _clone(settings);
-        if(!settings || typeof settings !== 'object') {
+        if (!settings || typeof settings !== 'object') {
             settings = {};
         };
 
@@ -79,7 +79,7 @@ module.exports = {
      * @return {Object} A mock object for the UI router state
      */
     createUiRouterStateMock: function(url) {
-        if(!typeof url !== 'string') {
+        if (!typeof url !== 'string') {
             url = '';
         }
         var mock = {
@@ -108,16 +108,16 @@ module.exports = {
      * @return {Object} A mock object for the user
      */
     createUserMock: function(username, roles, serviceTokens, properties) {
-        if(!typeof username !== 'string') {
+        if (!typeof username !== 'string') {
             username = 'jdoe';
         }
-        if(!(roles instanceof Array)) {
+        if (!(roles instanceof Array)) {
             roles = [];
         }
-        if(!serviceTokens || typeof serviceTokens !== 'object') {
+        if (!serviceTokens || typeof serviceTokens !== 'object') {
             serviceTokens = {};
         }
-        if(!properties || typeof properties !== 'object') {
+        if (!properties || typeof properties !== 'object') {
             properties = {};
         }
 
@@ -137,7 +137,7 @@ module.exports = {
             }
         };
 
-        for(var prop in properties) {
+        for (var prop in properties) {
             mock[prop] = properties[prop];
         }
 
@@ -259,7 +259,7 @@ module.exports = {
             this.__canRender = true;
             this.__link = '';
 
-            for(var prop in options) {
+            for (var prop in options) {
                 this[prop] = options[prop];
             }
 

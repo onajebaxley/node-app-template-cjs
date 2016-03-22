@@ -21,10 +21,9 @@ describe('[public routes]', function() {
         var tokens = path.split('.');
         var extension = tokens.pop();
 
-        if(process.env.TEST_MODE === 'build') {
+        if (process.env.TEST_MODE === 'build') {
             tokens.push('min');
-        } else {
-        }
+        } else {}
         tokens.push(extension);
         var path = tokens.join('.');
         console.log(path);

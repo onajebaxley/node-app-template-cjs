@@ -57,6 +57,7 @@ describe('[app.data.daoFactory]', function() {
     describe('buildApiDao()', function() {
         it('should throw an error if invoked without a valid api url path', function() {
             var error = 'Invalid api path specified (arg #1)';
+
             function invokeMethod(path) {
                 return function() {
                     factory.buildApiDao(path);
@@ -92,7 +93,7 @@ describe('[app.data.daoFactory]', function() {
                 expect(config.headers).to.be.an('object');
                 expect(config.headers.Authorization).to.equal('bearer ' + API_KEY);
                 expect(config.headers.Accept).to.equal('application/json');
-                switch(method) {
+                switch (method) {
                     case 'POST':
                         expect(config.headers['Content-Type']).to.equal('application/json');
                         break;

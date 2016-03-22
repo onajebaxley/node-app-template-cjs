@@ -54,12 +54,12 @@ describe('[app.layout.breadCrumb]', function() {
         });
 
         it('should return an array of menu item objects if not empty', function() {
-            var crumbs = [ 'foo', 'bar', 'baz' ];
+            var crumbs = ['foo', 'bar', 'baz'];
             factory.setCrumbs(crumbs);
             var actualCrumbs = factory.getCrumbs();
 
             expect(actualCrumbs).to.have.length(crumbs.length);
-            for(var index=0; index<actualCrumbs.length; index++) {
+            for (var index = 0; index < actualCrumbs.length; index++) {
                 var actualCrumb = actualCrumbs[index];
 
                 expect(actualCrumb).to.be.an.instanceof(MenuItemMock);
@@ -91,7 +91,7 @@ describe('[app.layout.breadCrumb]', function() {
 
             function invokeMethod(crumb) {
                 return function() {
-                    var crumbs = [ crumb ];
+                    var crumbs = [crumb];
                     return factory.setCrumbs(crumbs);
                 };
             }
@@ -105,12 +105,12 @@ describe('[app.layout.breadCrumb]', function() {
         });
 
         it('should convert string items into menu items with no links and add them to the array', function() {
-            var crumbs = [ 'foo', 'bar', 'baz' ];
+            var crumbs = ['foo', 'bar', 'baz'];
             factory.setCrumbs(crumbs);
             var actualCrumbs = factory.getCrumbs();
 
             expect(actualCrumbs).to.have.length(crumbs.length);
-            for(var index=0; index<actualCrumbs.length; index++) {
+            for (var index = 0; index < actualCrumbs.length; index++) {
                 var originalCrumb = crumbs[index];
                 var item = actualCrumbs[index];
 
@@ -119,7 +119,7 @@ describe('[app.layout.breadCrumb]', function() {
         });
 
         it('should create menu item objects using specified options if crumb items are specified as objects', function() {
-            var crumbs = [ {
+            var crumbs = [{
                 title: 'foo',
                 routeState: 'foo-state'
             }, {
@@ -127,27 +127,27 @@ describe('[app.layout.breadCrumb]', function() {
                 link: 'http://bar'
             }, {
                 title: 'baz',
-            } ];
+            }];
             factory.setCrumbs(crumbs);
             var actualCrumbs = factory.getCrumbs();
 
             expect(actualCrumbs).to.have.length(crumbs.length);
-            for(var index=0; index<actualCrumbs.length; index++) {
+            for (var index = 0; index < actualCrumbs.length; index++) {
                 var originalCrumb = crumbs[index];
                 var item = actualCrumbs[index];
 
                 expect(item.title).to.equal(originalCrumb.title);
-                if(typeof item.link !== 'undefined') {
+                if (typeof item.link !== 'undefined') {
                     expect(item.link).to.equal(originalCrumb.link);
                 }
-                if(typeof item.routeState !== 'undefined') {
+                if (typeof item.routeState !== 'undefined') {
                     expect(item.routeState).to.equal(originalCrumb.routeState);
                 }
             }
         });
 
         it('should re initialize the crumb array if invoked multiple times', function() {
-            var crumbs = [ 'foo', 'bar', 'baz' ];
+            var crumbs = ['foo', 'bar', 'baz'];
 
             expect(factory.getCrumbs()).to.have.length(0);
 
@@ -179,10 +179,10 @@ describe('[app.layout.breadCrumb]', function() {
         });
 
         it('should convert string items into menu items with no links and add them to the end of the array', function() {
-            var crumbs = [ 'foo', 'bar', 'baz' ];
+            var crumbs = ['foo', 'bar', 'baz'];
 
             expect(factory.getCrumbs()).to.have.length(0);
-            for(var index=0; index<crumbs.length; index++) {
+            for (var index = 0; index < crumbs.length; index++) {
                 factory.push(crumbs[index]);
                 var actualCrumbs = factory.getCrumbs();
                 var item = actualCrumbs[index];
@@ -193,7 +193,7 @@ describe('[app.layout.breadCrumb]', function() {
         });
 
         it('should create menu item objects using specified options if crumb items are specified as objects', function() {
-            var crumbs = [ {
+            var crumbs = [{
                 title: 'foo',
                 routeState: 'foo-state'
             }, {
@@ -201,10 +201,10 @@ describe('[app.layout.breadCrumb]', function() {
                 link: 'http://bar'
             }, {
                 title: 'baz',
-            } ];
+            }];
 
             expect(factory.getCrumbs()).to.have.length(0);
-            for(var index=0; index<crumbs.length; index++) {
+            for (var index = 0; index < crumbs.length; index++) {
                 factory.push(crumbs[index]);
                 var actualCrumbs = factory.getCrumbs();
                 var originalCrumb = crumbs[index];
@@ -213,10 +213,10 @@ describe('[app.layout.breadCrumb]', function() {
                 expect(actualCrumbs).to.have.length(index + 1);
 
                 expect(item.title).to.equal(originalCrumb.title);
-                if(typeof item.link !== 'undefined') {
+                if (typeof item.link !== 'undefined') {
                     expect(item.link).to.equal(originalCrumb.link);
                 }
-                if(typeof item.routeState !== 'undefined') {
+                if (typeof item.routeState !== 'undefined') {
                     expect(item.routeState).to.equal(originalCrumb.routeState);
                 }
             }
@@ -225,10 +225,10 @@ describe('[app.layout.breadCrumb]', function() {
 
     describe('pop()', function() {
         it('should remove and return the last element from the bread crumb when invoked', function() {
-            var crumbs = [ 'foo', 'bar', 'baz' ];
+            var crumbs = ['foo', 'bar', 'baz'];
             factory.setCrumbs(crumbs);
 
-            for(var index = crumbs.length - 1; index >= 0; index--) {
+            for (var index = crumbs.length - 1; index >= 0; index--) {
                 var ret = factory.pop();
 
                 expect(factory.getCrumbs()).to.have.length(index);

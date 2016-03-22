@@ -119,12 +119,12 @@ describe('[app.auth.LeftSidebarController]', function() {
                 expect(item.position).to.equal(expectedItem.position);
                 expect(item.title).to.equal(expectedItem.title);
                 expect(item.iconName).to.equal(expectedItem.iconName);
-                if(expectedItem.routeState) {
+                if (expectedItem.routeState) {
                     expect(item.routeState).to.equal(expectedItem.routeState);
                 } else {
                     expect(item.link).to.equal(expectedItem.link);
                 }
-                if(expectedItem.roles) {
+                if (expectedItem.roles) {
                     expect(item.roles).to.deep.equal(expectedItem.roles);
                 }
             }
@@ -134,7 +134,7 @@ describe('[app.auth.LeftSidebarController]', function() {
             });
 
             expect($scope.menu.childItems).to.have.length(expectedItems.length);
-            for(var index=0; index<expectedItems.length; index++) {
+            for (var index = 0; index < expectedItems.length; index++) {
                 checkMenuItemProperties($scope.menu.childItems[index], expectedItems[index]);
             }
         });

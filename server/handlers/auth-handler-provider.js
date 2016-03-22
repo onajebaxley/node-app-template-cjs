@@ -92,7 +92,7 @@ AuthHandlerProvider.prototype.logoutHandler = function() {
  *                    signature.
  */
 AuthHandlerProvider.prototype.authHandler = function(strategy) {
-    if(typeof strategy !== 'string' || strategy.length <= 0) {
+    if (typeof strategy !== 'string' || strategy.length <= 0) {
         throw new Error('Invalid strategy specified (arg #1)');
     }
     return function(req, res, next) {

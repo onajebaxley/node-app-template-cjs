@@ -36,7 +36,7 @@ describe('[app.auth.AccountSettingsController]', function() {
         mocks = mocks || {};
 
         inject(['$rootScope', '$controller', '$resource', 'app.data.daoFactory',
-                'app.layout.MessageBlock',
+            'app.layout.MessageBlock',
             function(_$rootScope, _$controller, _$resource, _daoFactory, _messageBlock) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
@@ -115,8 +115,13 @@ describe('[app.auth.AccountSettingsController]', function() {
                 var crumbs = breadCrumbMock.setCrumbs.args[0][0];
 
                 expect(crumbs).to.have.length(2);
-                _breadCrumbHelper.verifyCrumb(crumbs[0], { title: 'Dashboard', routeState: 'explore' });
-                _breadCrumbHelper.verifyCrumb(crumbs[1], { title: 'Account Settings' });
+                _breadCrumbHelper.verifyCrumb(crumbs[0], {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                });
+                _breadCrumbHelper.verifyCrumb(crumbs[1], {
+                    title: 'Account Settings'
+                });
             });
         });
 
@@ -145,8 +150,7 @@ describe('[app.auth.AccountSettingsController]', function() {
             _initController();
         });
 
-        it('should reset the value of the scope\'s setting object back to the internal settings object', function() {
-        });
+        it('should reset the value of the scope\'s setting object back to the internal settings object', function() {});
     });
 
 });

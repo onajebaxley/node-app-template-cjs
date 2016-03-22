@@ -242,6 +242,7 @@ describe('AuthHandlerProvider', function() {
 
         it('should throw an error if invoked without a valid strategy', function() {
             var error = 'Invalid strategy specified (arg #1)';
+
             function invoke(strategy) {
                 return function() {
                     var provider = new AuthHandlerProvider(DEFAULT_REDIRECT_URL);
