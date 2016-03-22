@@ -23,7 +23,7 @@ module.exports = {
         config = _clone(config);
         if (!config || typeof config !== 'object') {
             config = {};
-        };
+        }
 
         var mock = {
             get: function(prop) {
@@ -54,7 +54,7 @@ module.exports = {
         settings = _clone(settings);
         if (!settings || typeof settings !== 'object') {
             settings = {};
-        };
+        }
 
         var mock = {
             isSupported: isSupported,
@@ -79,7 +79,7 @@ module.exports = {
      * @return {Object} A mock object for the UI router state
      */
     createUiRouterStateMock: function(url) {
-        if (!typeof url !== 'string') {
+        if (typeof url !== 'string') {
             url = '';
         }
         var mock = {
@@ -108,7 +108,7 @@ module.exports = {
      * @return {Object} A mock object for the user
      */
     createUserMock: function(username, roles, serviceTokens, properties) {
-        if (!typeof username !== 'string') {
+        if (typeof username !== 'string') {
             username = 'jdoe';
         }
         if (!(roles instanceof Array)) {

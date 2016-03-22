@@ -23,10 +23,9 @@ describe('[public routes]', function() {
 
         if (process.env.TEST_MODE === 'build') {
             tokens.push('min');
-        } else {}
+        }
         tokens.push(extension);
-        var path = tokens.join('.');
-        console.log(path);
+        path = tokens.join('.');
         return path;
     }
 

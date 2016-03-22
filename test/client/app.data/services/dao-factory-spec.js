@@ -100,7 +100,7 @@ describe('[app.data.daoFactory]', function() {
                     case 'GET':
                         expect(config.isArray).to.equal(!!isArray);
                         break;
-                };
+                }
             }
 
             var dao = factory.buildApiDao(path, defaults);
