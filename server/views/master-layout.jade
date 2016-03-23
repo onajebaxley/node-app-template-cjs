@@ -16,8 +16,10 @@ html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.LayoutController'
 		title=title
 		if jv_use_minified === true
 			link(rel='stylesheet', href='#{jv_root_path}css/app.min.css?#{jv_app_version}')
+			link(rel='stylesheet', href='#{jv_root_path}lib/font-awesome/css/font-awesome.min.css')
 		else
 			link(rel='stylesheet', href='#{jv_root_path}css/app.css?#{jv_app_version}')
+			link(rel='stylesheet', href='#{jv_root_path}lib/font-awesome/css/font-awesome.css?#{jv_app_version}')
 	body
 		div.cs-full-height
 			block content
