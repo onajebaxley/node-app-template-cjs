@@ -3,10 +3,10 @@
 // ============================================================================
 // Core Angular Material styles + icons
 @import 'angular-material';
-@import 'icons/angular-material/angular-material-icons';
 @import 'icons/font-awesome/scss/font-awesome';
 
 //@import 'print';
+@import 'components/material-design-icons';
 @import 'components/typography';
 @import 'components/layout';
 @import 'components/sidebar-left';
