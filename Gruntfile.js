@@ -239,13 +239,13 @@ module.exports = function(grunt) {
                 filter: function(path) {
                     // Delete everything except for files that will
                     // be required in a production deployment.
-                    return  !path.match(/\/lib\/font-awesome/i) &&
+                    return  !path.match(/\/lib\/font-awesome$/i) &&
                             !path.match(/\/lib\/font-awesome\/fonts($|\/.*\.(woff|woff2|ttf|svg|eot|otf)$)/i) &&
                             !path.match(/\/lib\/font-awesome\/css($|\/.*\.min\.css$)/i) &&
 
                             !path.match(/\/lib\/material-design-icons$/i) &&
                             !path.match(/\/lib\/material-design-icons\/iconfont($|\/.*\.css$)/i) &&
-                            !path.match(/\/lib\/material-design-icons\/fonts($|\/.*\.(woff|woff2|ttf|svg|eot|otf|ijmap)$)/i) &&
+                            !path.match(/\/lib\/material-design-icons\/iconfont($|\/.*\.(woff|woff2|ttf|svg|eot|otf|ijmap)$)/i) &&
 
                             true;
                 }
