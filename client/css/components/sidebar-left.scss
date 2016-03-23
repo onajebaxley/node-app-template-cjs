@@ -8,7 +8,7 @@ $lsb_default_transition: 0.3s;
 
 // Standard sidebar styles
 .cs-sidebar-left {
-    overflow-x:hidden;
+    overflow-x: hidden;
 
     // Default width of the sidebar - smaller than the default
     // angular material settings.
@@ -17,7 +17,7 @@ $lsb_default_transition: 0.3s;
     max-width: $lsb_width_expanded;
 
     .cs-toolbar {
-        box-shadow: 0px 1px 0px rgba(0,0,0,0.12);
+        box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.12);
         z-index: 10;
     }
 
@@ -25,10 +25,12 @@ $lsb_default_transition: 0.3s;
     // the menu is in expanded mode
     .cs-logo {
         flex-shrink: 0;
+
         md-icon {
             width: 32px;
             height: 32px;
         }
+
         svg, img {
             transition: $lsb_default_transition;
             width: 24px;
@@ -67,18 +69,21 @@ $lsb_default_transition: 0.3s;
     .cs-menu-item {
         width: 100%;
         height: $lsb_menu_item_height;
+
         a {
             width: 100%;
             margin: 0px;
             padding: 0px 10px;
             text-align: left;
         }
+
         md-icon {
             transition: $lsb_default_transition;
             padding-left: 3px;
             padding-bottom: 30px;
             font-size: 18px;
         }
+
         span {
             transition: $lsb_default_transition;
             display: inline-block;
@@ -104,9 +109,10 @@ $lsb_default_transition: 0.3s;
     width: $lsb_width_collapsed;
     min-width: $lsb_width_collapsed;
     max-width: $lsb_width_collapsed;
-
     transition: $lsb_default_transition;
-    -ms-overflow-style: none; /* ie fix for removing scrollbars */
+    -ms-overflow-style: none;
+
+    /* ie fix for removing scrollbars */
 
     // We need this setting here so that text is hidden when the sidebar is
     // locked open, but is not expanded (i.e., it is in icon only mode), so
@@ -125,7 +131,7 @@ $lsb_default_transition: 0.3s;
         .cs-title {
             opacity: 1;
         }
-        
+
         // Make logo bigger and adjust positioning so that it is aligned
         // correctly.
         .cs-logo {

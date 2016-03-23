@@ -2,20 +2,20 @@
 //  Import stylesheets
 // ============================================================================
 // Core Angular Material styles + icons
-@import 'angular-material';
+@import "angular-material";
 
 //@import 'print';
-@import 'components/material-design-icons';
-@import 'components/typography';
-@import 'components/layout';
-@import 'components/sidebar-left';
-@import 'components/topbar';
-@import 'components/breadcrumb';
-@import 'components/dashboard';
-@import 'components/user-profile';
+@import "components/material-design-icons";
+@import "components/typography";
+@import "components/layout";
+@import "components/sidebar-left";
+@import "components/topbar";
+@import "components/breadcrumb";
+@import "components/dashboard";
+@import "components/user-profile";
 
 // Debugging styles
-@import 'components/debug';
+@import "components/debug";
 
 // set template font family
 //button, select, html, textarea, input {
