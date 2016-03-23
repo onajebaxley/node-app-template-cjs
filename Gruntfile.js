@@ -578,7 +578,8 @@ module.exports = function(grunt) {
                 indent: 4
             },
             dev: {
-                src: [ CLIENT.css.allFilesPattern('scss') ]
+                src: [ CLIENT.css.allFilesPattern('scss'),
+                        '!' + CLIENT.css.getChildPath('angular-material.scss')]
             }
         },
 
