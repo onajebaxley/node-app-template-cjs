@@ -64,6 +64,9 @@ module.exports = {
             set: function(key, value) {
                 mock.__settings[key] = value;
             },
+            keys: function() {
+                return Object.keys(settings);
+            },
             __settings: settings
         };
 

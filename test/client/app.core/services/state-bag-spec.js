@@ -11,6 +11,7 @@ var expect = _chai.expect;
 
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
+var _clone = require('clone');
 
 var _module = 'app.core';
 var _mockHelper = require('../../../client-utils/mock-helper');
@@ -40,28 +41,16 @@ describe('[app.core.stateBag]', function() {
         $injector = _$injector;
     }]));
 
-    function _applySettings(settings) {
-        settings = settings || {};
+    function _initService(stateBag) {
+        stateBag = stateBag || {};
 
-        for (var prop in settings) {
-            provider.set(prop, settings[prop]);
+        for(var key in stateBag) {
+            localStorageMock.set('_state.' + key, _clone(stateBag[key]));
         }
-    }
-
-    function _initService(settings) {
-        _applySettings(settings);
         return $injector.invoke(provider.$get);
     }
 
     describe('[app.core.stateBag]', function() {
-        function _initLocalStorage(props) {
-            props = props || {};
-
-            for(var key in props) {
-                localStorageMock.set(key, props[key]);
-            }
-        }
-
         describe('[init]', function() {
             it('should define the necessary fields and methods', function() {
                 var service = _initService();
@@ -71,28 +60,43 @@ describe('[app.core.stateBag]', function() {
                 expect(service).to.have.property('get').and.to.be.a('function');
             });
 
-            it('should load values from local storage on load', function() {
+            it('should load values from local storage on load if local storage is supported', function() {
                 var props = {
                     foo: 'bar',
                     abc: 123,
                     isFalse: true
                 };
 
-                _initLocalStorage(props);
-                var service = _initService();
+                localStorageMock.isSupported = true;
+                var service = _initService(props);
                 for(var key in props) {
                     expect(service.get(key)).to.equal(props[key]);
+                }
+            });
+
+            it('should not load values from local storage on load if local storage is not supported', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+
+                localStorageMock.isSupported = false;
+                var service = _initService(props);
+                for(var key in props) {
+                    expect(service.get(key)).to.be.undefined;
                 }
             });
         });
 
         describe('set()', function() {
-            xit('should throw an error if invoked without a key', function() {
+            it('should throw an error if invoked without a key', function() {
                 var error = 'Invalid key specified (arg #1)';
+                var service = _initService();
 
                 function invokeMethod(key) {
                     return function() {
-                        return provider.set(key, 'foo');
+                        return service.set(key, 'foo');
                     };
                 }
 
@@ -105,10 +109,85 @@ describe('[app.core.stateBag]', function() {
                 expect(invokeMethod([])).to.throw(error);
                 expect(invokeMethod(function() {})).to.throw(error);
             });
+
+            it('store the value against the key if invoked with a valid key', function() {
+                var service = _initService();
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+
+                for(var key in props) {
+                    service.set(key, props[key]);
+                }
+
+                for(var key in props) {
+                    expect(service.get(key)).to.equal(props[key]);
+                }
+            });
+
+            it('store the value in local storage if the persist flag is set to true and local storage is supported', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+                localStorageMock.isSupported = true;
+
+                var service = _initService();
+                var spy = _sinon.stub(localStorageMock, 'set');
+                for(var key in props) {
+                    var stateKey = '_state.' + key;
+                    expect(localStorageMock.set).to.not.have.been.called;
+                    service.set(key, props[key], true);
+                    expect(localStorageMock.set).to.have.been.calledOnce;
+                    expect(localStorageMock.set).to.have.been.calledWith(stateKey, props[key]);
+                    localStorageMock.set.reset();
+                }
+            });
+
+            it('store not the value in local storage if the persist flag is set to true but local storage is not supported', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+                localStorageMock.isSupported = false;
+
+                var service = _initService();
+                var spy = _sinon.stub(localStorageMock, 'set');
+                for(var key in props) {
+                    var stateKey = '_state.' + key;
+                    expect(localStorageMock.set).to.not.have.been.called;
+                    service.set(key, props[key], true);
+                    expect(localStorageMock.set).to.not.have.been.called;
+                    localStorageMock.set.reset();
+                }
+            });
+
+            it('store not the value in local storage if the persist flag is set to false even if local storage is supported', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+                localStorageMock.isSupported = true;
+
+                var service = _initService();
+                var spy = _sinon.stub(localStorageMock, 'set');
+                for(var key in props) {
+                    var stateKey = '_state.' + key;
+                    expect(localStorageMock.set).to.not.have.been.called;
+                    service.set(key, props[key], false);
+                    expect(localStorageMock.set).to.not.have.been.called;
+                    localStorageMock.set.reset();
+                }
+            });
         });
 
         describe('get()', function() {
-            xit('should return an undefined value if the configuration setting is undefined', function() {
+            it('should return an undefined value if the state value is undefined', function() {
                 var service = _initService();
 
                 expect(service.get()).to.be.undefined;
@@ -121,7 +200,7 @@ describe('[app.core.stateBag]', function() {
                 expect(service.get(function() {})).to.be.undefined;
             });
 
-            xit('should return the default value if the setting is undefined, and a default value is specified', function() {
+            it('should return the default value if the setting is undefined, and a default value is specified', function() {
                 var service = _initService();
 
                 function doTest(key, defaultValue) {
@@ -138,47 +217,43 @@ describe('[app.core.stateBag]', function() {
                 doTest('bad-key', function() {});
             });
 
-            xit('should return the property set using the provider if invoked with a valid key', function() {
-                var settings = {
-                    environment: 'production',
-                    endpoints: {
-                        api: {
-                            url: '/foo',
-                            security: null
-                        },
-                        thirdParty: {
-                            url: 'http://thirdparty/api',
-                            security: 'HEADER'
-                        }
-                    },
-                    counter: 20,
-                    isTest: false
+            it('should return the property previously set if invoked with a valid key', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
                 };
-                var service = _initService(settings);
+                localStorageMock.isSupported = false;
 
-                for (var prop in settings) {
-                    expect(service.get(prop)).to.deep.equal(settings[prop]);
+                var service = _initService(props);
+                for (var prop in props) {
+                    service.set(prop, props[prop]);
+                }
+
+                for (var prop in props) {
+                    expect(service.get(prop)).to.deep.equal(props[prop]);
                 }
             });
 
-            xit('should return a deep copy of the property value, instead of a reference', function() {
-                var settings = {
-                    options: ['foo', 'bar', 'baz'],
-                    endpoints: {
-                        api: {
-                            url: '/foo',
-                            security: null
-                        },
-                        thirdParty: {
-                            url: 'http://thirdparty/api',
-                            security: 'HEADER'
+            it('should return a deep copy of the property value, instead of a reference', function() {
+                var props = {
+                    complex: {
+                        a: 'b',
+                        c: 'd',
+                        n: {
+                            some: 'property'
                         }
                     }
                 };
-                var service = _initService(settings);
+                localStorageMock.isSupported = false;
 
-                for (var prop in settings) {
-                    expect(service.get(prop)).to.not.equal(settings[prop]);
+                var service = _initService(props);
+                for (var prop in props) {
+                    service.set(prop, props[prop]);
+                }
+
+                for (var prop in props) {
+                    expect(service.get(prop)).to.not.equal(props[prop]);
                 }
             });
 

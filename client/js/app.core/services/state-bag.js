@@ -7,41 +7,19 @@
 var _clone = require('clone');
 
 module.exports = [ 'localStorageService', function(localStorage) {
+    var STATE_PREFIX = '_state.';
     var _state = {};
 
-    function _restoreLocalStorageSettings() {
-        if(!localStorage.isSupported) {
-            return;
-        }
-
-        function _default(value, defaultValue) {
-            if(typeof value === 'undefined') {
-                return defaultValue;
-            } else if(value instanceof Array) {
-                return _clone(value);
-            }
-            return value;
-        }
-
-        function _applySetting(propPrefix, container) {
-            for(var propName in container) {
-                var storageKey = propPrefix + '.' + propName;
-
-                var value = container[propName];
-                if(!(value instanceof Array) &&
-                   value && typeof value === 'object') {
-                    _applySetting(storageKey, value);
-                } else {
-                    container[propName] = _default(localStorage.get(storageKey),
-                                                  container[propName]);
-                }
+    if(localStorage.isSupported) {
+        var keys = localStorage.keys();
+        for(var index = 0; index < keys.length; index++) {
+            var prop = keys[index];
+            if(prop.indexOf(STATE_PREFIX) === 0) {
+                var stateKey = prop.replace(STATE_PREFIX, '');
+                _state[stateKey] = _clone(localStorage.get(prop));
             }
         }
-
-        _applySetting('_state', _state);
     }
-
-    _restoreLocalStorageSettings();
 
     return {
         /**
@@ -51,12 +29,18 @@ module.exports = [ 'localStorageService', function(localStorage) {
          * @method set
          * @param {String} key The key of the state object
          * @param {Object} value The value of the state object
+         * @param {Boolean} [persist=false] If set to true, persists the value
+         *          in local storage.
          */
-        set: function(key, value) {
+        set: function(key, value, persist) {
+            persist = !!persist;
             if(typeof key !== 'string' || key.length <= 0) {
                 throw new Error('Invalid key specified (arg #1)');
             }
             _state[key] = _clone(value);
+            if(localStorage.isSupported && persist) {
+                localStorage.set(STATE_PREFIX + key, value);
+            }
         },
 
         /**
@@ -72,7 +56,7 @@ module.exports = [ 'localStorageService', function(localStorage) {
          *          undefined.
          */
         get: function(key, defaultValue) {
-            var value = _state[key];
+            var value = _clone(_state[key]);
             return (typeof value !== 'undefined') ? value: defaultValue;
         }
     };
