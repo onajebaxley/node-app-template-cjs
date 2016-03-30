@@ -13,6 +13,8 @@
 doctype html
 html(lang='en' ng-cloak ng-app='app' ng-controller='app.layout.LayoutController')
 	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
 		title=title
 		if jv_use_minified === true
 			link(rel='stylesheet', href='#{jv_root_path}css/app.min.css?#{jv_app_version}')
