@@ -22,6 +22,9 @@ block content
 					md-button.md-icon-button(ng-click='toggleLayoutProperty("leftSidebar.isOpen")' aria-label='open left sidebar' hide-gt-sm show-sm show-xs)
 						md-icon(md-font-set='material-icons') menu
 					h2(flex)
+						span.cs-breadcrumb(hide-gt-xs)
+							md-button.md-icon-button(ng-click='goBack()')
+								md-icon(md-font-set='material-icons') arrow_back
 						span.cs-breadcrumb(ng-repeat='crumb in _breadCrumb.getCrumbs()')
 							a(ng-href='{{crumb.getLink()}}' ng-if='crumb.getLink() !== "#"' hide-xs)
 								span {{crumb.title}}
@@ -45,3 +48,4 @@ block content
 									span Log out
 			<md-progress-linear md-mode="indeterminate" ng-if='_layout.stateTransitionInProgress'></md-progress-linear>
 			block body
+			div(style='position:absolute; bottom:20px; right:20px;' ui-view='fab' ng-cloak)

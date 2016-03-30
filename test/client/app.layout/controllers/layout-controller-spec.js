@@ -135,6 +135,7 @@ describe('[app.layout.LayoutController]', function() {
             expect($scope).to.have.property('setLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleLayoutProperty').and.to.be.a('function');
             expect($scope).to.have.property('toggleFullScreen').and.to.be.a('function');
+            expect($scope).to.have.property('goBack').and.to.be.a('function');
 
             expect($scope._user).to.equal(userMock);
         });
@@ -658,6 +659,23 @@ describe('[app.layout.LayoutController]', function() {
 
             $scope.toggleFullScreen();
             expect($scope._layout.isFullScreen).to.be.false;
+        });
+    });
+
+    describe('goBack()', function() {
+        it('should navigate backwards on the browser history when invoked', function() {
+            var $windowMock = {
+                history: {
+                    back: _sinon.spy()
+                }
+            };
+            _initController({
+                '$window': $windowMock
+            });
+
+            expect($windowMock.history.back).to.not.have.been.called;
+            $scope.goBack();
+            expect($windowMock.history.back).to.have.been.calledOnce;
         });
     });
 

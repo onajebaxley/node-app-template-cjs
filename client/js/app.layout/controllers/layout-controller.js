@@ -10,9 +10,11 @@ var _screenfull = require('screenfull');
  *
  * @module app.layout.LayoutController
  */
-module.exports = [ '$scope', '$rootScope', 'localStorageService', 'app.core.config',
-                    'app.core.user', 'app.core.utils', 'app.layout.breadCrumb',
-    function($scope, $rootScope, localStorage, config, user, utils, breadCrumb) {
+module.exports = [ '$scope', '$rootScope', '$window', 'localStorageService',
+                    'app.core.config', 'app.core.user', 'app.core.utils',
+                    'app.layout.breadCrumb',
+    function($scope, $rootScope, $window, localStorage,
+             config, user, utils, breadCrumb) {
 
         $scope._user = user;
         $scope._breadCrumb = breadCrumb;
@@ -100,7 +102,18 @@ module.exports = [ '$scope', '$rootScope', 'localStorageService', 'app.core.conf
             if(_screenfull.enabled) {
                 _screenfull.toggle();
             }
-        }
+        };
+
+        /**
+         * Uses the window history go navigate to the previous page. Calling this
+         * function is the equivalent of pressing the browser's back button.
+         *
+         * @module app.layout.LayoutController
+         * @method goBack
+         */
+        $scope.goBack = function() {
+            $window.history.back();
+        };
 
         // --------------------------------------------------------------------
         // Event handlers
