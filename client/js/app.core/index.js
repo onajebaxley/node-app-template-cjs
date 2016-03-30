@@ -13,6 +13,7 @@ var moduleName = 'app.core';
 angular.module(moduleName, [ ])
     .provider('app.core.config', require('./services/config'))
     .provider('app.core.user', require('./services/user'))
+    .factory('app.core.stateBag', require('./services/state-bag'))
     .factory('app.core.utils', require('./services/utils'))
     ;
 
