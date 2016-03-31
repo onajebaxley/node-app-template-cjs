@@ -17,6 +17,12 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
         urlRouterProvider.otherwise('/explore');
 
         // Application routes
+        stateProvider.state('error', {
+            url: '/error',
+            templateUrl: '/views/error.html',
+            controller: 'app.layout.ErrorController'
+        });
+
         stateProvider.state('explore', {
             url: '/explore',
             templateUrl: '/views/dashboard-explore.html',

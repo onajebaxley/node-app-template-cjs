@@ -1,2 +1,10 @@
-1. Evaluate the use of $httpbackend for rest-data-source
+ - Gateway connection to CNC mechanics
+ - Error route for state transition errors
+ - Move breadcrumb logic into routes file (user, account settings)
+ - Move createToast into reusable service
 
+ - Add warning dialogs before:
+    - Deleting sensors
+    - Stopping cnc cloud connectors
+    - Deleting connectors
+ - Evaluate the use of $httpbackend for rest-data-source

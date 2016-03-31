@@ -20,6 +20,7 @@ angular.module(moduleName, [ 'ui.router', 'LocalStorageModule', 'app.core' ])
     .factory('app.layout.breadCrumb', require('./services/bread-crumb'))
     .controller('app.layout.LayoutController', require('./controllers/layout-controller'))
     .controller('app.layout.LeftSidebarController', require('./controllers/left-sidebar-controller'))
+    .controller('app.layout.ErrorController', require('./controllers/error-controller'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');

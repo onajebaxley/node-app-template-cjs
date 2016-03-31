@@ -10,10 +10,10 @@ var _screenfull = require('screenfull');
  *
  * @module app.layout.LayoutController
  */
-module.exports = [ '$scope', '$rootScope', '$window', 'localStorageService',
-                    'app.core.config', 'app.core.user', 'app.core.utils',
-                    'app.layout.breadCrumb',
-    function($scope, $rootScope, $window, localStorage,
+module.exports = [ '$scope', '$rootScope', '$window', '$state',
+                    'localStorageService', 'app.core.config', 'app.core.user',
+                    'app.core.utils', 'app.layout.breadCrumb',
+    function($scope, $rootScope, $window, $state, localStorage,
              config, user, utils, breadCrumb) {
 
         $scope._user = user;
@@ -126,9 +126,8 @@ module.exports = [ '$scope', '$rootScope', '$window', 'localStorageService',
             $scope._layout.stateTransitionInProgress = false;
         });
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-            //TODO: Do something more meaningful here.
-            console.error('Error changing state: ', error);
             $scope._layout.stateTransitionInProgress = false;
+            $state.go('error');
         });
         // --------------------------------------------------------------------
         // Private members
