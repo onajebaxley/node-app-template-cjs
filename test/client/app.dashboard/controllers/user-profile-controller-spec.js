@@ -98,7 +98,7 @@ describe('[app.dashboard.UserProfileController]', function() {
             expect($scope.serviceTokens).to.deep.equal(userMock._serviceTokens);
         });
 
-        describe('[bread crumbs]', function() {
+        xdescribe('[bread crumbs]', function() {
             beforeEach(function() {
                 _initController();
             });

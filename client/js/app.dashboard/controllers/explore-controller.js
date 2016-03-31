@@ -10,14 +10,7 @@ var _screenfull = require('screenfull');
  *
  * @module app.dashboard.AccountSettingsController
  */
-module.exports = [ '$scope', 'app.layout.MenuItem', 'app.layout.breadCrumb',
-    function($scope, MenuItem, breadCrumb) {
-
-        breadCrumb.setCrumbs([ {
-            title: 'Dashboard',
-            routeState: 'explore'
-        }, {
-            title: 'Explore',
-        } ]);
+module.exports = [ '$scope', 'app.layout.MenuItem',
+    function($scope, MenuItem) {
     }
 ];

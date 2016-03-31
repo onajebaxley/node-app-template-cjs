@@ -17,16 +17,43 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
         urlRouterProvider.otherwise('/explore');
 
         // Application routes
-        stateProvider.state('error', {
-            url: '/error',
-            templateUrl: '/views/error.html',
-            controller: 'app.layout.ErrorController'
-        });
-
         stateProvider.state('explore', {
             url: '/explore',
             templateUrl: '/views/dashboard-explore.html',
-            controller: 'app.dashboard.ExploreController'
+            controller: 'app.dashboard.ExploreController',
+            onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard'
+                } ]);
+            } ]
+        });
+
+        stateProvider.state('error', {
+            url: '/error',
+            templateUrl: '/views/error.html',
+            controller: 'app.layout.ErrorController',
+            onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'Error'
+                } ]);
+            } ]
+        });
+
+        stateProvider.state('user', {
+            url: '/user',
+            templateUrl: '/views/dashboard-user-profile.html',
+            controller: 'app.dashboard.UserProfileController',
+            onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
+                breadCrumb.setCrumbs([ {
+                    title: 'Dashboard',
+                    routeState: 'explore'
+                }, {
+                    title: 'User Profile'
+                } ]);
+            } ]
         });
 
         stateProvider.state('nodes', {
@@ -53,12 +80,6 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
             url: '/account',
             templateUrl: '/views/dashboard-account-settings.html',
             controller: 'app.dashboard.AccountSettingsController'
-        });
-
-        stateProvider.state('user', {
-            url: '/user',
-            templateUrl: '/views/dashboard-user-profile.html',
-            controller: 'app.dashboard.UserProfileController'
         });
 
 

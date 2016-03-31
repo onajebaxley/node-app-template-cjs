@@ -10,6 +10,7 @@ _chai.use(_chaiAsPromised);
 var expect = _chai.expect;
 
 var _routes = require('../../client/js/routes');
+var _mockHelper = require('../client-utils/mock-helper');
 
 
 describe('[app.routes]', function() {
@@ -39,13 +40,17 @@ describe('[app.routes]', function() {
             module = _routes[_routes.length - 1];
         });
 
-        function _checkRouteSetup(module, stateProvider, count, state, params) {
-            expect(stateProvider.state.callCount).to.be.at.least(count);
+        function _checkRouteSetup(module, stateProvider, state, params) {
+            var args = null;
 
-            var callIndex = count - 1;
-            var args = stateProvider.state.args[callIndex];
-
-            expect(args[0]).to.equal(state);
+            for(var index=0; index<stateProvider.state.args.length; index++) {
+                args = stateProvider.state.args[index];
+                if(args[0] === state) {
+                    break;
+                } else {
+                    args = null;
+                }
+            }
 
             // Testing too much here makes the code less flexible, requiring
             // test changes for every small change in routes. There may be
@@ -55,6 +60,22 @@ describe('[app.routes]', function() {
             var routeConfig = args[1];
             expect(routeConfig).to.be.an('object');
             expect(routeConfig.url).to.equal(params.url);
+
+            return routeConfig;
+        }
+
+        function _verifyOnEnterBreadCrumbs(config, crumbs) {
+
+            expect(config.onEnter).to.be.an('Array');
+            var handler = config.onEnter[1];
+
+            expect(handler).to.be.a('function');
+            var bcMock = _mockHelper.createBreadCrumbMock();
+
+            expect(bcMock.setCrumbs).to.not.have.been.called;
+            handler(bcMock);
+            expect(bcMock.setCrumbs).to.have.been.calledOnce;
+            expect(bcMock.setCrumbs.args[0][0]).to.deep.equal(crumbs);
         }
 
         it('should setup a default route of "/explore" when invoked', function() {
@@ -66,24 +87,51 @@ describe('[app.routes]', function() {
             expect(urlRouterProvider.otherwise).to.have.been.calledWith('/explore');
         });
 
-        it('should setup an application route for the error state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 1, 'error', {
-                url: '/error'
-            });
-        });
-
         it('should setup an application route for the explore state when invoked', function() {
             expect(stateProvider.state).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 2, 'explore', {
+            var config = _checkRouteSetup(module, stateProvider, 'explore', {
                 url: '/explore'
             });
+            _verifyOnEnterBreadCrumbs(config, [ {
+                title: 'Dashboard'
+            } ]);
+        });
+
+        it('should setup an application route for the error state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            var config = _checkRouteSetup(module, stateProvider, 'error', {
+                url: '/error'
+            });
+
+            _verifyOnEnterBreadCrumbs(config, [ {
+                title: 'Dashboard',
+                routeState: 'explore'
+            }, {
+                title: 'Error'
+            }]);
+        });
+
+        it('should setup an application route for the user profile state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            var config = _checkRouteSetup(module, stateProvider, 'user', {
+                url: '/user'
+            });
+
+            _verifyOnEnterBreadCrumbs(config, [ {
+                title: 'Dashboard',
+                routeState: 'explore'
+            }, {
+                title: 'User Profile'
+            }]);
         });
 
         it('should setup an application route for the nodes state when invoked', function() {
@@ -91,7 +139,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 3, 'nodes', {
+            _checkRouteSetup(module, stateProvider, 'nodes', {
                 url: '/nodes'
             });
         });
@@ -101,7 +149,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 4, 'create_node', {
+            _checkRouteSetup(module, stateProvider, 'create_node', {
                 url: '/create-node'
             });
         });
@@ -111,7 +159,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 5, 'gateways', {
+            _checkRouteSetup(module, stateProvider, 'gateways', {
                 url: '/gateways'
             });
         });
@@ -121,7 +169,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 6, 'create_gateway', {
+            _checkRouteSetup(module, stateProvider, 'create_gateway', {
                 url: '/create-gateway'
             });
         });
@@ -131,7 +179,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 7, 'account', {
+            _checkRouteSetup(module, stateProvider, 'account', {
                 url: '/account'
             });
         });

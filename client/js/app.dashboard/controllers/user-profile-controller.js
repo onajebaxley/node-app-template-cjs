@@ -8,8 +8,8 @@ var _clone = require('clone');
  *
  * @module app.dashboard.UserProfileController
  */
-module.exports = [ '$scope', 'app.core.user', 'app.layout.breadCrumb',
-    function($scope, user, breadCrumb) {
+module.exports = [ '$scope', 'app.core.user',
+    function($scope, user) {
 
         $scope.username = user.username;
         $scope.firstName = user.firstName;
@@ -35,12 +35,6 @@ module.exports = [ '$scope', 'app.core.user', 'app.layout.breadCrumb',
         // --------------------------------------------------------------------
         // Initialization code.
         // --------------------------------------------------------------------
-        breadCrumb.setCrumbs([ {
-            title: 'Dashboard',
-            routeState: 'explore'
-        }, {
-            title: 'User Profile',
-        } ]);
 
         // --------------------------------------------------------------------
         // Private members
