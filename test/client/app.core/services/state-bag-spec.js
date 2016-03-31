@@ -44,7 +44,7 @@ describe('[app.core.stateBag]', function() {
     function _initService(stateBag) {
         stateBag = stateBag || {};
 
-        for(var key in stateBag) {
+        for (var key in stateBag) {
             localStorageMock.set('_state.' + key, _clone(stateBag[key]));
         }
         return $injector.invoke(provider.$get);
@@ -69,7 +69,7 @@ describe('[app.core.stateBag]', function() {
 
                 localStorageMock.isSupported = true;
                 var service = _initService(props);
-                for(var key in props) {
+                for (var key in props) {
                     expect(service.get(key)).to.equal(props[key]);
                 }
             });
@@ -83,7 +83,7 @@ describe('[app.core.stateBag]', function() {
 
                 localStorageMock.isSupported = false;
                 var service = _initService(props);
-                for(var key in props) {
+                for (var key in props) {
                     expect(service.get(key)).to.be.undefined;
                 }
             });
@@ -118,11 +118,12 @@ describe('[app.core.stateBag]', function() {
                     isFalse: true
                 };
 
-                for(var key in props) {
+                var key = null;
+                for (key in props) {
                     service.set(key, props[key]);
                 }
 
-                for(var key in props) {
+                for (key in props) {
                     expect(service.get(key)).to.equal(props[key]);
                 }
             });
@@ -137,7 +138,7 @@ describe('[app.core.stateBag]', function() {
 
                 var service = _initService();
                 var spy = _sinon.stub(localStorageMock, 'set');
-                for(var key in props) {
+                for (var key in props) {
                     var stateKey = '_state.' + key;
                     expect(localStorageMock.set).to.not.have.been.called;
                     service.set(key, props[key], true);
@@ -157,7 +158,7 @@ describe('[app.core.stateBag]', function() {
 
                 var service = _initService();
                 var spy = _sinon.stub(localStorageMock, 'set');
-                for(var key in props) {
+                for (var key in props) {
                     var stateKey = '_state.' + key;
                     expect(localStorageMock.set).to.not.have.been.called;
                     service.set(key, props[key], true);
@@ -176,7 +177,7 @@ describe('[app.core.stateBag]', function() {
 
                 var service = _initService();
                 var spy = _sinon.stub(localStorageMock, 'set');
-                for(var key in props) {
+                for (var key in props) {
                     var stateKey = '_state.' + key;
                     expect(localStorageMock.set).to.not.have.been.called;
                     service.set(key, props[key], false);
@@ -226,11 +227,12 @@ describe('[app.core.stateBag]', function() {
                 localStorageMock.isSupported = false;
 
                 var service = _initService(props);
-                for (var prop in props) {
+                var prop = null;
+                for (prop in props) {
                     service.set(prop, props[prop]);
                 }
 
-                for (var prop in props) {
+                for (prop in props) {
                     expect(service.get(prop)).to.deep.equal(props[prop]);
                 }
             });
@@ -248,11 +250,12 @@ describe('[app.core.stateBag]', function() {
                 localStorageMock.isSupported = false;
 
                 var service = _initService(props);
-                for (var prop in props) {
+                var prop = null;
+                for (prop in props) {
                     service.set(prop, props[prop]);
                 }
 
-                for (var prop in props) {
+                for (prop in props) {
                     expect(service.get(prop)).to.not.equal(props[prop]);
                 }
             });
