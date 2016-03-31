@@ -66,12 +66,22 @@ describe('[app.routes]', function() {
             expect(urlRouterProvider.otherwise).to.have.been.calledWith('/explore');
         });
 
+        it('should setup an application route for the error state when invoked', function() {
+            expect(stateProvider.state).to.not.have.been.called;
+
+            module(stateProvider, urlRouterProvider);
+
+            _checkRouteSetup(module, stateProvider, 1, 'error', {
+                url: '/error'
+            });
+        });
+
         it('should setup an application route for the explore state when invoked', function() {
             expect(stateProvider.state).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 1, 'explore', {
+            _checkRouteSetup(module, stateProvider, 2, 'explore', {
                 url: '/explore'
             });
         });
@@ -81,7 +91,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 2, 'nodes', {
+            _checkRouteSetup(module, stateProvider, 3, 'nodes', {
                 url: '/nodes'
             });
         });
@@ -91,7 +101,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 3, 'create_node', {
+            _checkRouteSetup(module, stateProvider, 4, 'create_node', {
                 url: '/create-node'
             });
         });
@@ -101,7 +111,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 4, 'gateways', {
+            _checkRouteSetup(module, stateProvider, 5, 'gateways', {
                 url: '/gateways'
             });
         });
@@ -111,7 +121,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 5, 'create_gateway', {
+            _checkRouteSetup(module, stateProvider, 6, 'create_gateway', {
                 url: '/create-gateway'
             });
         });
@@ -121,7 +131,7 @@ describe('[app.routes]', function() {
 
             module(stateProvider, urlRouterProvider);
 
-            _checkRouteSetup(module, stateProvider, 6, 'account', {
+            _checkRouteSetup(module, stateProvider, 7, 'account', {
                 url: '/account'
             });
         });

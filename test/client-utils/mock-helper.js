@@ -87,7 +87,8 @@ module.exports = {
         }
         var mock = {
             __url: url,
-            href: function() {}
+            href: function() {},
+            go: _sinon.spy()
         };
 
         _sinon.stub(mock, 'href', function(state, params) {

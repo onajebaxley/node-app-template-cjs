@@ -22,6 +22,7 @@ describe('[app.layout.LayoutController]', function() {
     var $rootScope = null;
     var $scope = null;
     var userMock = null;
+    var $stateMock = null;
     var DEFAULT_PROPERTIES = ['isFullScreen', 'stateTransitionInProgress'];
 
     function _getConfigMock(layoutConfig) {
@@ -96,12 +97,14 @@ describe('[app.layout.LayoutController]', function() {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
                 userMock = _mockHelper.createUserMock();
+                $stateMock = _mockHelper.createUiRouterStateMock();
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
                     localStorageService: _mockHelper.createLocalStorageMock(false, {}),
-                    'app.core.user': userMock
+                    'app.core.user': userMock,
+                    '$state': $stateMock
                 };
 
                 for (var mockName in mocks) {
@@ -117,6 +120,7 @@ describe('[app.layout.LayoutController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
+        $stateMock = null;
         userMock = null;
     });
 
@@ -702,6 +706,15 @@ describe('[app.layout.LayoutController]', function() {
             $scope._layout.stateTransitionInProgress = true;
             $rootScope.$broadcast('$stateChangeError');
             expect($scope._layout.stateTransitionInProgress).to.be.false;
+        });
+
+        it('should route the user to the error state when a state transition completes with errors', function() {
+            _initController({});
+
+            expect($stateMock.go).to.not.have.been.called;
+            $rootScope.$broadcast('$stateChangeError');
+            expect($stateMock.go).to.have.been.calledOnce;
+            expect($stateMock.go).to.have.been.calledWith('error');
         });
     });
 
