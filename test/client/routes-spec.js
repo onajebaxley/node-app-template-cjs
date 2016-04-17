@@ -43,9 +43,9 @@ describe('[app.routes]', function() {
         function _checkRouteSetup(module, stateProvider, state, params) {
             var args = null;
 
-            for(var index=0; index<stateProvider.state.args.length; index++) {
+            for (var index = 0; index < stateProvider.state.args.length; index++) {
                 args = stateProvider.state.args[index];
-                if(args[0] === state) {
+                if (args[0] === state) {
                     break;
                 } else {
                     args = null;
@@ -95,9 +95,9 @@ describe('[app.routes]', function() {
             var config = _checkRouteSetup(module, stateProvider, 'explore', {
                 url: '/explore'
             });
-            _verifyOnEnterBreadCrumbs(config, [ {
+            _verifyOnEnterBreadCrumbs(config, [{
                 title: 'Dashboard'
-            } ]);
+            }]);
         });
 
         it('should setup an application route for the error state when invoked', function() {
@@ -109,7 +109,7 @@ describe('[app.routes]', function() {
                 url: '/error'
             });
 
-            _verifyOnEnterBreadCrumbs(config, [ {
+            _verifyOnEnterBreadCrumbs(config, [{
                 title: 'Dashboard',
                 routeState: 'explore'
             }, {
@@ -126,7 +126,7 @@ describe('[app.routes]', function() {
                 url: '/user'
             });
 
-            _verifyOnEnterBreadCrumbs(config, [ {
+            _verifyOnEnterBreadCrumbs(config, [{
                 title: 'Dashboard',
                 routeState: 'explore'
             }, {
