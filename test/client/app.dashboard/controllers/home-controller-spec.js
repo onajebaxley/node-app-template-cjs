@@ -16,7 +16,7 @@ var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
 var _module = 'app.dashboard';
 
-describe('[app.auth.ExploreController]', function() {
+describe('[app.auth.HomeController]', function() {
     'use strict';
 
     var controller = null;
@@ -44,7 +44,7 @@ describe('[app.auth.ExploreController]', function() {
                     options[mockName] = mocks[mockName];
                 }
 
-                controller = _$controller('app.dashboard.ExploreController', options);
+                controller = _$controller('app.dashboard.HomeController', options);
             }
         ]);
     }
@@ -70,30 +70,6 @@ describe('[app.auth.ExploreController]', function() {
     describe('[init]', function() {
         it('should expose expected properties and methods', function() {
             _initController();
-        });
-
-        xdescribe('[bread crumbs]', function() {
-            beforeEach(function() {
-                _initController();
-            });
-
-            it('should initialize the bread crumb service when loaded', function() {
-                expect(breadCrumbMock.setCrumbs).to.have.been.calledOnce;
-                expect(breadCrumbMock.setCrumbs.args[0][0]).to.be.an('Array')
-            });
-
-            it('should set the expected breadcrumb values', function() {
-                var crumbs = breadCrumbMock.setCrumbs.args[0][0];
-
-                expect(crumbs).to.have.length(2);
-                _breadCrumbHelper.verifyCrumb(crumbs[0], {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                });
-                _breadCrumbHelper.verifyCrumb(crumbs[1], {
-                    title: 'Explore'
-                });
-            });
         });
     });
 

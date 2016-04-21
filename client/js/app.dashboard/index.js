@@ -17,10 +17,8 @@ var dataModule = require('../app.data');
 var moduleName = 'app.dashboard';
 angular.module(moduleName, [ 'ui.router', 'app.core', 'app.layout', 'app.data' ])
     .controller('app.dashboard.UserProfileController', require('./controllers/user-profile-controller'))
-    .controller('app.dashboard.ExploreController', require('./controllers/explore-controller'))
+    .controller('app.dashboard.HomeController', require('./controllers/home-controller'))
     .controller('app.dashboard.AccountSettingsController', require('./controllers/account-settings-controller'))
-    //.factory('app.dashboard.breadCrumb', require('./services/bread-crumb'))
-    //.controller('app.dashboard.LeftSidebarController', require('./controllers/left-sidebar-controller'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');
