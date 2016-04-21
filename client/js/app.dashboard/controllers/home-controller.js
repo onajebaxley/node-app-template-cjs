@@ -8,7 +8,7 @@ var _screenfull = require('screenfull');
  *
  * @module app.dashboard.HomeController
  */
-module.exports = [ '$scope', 'app.layout.MenuItem',
-    function($scope, MenuItem) {
+module.exports = [ '$scope',
+    function($scope) {
     }
 ];

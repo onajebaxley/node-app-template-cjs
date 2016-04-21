@@ -16,9 +16,8 @@ var dataModule = require('../app.data');
  */
 var moduleName = 'app.dashboard';
 angular.module(moduleName, [ 'ui.router', 'app.core', 'app.layout', 'app.data' ])
-    .controller('app.dashboard.UserProfileController', require('./controllers/user-profile-controller'))
     .controller('app.dashboard.HomeController', require('./controllers/home-controller'))
-    .controller('app.dashboard.AccountSettingsController', require('./controllers/account-settings-controller'))
+    .controller('app.dashboard.UserProfileController', require('./controllers/user-profile-controller'))
     ;
 
 console.debug('Module loaded: [' + moduleName + ']');

@@ -22,7 +22,6 @@ describe('[app.auth.HomeController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
-    var breadCrumbMock = null;
 
     function _initController(mocks) {
         mocks = mocks || {};
@@ -31,12 +30,10 @@ describe('[app.auth.HomeController]', function() {
             function(_$rootScope, _$controller) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
-                breadCrumbMock = _mockHelper.createBreadCrumbMock();
 
                 var options = {
                     $rootScope: _$rootScope,
-                    $scope: $scope,
-                    'app.layout.breadCrumb': breadCrumbMock
+                    $scope: $scope
                 };
 
                 for (var mockName in mocks) {
@@ -52,7 +49,6 @@ describe('[app.auth.HomeController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
-        breadCrumbMock = null;
     });
 
     beforeEach(angular.mock.module(_module));
