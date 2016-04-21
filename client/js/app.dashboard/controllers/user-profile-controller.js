@@ -20,18 +20,6 @@ module.exports = [ '$scope', 'app.core.user',
         $scope.serviceTokens = _clone(user._serviceTokens);
 
         $scope.isEditEnabled = false;
-
-        /**
-         * Cancels an ongoing edit operation, and restores the metadata
-         * variable to the local metadata reference.
-         *
-         * @module app.layout.UserProfileController
-         * @method cancelEdit
-         */
-        //$scope.cancelEdit = function() {
-        //    _updateMetadataText();
-        //};
-
         // --------------------------------------------------------------------
         // Initialization code.
         // --------------------------------------------------------------------

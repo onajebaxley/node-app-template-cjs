@@ -16,7 +16,7 @@ var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
 var _module = 'app.dashboard';
 
-describe('[app.auth.HomeController]', function() {
+describe('[app.dashboard.HomeController]', function() {
     'use strict';
 
     var controller = null;

@@ -13,7 +13,6 @@ var _clone = require('clone');
 var _angular = require('angular');
 var _ngMocks = require('angular-mocks');
 var _mockHelper = require('../../../client-utils/mock-helper');
-var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
 var _module = 'app.dashboard';
 
@@ -23,7 +22,6 @@ describe('[app.dashboard.UserProfileController]', function() {
     var controller = null;
     var $rootScope = null;
     var $scope = null;
-    var breadCrumbMock = null;
     var userMock = null;
 
     function _initController(mocks) {
@@ -33,13 +31,11 @@ describe('[app.dashboard.UserProfileController]', function() {
             function(_$rootScope, _$controller) {
                 $rootScope = _$rootScope;
                 $scope = _$rootScope.$new();
-                breadCrumbMock = _mockHelper.createBreadCrumbMock();
 
                 var options = {
                     $rootScope: _$rootScope,
                     $scope: $scope,
-                    'app.core.user': userMock,
-                    'app.layout.breadCrumb': breadCrumbMock
+                    'app.core.user': userMock
                 };
 
                 for (var mockName in mocks) {
@@ -55,7 +51,6 @@ describe('[app.dashboard.UserProfileController]', function() {
         controller = null;
         $rootScope = null;
         $scope = null;
-        breadCrumbMock = null;
         userMock = _mockHelper.createUserMock('jdoe', [], {
             'wc-api': 'wc-jwt-token'
         }, {
@@ -96,30 +91,6 @@ describe('[app.dashboard.UserProfileController]', function() {
             expect($scope.picture).to.equal(userMock.picture);
             expect($scope.roles).to.deep.equal(userMock._roles);
             expect($scope.serviceTokens).to.deep.equal(userMock._serviceTokens);
-        });
-
-        xdescribe('[bread crumbs]', function() {
-            beforeEach(function() {
-                _initController();
-            });
-
-            it('should initialize the bread crumb service when loaded', function() {
-                expect(breadCrumbMock.setCrumbs).to.have.been.calledOnce;
-                expect(breadCrumbMock.setCrumbs.args[0][0]).to.be.an('Array')
-            });
-
-            it('should set the expected breadcrumb values', function() {
-                var crumbs = breadCrumbMock.setCrumbs.args[0][0];
-
-                expect(crumbs).to.have.length(2);
-                _breadCrumbHelper.verifyCrumb(crumbs[0], {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                });
-                _breadCrumbHelper.verifyCrumb(crumbs[1], {
-                    title: 'User Profile'
-                });
-            });
         });
     });
 });
