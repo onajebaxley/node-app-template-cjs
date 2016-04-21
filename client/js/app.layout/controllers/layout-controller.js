@@ -16,6 +16,9 @@ module.exports = [ '$scope', '$rootScope', '$window', '$state',
     function($scope, $rootScope, $window, $state, localStorage,
              config, user, utils, breadCrumb) {
 
+        //Note: This is a hack to enable testing of fullscreen toggle functionality.
+        $scope.__screenfull_wrapper = _screenfull;
+
         $scope._user = user;
         $scope._breadCrumb = breadCrumb;
 
@@ -97,10 +100,9 @@ module.exports = [ '$scope', '$rootScope', '$window', '$state',
          * @method toggleFullScreen
          */
         $scope.toggleFullScreen = function() {
-            $scope._layout.isFullScreen = !$scope._layout.isFullScreen;
-            //Note: There is no easy way to test this functionality at the moment.
-            if(_screenfull.enabled) {
-                _screenfull.toggle();
+            if($scope.__screenfull_wrapper.enabled) {
+                $scope.__screenfull_wrapper.toggle();
+                $scope._layout.isFullScreen = !$scope._layout.isFullScreen;
             }
         };
 

@@ -9,7 +9,6 @@ var _clone = require('clone');
  */
 module.exports = [ '$scope', 'app.core.stateBag',
     function($scope, stateBag) {
-
         // --------------------------------------------------------------------
         // Initialization code.
         // --------------------------------------------------------------------

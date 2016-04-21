@@ -14,9 +14,9 @@ var _ngMocks = require('angular-mocks');
 var _mockHelper = require('../../../client-utils/mock-helper');
 var _breadCrumbHelper = require('../../../client-utils/bread-crumb-helper');
 
-var _module = 'app.dashboard';
+var _module = 'app.layout';
 
-describe('[app.auth.HomeController]', function() {
+describe('[app.layout.ErrorController]', function() {
     'use strict';
 
     var controller = null;
@@ -40,7 +40,7 @@ describe('[app.auth.HomeController]', function() {
                     options[mockName] = mocks[mockName];
                 }
 
-                controller = _$controller('app.dashboard.HomeController', options);
+                controller = _$controller('app.layout.ErrorController', options);
             }
         ]);
     }

@@ -653,8 +653,29 @@ describe('[app.layout.LayoutController]', function() {
     });
 
     describe('toggleFullScreen()', function() {
-        it('should toggle the value of the _layout.isFullScreen variable when invoked', function() {
+        it('should do nothing if fullscreen mode is not enabled', function() {
             _initController({});
+
+            $scope.__screenfull_wrapper = {
+                enabled: false,
+                toggle: _sinon.spy()
+            };
+
+            $scope._layout.isFullScreen = false;
+            expect($scope.__screenfull_wrapper.toggle).to.not.have.been.called;
+
+            $scope.toggleFullScreen();
+            expect($scope._layout.isFullScreen).to.be.false;
+            expect($scope.__screenfull_wrapper.toggle).to.not.have.been.called;
+        });
+
+        it('should toggle the value of the _layout.isFullScreen variable when invoked, and if fullscreen mode is enabled', function() {
+            _initController({});
+
+            $scope.__screenfull_wrapper = {
+                enabled: true,
+                toggle: _sinon.spy()
+            };
 
             $scope._layout.isFullScreen = false;
 
@@ -663,6 +684,20 @@ describe('[app.layout.LayoutController]', function() {
 
             $scope.toggleFullScreen();
             expect($scope._layout.isFullScreen).to.be.false;
+        });
+
+        it('should use the screenful library toggle fullscreen mode when invoked when fullscreen mode is enabled', function() {
+            _initController({});
+
+            $scope.__screenfull_wrapper = {
+                enabled: false,
+                toggle: _sinon.spy()
+            };
+
+            expect($scope.__screenfull_wrapper.toggle).to.not.have.been.called;
+
+            $scope.toggleFullScreen();
+            expect($scope.__screenfull_wrapper.toggle).to.not.have.been.called;
         });
     });
 
