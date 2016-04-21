@@ -64,8 +64,7 @@ describe('[app.routes]', function() {
             return routeConfig;
         }
 
-        function _verifyOnEnterBreadCrumbs(config, crumbs) {
-
+        function _verifyBcSetOnEnter(config, crumbs) {
             expect(config.onEnter).to.be.an('Array');
             var handler = config.onEnter[1];
 
@@ -78,24 +77,49 @@ describe('[app.routes]', function() {
             expect(bcMock.setCrumbs.args[0][0]).to.deep.equal(crumbs);
         }
 
-        it('should setup a default route of "/explore" when invoked', function() {
+        function _verifyBcPushOnEnter(config, crumb) {
+            expect(config.onEnter).to.be.an('Array');
+            var handler = config.onEnter[1];
+
+            expect(handler).to.be.a('function');
+            var bcMock = _mockHelper.createBreadCrumbMock();
+
+            expect(bcMock.push).to.not.have.been.called;
+            handler(bcMock);
+            expect(bcMock.push).to.have.been.calledOnce;
+            expect(bcMock.push.args[0][0]).to.deep.equal(crumb);
+        }
+
+        function _verifyBcPopOnExit(config) {
+            expect(config.onExit).to.be.an('Array');
+            var handler = config.onExit[1];
+
+            expect(handler).to.be.a('function');
+            var bcMock = _mockHelper.createBreadCrumbMock();
+
+            expect(bcMock.pop).to.not.have.been.called;
+            handler(bcMock);
+            expect(bcMock.pop).to.have.been.calledOnce;
+        }
+
+        it('should setup a default route of "/" when invoked', function() {
             expect(urlRouterProvider.otherwise).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
             expect(urlRouterProvider.otherwise).to.have.been.calledOnce;
-            expect(urlRouterProvider.otherwise).to.have.been.calledWith('/explore');
+            expect(urlRouterProvider.otherwise).to.have.been.calledWith('/');
         });
 
-        it('should setup an application route for the explore state when invoked', function() {
+        it('should setup an application route for the home state when invoked', function() {
             expect(stateProvider.state).to.not.have.been.called;
 
             module(stateProvider, urlRouterProvider);
 
-            var config = _checkRouteSetup(module, stateProvider, 'explore', {
-                url: '/explore'
+            var config = _checkRouteSetup(module, stateProvider, 'home', {
+                url: '/'
             });
-            _verifyOnEnterBreadCrumbs(config, [{
+            _verifyBcSetOnEnter(config, [{
                 title: 'Dashboard'
             }]);
         });
@@ -109,12 +133,11 @@ describe('[app.routes]', function() {
                 url: '/error'
             });
 
-            _verifyOnEnterBreadCrumbs(config, [{
-                title: 'Dashboard',
-                routeState: 'explore'
-            }, {
+            _verifyBcPushOnEnter(config, {
                 title: 'Error'
-            }]);
+            }, true);
+
+            _verifyBcPopOnExit(config);
         });
 
         it('should setup an application route for the user profile state when invoked', function() {
@@ -126,62 +149,12 @@ describe('[app.routes]', function() {
                 url: '/user'
             });
 
-            _verifyOnEnterBreadCrumbs(config, [{
+            _verifyBcSetOnEnter(config, [{
                 title: 'Dashboard',
-                routeState: 'explore'
+                routeState: 'home'
             }, {
                 title: 'User Profile'
             }]);
-        });
-
-        it('should setup an application route for the nodes state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 'nodes', {
-                url: '/nodes'
-            });
-        });
-
-        it('should setup an application route for the create node state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 'create_node', {
-                url: '/create-node'
-            });
-        });
-
-        it('should setup an application route for the gateways state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 'gateways', {
-                url: '/gateways'
-            });
-        });
-
-        it('should setup an application route for the create gateway state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 'create_gateway', {
-                url: '/create-gateway'
-            });
-        });
-
-        it('should setup an application route for the manage account settings state when invoked', function() {
-            expect(stateProvider.state).to.not.have.been.called;
-
-            module(stateProvider, urlRouterProvider);
-
-            _checkRouteSetup(module, stateProvider, 'account', {
-                url: '/account'
-            });
         });
     });
 });

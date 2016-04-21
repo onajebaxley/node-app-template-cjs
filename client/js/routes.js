@@ -14,13 +14,13 @@ var console = require('console');
 module.exports = [ '$stateProvider', '$urlRouterProvider', 
     function(stateProvider, urlRouterProvider) {
         // Default route
-        urlRouterProvider.otherwise('/explore');
+        urlRouterProvider.otherwise('/');
 
         // Application routes
-        stateProvider.state('explore', {
-            url: '/explore',
-            templateUrl: '/views/dashboard-explore.html',
-            controller: 'app.dashboard.ExploreController',
+        stateProvider.state('home', {
+            url: '/',
+            templateUrl: '/views/dashboard.home.html',
+            controller: 'app.dashboard.HomeController',
             onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
                 breadCrumb.setCrumbs([ {
                     title: 'Dashboard'
@@ -30,58 +30,31 @@ module.exports = [ '$stateProvider', '$urlRouterProvider',
 
         stateProvider.state('error', {
             url: '/error',
-            templateUrl: '/views/error.html',
+            templateUrl: '/views/routes.error.html',
             controller: 'app.layout.ErrorController',
             onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
-                breadCrumb.setCrumbs([ {
-                    title: 'Dashboard',
-                    routeState: 'explore'
-                }, {
+                breadCrumb.push({
                     title: 'Error'
-                } ]);
+                });
+            } ],
+            onExit: [ 'app.layout.breadCrumb', function(breadCrumb) {
+                breadCrumb.pop();
             } ]
         });
 
         stateProvider.state('user', {
             url: '/user',
-            templateUrl: '/views/dashboard-user-profile.html',
+            templateUrl: '/views/dashboard.user-profile.html',
             controller: 'app.dashboard.UserProfileController',
             onEnter: [ 'app.layout.breadCrumb', function(breadCrumb) {
                 breadCrumb.setCrumbs([ {
                     title: 'Dashboard',
-                    routeState: 'explore'
+                    routeState: 'home'
                 }, {
                     title: 'User Profile'
                 } ]);
             } ]
         });
-
-        stateProvider.state('nodes', {
-            url: '/nodes',
-            templateUrl: '/views/dashboard-explore.html'
-        });
-
-        stateProvider.state('create_node', {
-            url: '/create-node',
-            templateUrl: '/views/dashboard-explore.html'
-        });
-
-        stateProvider.state('gateways', {
-            url: '/gateways',
-            templateUrl: '/views/dashboard-explore.html'
-        });
-
-        stateProvider.state('create_gateway', {
-            url: '/create-gateway',
-            templateUrl: '/views/dashboard-explore.html'
-        });
-
-        stateProvider.state('account', {
-            url: '/account',
-            templateUrl: '/views/dashboard-account-settings.html',
-            controller: 'app.dashboard.AccountSettingsController'
-        });
-
 
         console.debug('Routes configured');
     }
