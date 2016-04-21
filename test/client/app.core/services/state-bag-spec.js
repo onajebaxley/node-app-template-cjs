@@ -41,11 +41,12 @@ describe('[app.core.stateBag]', function() {
         $injector = _$injector;
     }]));
 
-    function _initService(stateBag) {
+    function _initService(stateBag, prefix) {
+        prefix = prefix || '_state';
         stateBag = stateBag || {};
 
         for (var key in stateBag) {
-            localStorageMock.set('_state.' + key, _clone(stateBag[key]));
+            localStorageMock.set(prefix + '.' + key, _clone(stateBag[key]));
         }
         return $injector.invoke(provider.$get);
     }
@@ -83,6 +84,20 @@ describe('[app.core.stateBag]', function() {
 
                 localStorageMock.isSupported = false;
                 var service = _initService(props);
+                for (var key in props) {
+                    expect(service.get(key)).to.be.undefined;
+                }
+            });
+
+            it('should not load values from local storage on load if local storage supported, but no matching properties are found', function() {
+                var props = {
+                    foo: 'bar',
+                    abc: 123,
+                    isFalse: true
+                };
+
+                localStorageMock.isSupported = true;
+                var service = _initService(props, 'incorrect_prefix');
                 for (var key in props) {
                     expect(service.get(key)).to.be.undefined;
                 }
