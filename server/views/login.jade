@@ -28,9 +28,11 @@ block content
 
 block scripts
 	script(type='text/javascript')
-		| var username= '#{username}';
+		| var username = '#{username}';
+		| var errorMessage = '#{errorMessage}';
 		| var responseUsername = '#{rv_username}';
 		| username = (username) ? username:responseUsername;
 		| angular.module('app').config(['app.core.configProvider', function(configProvider) {
 		|     configProvider.set('username', username);
+		|     configProvider.set('error_message', errorMessage);
 		| }]);
